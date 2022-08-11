@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mera_aadhar/screens/home_page.dart';
 import 'package:mera_aadhar/screens/verification.dart';
 
 void main() {
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
        
         primarySwatch: Colors.blue,
       ),
-      home:Verification(),
+      home:HomePage(),
     );
   }
 }

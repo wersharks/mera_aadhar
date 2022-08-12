@@ -2,6 +2,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:mera_aadhar/screens/verification.dart';
+import 'package:mera_aadhar/utilities/constants.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -13,6 +14,7 @@ class HomePage extends StatelessWidget {
       child: Column(
         children: [
           TextButton(
+            style: buttonStyle,
             child: Text("CLICK"),
             onPressed: () {
               Navigator.push(context,

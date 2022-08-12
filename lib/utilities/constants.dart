@@ -7,6 +7,8 @@ var buttonStyle = ButtonStyle(
     backgroundColor: MaterialStateProperty.all(Color(0xffF24405)),
     elevation: MaterialStateProperty.all(5));
 const textStyle = TextStyle(color: Colors.black, fontSize: 17);
+const bigTextStyle =
+    TextStyle(color: Colors.black, fontSize: 22, fontWeight: FontWeight.bold);
 const appBarTextStyle = TextStyle(
   color: Colors.black,
   fontWeight: FontWeight.bold,

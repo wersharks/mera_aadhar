@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "800240519039",
+    "project_id": "sportyme-9927c",
+    "storage_bucket": "sportyme-9927c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:800240519039:android:5b337449d5e254a151bc4a",
+        "android_client_info": {
+          "package_name": "com.shark.mera_aadhar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "800240519039-1eti7eqvbvgl9qj60s62sfevt9utsutn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCy24LszFzZ92VaIuL9CR0fid13JXBZLgw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "800240519039-1eti7eqvbvgl9qj60s62sfevt9utsutn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

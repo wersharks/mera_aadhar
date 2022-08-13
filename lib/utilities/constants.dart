@@ -13,3 +13,8 @@ const appBarTextStyle = TextStyle(
   color: Colors.black,
   fontWeight: FontWeight.bold,
 );
+const kSnackbarStyle = TextStyle(
+  fontSize: 20,
+  color: Colors.white,
+  fontFamily: 'Jose',
+);

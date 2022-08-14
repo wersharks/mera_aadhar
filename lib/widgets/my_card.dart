@@ -15,18 +15,19 @@ class MyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(30.0),
+      padding: const EdgeInsets.all(10.0),
       child: GestureDetector(
         onTap: () {
           onTheTap();
         },
         child: Container(
+          width: double.infinity,
           decoration: BoxDecoration(
-              color: Color(0xffFF2F2F2),
+              color: Colors.white,
               boxShadow: [
                 BoxShadow(
                     color: Colors.grey.withOpacity(.5),
-                    offset: Offset(0, 5),
+                    offset: Offset(0, 0),
                     spreadRadius: .1,
                     blurRadius: 3),
               ],
@@ -34,22 +35,18 @@ class MyCard extends StatelessWidget {
               border: Border.all(color: Colors.grey.withOpacity(.01))),
           child: Padding(
             padding: const EdgeInsets.all(15.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Expanded(
-                  child: Text(
-                    text,
-                    textAlign: TextAlign.center,
-                    style: bigTextStyle,
-                  ),
+                Icon(
+                  icon,
+                  size: 100,
+                  color: Colors.orange,
                 ),
-                Expanded(
-                  child: Icon(
-                    icon,
-                    size: 100,
-                    color: Colors.orange,
-                  ),
+                Text(
+                  text,
+                  textAlign: TextAlign.center,
+                  style: oTextStyle,
                 ),
               ],
             ),

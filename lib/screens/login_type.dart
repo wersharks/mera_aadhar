@@ -11,13 +11,13 @@ class LoginType extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xffF2F2F2),
       body: SafeArea(
           child: Column(
         children: [
           Expanded(
             child: MyCard(
-              text: "LOGIN USING PHONE NUMBER",
+              text: "Book operator",
               icon: FontAwesomeIcons.squarePhone,
               onTheTap: () {
                 Navigator.push(context,
@@ -27,7 +27,7 @@ class LoginType extends StatelessWidget {
           ),
           Expanded(
             child: MyCard(
-              text: "BOOK USING HELPLINE",
+              text: "Use helpline",
               icon: FontAwesomeIcons.headphonesSimple,
               onTheTap: () {
                 Navigator.push(context,
@@ -37,7 +37,7 @@ class LoginType extends StatelessWidget {
           ),
           Expanded(
             child: MyCard(
-              text: "LOREM IPSUM",
+              text: "Self Update",
               icon: FontAwesomeIcons.fireBurner,
               onTheTap: () {
                 Navigator.push(context,

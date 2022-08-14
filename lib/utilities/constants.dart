@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 
-const buttonTextStyle = TextStyle(color: Colors.white, fontSize: 21);
+const buttonTextStyle = TextStyle(color: Colors.white, fontSize: 18);
 var buttonStyle = ButtonStyle(
     shape: MaterialStateProperty.all(
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
-    backgroundColor: MaterialStateProperty.all(Color(0xffF24405)),
-    elevation: MaterialStateProperty.all(5));
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(32))),
+    backgroundColor: MaterialStateProperty.all(Color(0xffF8774A)),
+    elevation: MaterialStateProperty.all(1));
+
 const textStyle = TextStyle(color: Colors.black, fontSize: 17);
+const bTextStyle = TextStyle(color: Colors.black, fontSize: 21,fontWeight: FontWeight.bold);
+const oTextStyle = TextStyle(
+    color: Color(0xffF8774A), fontSize: 28, fontWeight: FontWeight.bold);
+const kTextSTyle = TextStyle(color: Color(0xffE34637),fontSize: 16);
 const bigTextStyle =
     TextStyle(color: Colors.black, fontSize: 22, fontWeight: FontWeight.bold);
 const appBarTextStyle = TextStyle(

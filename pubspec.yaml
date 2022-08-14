@@ -47,8 +47,11 @@ dependencies:
   location: ^4.4.0
   provider: ^6.0.3
   flutter_map_marker_popup: any
+  firebase_database: ^9.1.1
   
 dev_dependencies:
+  integration_test:
+    sdk: flutter
   flutter_test:
     sdk: flutter
 

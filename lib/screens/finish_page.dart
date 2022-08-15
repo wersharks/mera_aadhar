@@ -94,9 +94,15 @@ class _FinishPageState extends State<FinishPage> {
               textAlign: TextAlign.center,
             ),
           ),
+          SizedBox(
+            height: getProportionateScreenHeight(10),
+          ),
           Image.asset(
             'assets/checked.png',
-            width: getProportionateScreenWidth(175),
+            width: getProportionateScreenWidth(155),
+          ),
+          SizedBox(
+            height: getProportionateScreenHeight(10),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),

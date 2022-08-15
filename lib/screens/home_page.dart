@@ -11,7 +11,8 @@ import 'package:mera_aadhar/screens/map_basic.dart';
 import 'package:provider/provider.dart';
 import 'modeSelectionPage.dart';
 import 'serviceSelectionPage.dart';
-
+import 'onBoardingPage.dart';
+import 'loadingPage.dart';
 import 'package:mera_aadhar/testscreens/testfirebase.dart';
 
 class HomePage extends StatelessWidget {
@@ -31,6 +32,23 @@ class HomePage extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => LoginType()));
             },
           ),
+
+          TextButton(
+            child: Text("Welcome Page"),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LoadingPage()));
+            },
+          ),
+
+          TextButton(
+            child: Text("Welcome Sliders"),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => OnBoardingScreen()));
+            },
+          ),
+
           TextButton(
             child: Text("CLICK MAP"),
             onPressed: () {

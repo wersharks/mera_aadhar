@@ -95,7 +95,7 @@ class _FinishPageState extends State<FinishPage> {
             ),
           ),
           Image.asset(
-            'assets/tick.png',
+            'assets/checked.png',
             width: getProportionateScreenWidth(175),
           ),
           Padding(

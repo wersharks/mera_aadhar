@@ -64,29 +64,25 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             child: PageView(
               controller: _controller,
               children: [
-                WelcomeScreen(currentPage: _currentPage, vectorLink: "", textelement: "Search for a suitable role!",),
-                WelcomeScreen(currentPage: _currentPage, vectorLink: "", textelement: "Get notified for new Jobs!",),
-                WelcomeScreen(currentPage: _currentPage, vectorLink: "", textelement: "Get Hired easily!",)
+                WelcomeScreen(vectorLink: "", textelement: "Aaadhar update or Enrollment at your home",),
+                WelcomeScreen(vectorLink: "", textelement: "Select your own Time Slot",),
+                WelcomeScreen(vectorLink: "", textelement: "Review your appointments",)
               ],
             ),
           ),
-          if(_currentPage == 2)(
-              Text("Fuck you")
-          ) else(
-              Container(
-                alignment: const Alignment(0, 0.75),
-                child: SmoothPageIndicator(
-                  controller: _controller,
-                  count: 3,
-                  effect: const ExpandingDotsEffect(
-                      dotWidth:  10.0,
-                      dotHeight:  10.0,
-                      activeDotColor: Colors.white,
-                      dotColor: Color(0xFFFF855D)
-                  ),
-                ),
-              )
-          ),
+          Container(
+            alignment: const Alignment(0, 0.75),
+            child: SmoothPageIndicator(
+              controller: _controller,
+              count: 3,
+              effect: const ExpandingDotsEffect(
+                  dotWidth:  10.0,
+                  dotHeight:  10.0,
+                  activeDotColor: Colors.white,
+                  dotColor: Color(0xFFFF855D)
+              ),
+            ),
+          )
         ],
       ),
     );

@@ -48,6 +48,8 @@ dependencies:
   provider: ^6.0.3
   flutter_map_marker_popup: any
   firebase_database: ^9.1.1
+  smooth_page_indicator: ^1.0.0+2
+  google_fonts: ^3.0.1
   
 dev_dependencies:
   integration_test:

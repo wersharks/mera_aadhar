@@ -9,6 +9,8 @@ import 'package:mera_aadhar/services/auth/otp_signin.dart';
 import 'package:mera_aadhar/utilities/constants.dart';
 import 'package:mera_aadhar/screens/map_basic.dart';
 import 'package:provider/provider.dart';
+import 'modeSelectionPage.dart';
+import 'serviceSelectionPage.dart';
 
 import 'package:mera_aadhar/testscreens/testfirebase.dart';
 
@@ -55,6 +57,22 @@ class HomePage extends StatelessWidget {
             onPressed: () {
                 Navigator.push(context,
                   MaterialPageRoute(builder: (context) => FinishPage()));
+            },
+          ),
+
+          TextButton(
+            child: Text("Mode Selection Page"),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ModeSelectPage()));
+            },
+          ),
+
+          TextButton(
+            child: Text("Service Selection Page"),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ServiceSelectionPage()));
             },
           ),
 

@@ -46,76 +46,82 @@ class _ServiceSelectionPageState extends State<ServiceSelectionPage> {
                 padding: EdgeInsets.all(6),
                 child: Column(
                   children: [
-                    Container(
-                      height: 220,
-                      width: 390,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Colors.white),
-                      child: Center(
-                        child: Column(
-                          children: [
-                            const SizedBox(
-                              height: 50,
-                            ),
-                            Container(
-                              child: Image.asset(
-                                'assets/card.png',
-                                width: 72,
-                                height: 72,
+                    GestureDetector(
+                      onTap: (){},
+                      child: Container(
+                        height: 220,
+                        width: 390,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: Colors.white),
+                        child: Center(
+                          child: Column(
+                            children: [
+                              const SizedBox(
+                                height: 50,
                               ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              'New Application',
-                              style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 30,
-                                    color: Color(0xFFFF460A)),
+                              Container(
+                                child: Image.asset(
+                                  'assets/card.png',
+                                  width: 72,
+                                  height: 72,
+                                ),
                               ),
-                            ),
-                          ],
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                'New Application',
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 30,
+                                      color: Color(0xFFFF460A)),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                     const SizedBox(
                       height: 6,
                     ),
-                    Container(
-                      height: 220,
-                      width: 390,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Colors.white),
-                      child: Center(
-                        child: Column(
-                          children: [
-                            const SizedBox(
-                              height: 50,
-                            ),
-                            Container(
-                              child: Image.asset(
-                                'assets/fingerprint.png',
-                                width: 72,
-                                height: 72,
+                    GestureDetector(
+                      onTap: (){},
+                      child: Container(
+                        height: 220,
+                        width: 390,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: Colors.white),
+                        child: Center(
+                          child: Column(
+                            children: [
+                              const SizedBox(
+                                height: 50,
                               ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              'Update Information',
-                              style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 30,
-                                    color: Color(0xFFFF460A)),
+                              Container(
+                                child: Image.asset(
+                                  'assets/fingerprint.png',
+                                  width: 72,
+                                  height: 72,
+                                ),
                               ),
-                            ),
-                          ],
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                'Update Information',
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 30,
+                                      color: Color(0xFFFF460A)),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -125,39 +131,42 @@ class _ServiceSelectionPageState extends State<ServiceSelectionPage> {
                     Row(
                       children: [
                         Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                color: Colors.white),
-                            child: Center(
-                              child: Column(
-                                children: [
-                                  const SizedBox(
-                                    height: 50,
-                                  ),
-                                  Container(
-                                    child: Image.asset(
-                                      'assets/senior.png',
-                                      width: 72,
-                                      height: 72,
+                          child: GestureDetector(
+                            onTap: (){},
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  color: Colors.white),
+                              child: Center(
+                                child: Column(
+                                  children: [
+                                    const SizedBox(
+                                      height: 50,
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(
-                                    'Senior Citizen',
-                                    style: GoogleFonts.poppins(
-                                      textStyle: const TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 20,
-                                          color: Color(0xFFFF460A)),
+                                    Container(
+                                      child: Image.asset(
+                                        'assets/senior.png',
+                                        width: 72,
+                                        height: 72,
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    height: 58,
-                                  )
-                                ],
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                      'Senior Citizen',
+                                      style: GoogleFonts.poppins(
+                                        textStyle: const TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 20,
+                                            color: Color(0xFFFF460A)),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 58,
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -166,39 +175,42 @@ class _ServiceSelectionPageState extends State<ServiceSelectionPage> {
                           width: 7,
                         ),
                         Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                color: Colors.white),
-                            child: Center(
-                              child: Column(
-                                children: [
-                                  const SizedBox(
-                                    height: 50,
-                                  ),
-                                  Container(
-                                    child: Image.asset(
-                                      'assets/disable.png',
-                                      width: 72,
-                                      height: 72,
+                          child: GestureDetector(
+                            onTap: (){},
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  color: Colors.white),
+                              child: Center(
+                                child: Column(
+                                  children: [
+                                    const SizedBox(
+                                      height: 50,
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(
-                                    'Physically Disabled',
-                                    style: GoogleFonts.poppins(
-                                      textStyle: const TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 19,
-                                          color: Color(0xFFFF460A)),
+                                    Container(
+                                      child: Image.asset(
+                                        'assets/disable.png',
+                                        width: 72,
+                                        height: 72,
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    height: 58,
-                                  )
-                                ],
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                      'Physically Disabled',
+                                      style: GoogleFonts.poppins(
+                                        textStyle: const TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 19,
+                                            color: Color(0xFFFF460A)),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 58,
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),

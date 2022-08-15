@@ -46,117 +46,126 @@ class _ModeSelectPageState extends State<ModeSelectPage> {
                 padding: EdgeInsets.all(6),
                 child: Column(
                   children: [
-                    Container(
-                      height: 220,
-                      width: 390,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Colors.white),
-                      child: Center(
-                        child: Column(
-                          children: [
-                            const SizedBox(
-                              height: 50,
-                            ),
-                            Container(
-                              child: Image.asset(
-                                'assets/operatoricon.png',
-                                width: 72,
-                                height: 72,
+                    GestureDetector(
+                      onTap: (){},
+                      child: Container(
+                        height: 220,
+                        width: 390,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: Colors.white),
+                        child: Center(
+                          child: Column(
+                            children: [
+                              const SizedBox(
+                                height: 50,
                               ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              'Book Operator',
-                              style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 30,
-                                    color: Color(0xFFFF460A)
+                              Container(
+                                child: Image.asset(
+                                  'assets/operatoricon.png',
+                                  width: 72,
+                                  height: 72,
                                 ),
                               ),
-                            ),
-                          ],
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                'Book Operator',
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 30,
+                                      color: Color(0xFFFF460A)
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                     const SizedBox(
                       height: 6,
                     ),
-                    Container(
-                      height: 220,
-                      width: 390,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Colors.white),
-                      child: Center(
-                        child: Column(
-                          children: [
-                            const SizedBox(
-                              height: 50,
-                            ),
-                            Container(
-                              child: Image.asset(
-                                'assets/helpline.png',
-                                width: 72,
-                                height: 72,
+                    GestureDetector(
+                      onTap: (){},
+                      child: Container(
+                        height: 220,
+                        width: 390,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: Colors.white),
+                        child: Center(
+                          child: Column(
+                            children: [
+                              const SizedBox(
+                                height: 50,
                               ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              'Use Helpline',
-                              style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 30,
-                                    color: Color(0xFFFF460A)
+                              Container(
+                                child: Image.asset(
+                                  'assets/helpline.png',
+                                  width: 72,
+                                  height: 72,
                                 ),
                               ),
-                            ),
-                          ],
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                'Use Helpline',
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 30,
+                                      color: Color(0xFFFF460A)
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                     const SizedBox(
                       height: 6,
                     ),
-                    Container(
-                      height: 220,
-                      width: 390,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Colors.white),
-                      child: Center(
-                        child: Column(
-                          children: [
-                            const SizedBox(
-                              height: 50,
-                            ),
-                            Container(
-                              child: Image.asset(
-                                'assets/self-service.png',
-                                width: 72,
-                                height: 72,
+                    GestureDetector(
+                      onTap: (){},
+                      child: Container(
+                        height: 220,
+                        width: 390,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: Colors.white),
+                        child: Center(
+                          child: Column(
+                            children: [
+                              const SizedBox(
+                                height: 50,
                               ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              'Self Update',
-                              style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 30,
-                                    color: Color(0xFFFF460A)
+                              Container(
+                                child: Image.asset(
+                                  'assets/self-service.png',
+                                  width: 72,
+                                  height: 72,
                                 ),
                               ),
-                            ),
-                          ],
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                'Self Update',
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 30,
+                                      color: Color(0xFFFF460A)
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

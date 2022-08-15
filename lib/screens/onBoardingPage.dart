@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'welcomePage.dart';
 import 'dart:async';
@@ -12,7 +13,7 @@ class OnBoardingScreen extends StatefulWidget {
 
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
   int _currentPage = 0;
-  Timer _timer = Timer(const Duration(seconds: 5), () { });
+  Timer _timer = Timer(const Duration(seconds: 5), () {});
   final PageController _controller = PageController(initialPage: 0);
 
   @override
@@ -46,7 +47,30 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       body: Column(
         children: [
           const SizedBox(
-            height: 80,
+            height: 30,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () {},
+                  child: Text(
+                    "SKIP >>",
+                    style: GoogleFonts.nunito(
+                      textStyle: TextStyle(
+                          color: Colors.white.withOpacity(0.6),
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 30,
           ),
           Center(
             child: CircleAvatar(
@@ -64,9 +88,18 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             child: PageView(
               controller: _controller,
               children: [
-                WelcomeScreen(vectorLink: "", textelement: "Aaadhar update or Enrollment at your home",),
-                WelcomeScreen(vectorLink: "", textelement: "Select your own Time Slot",),
-                WelcomeScreen(vectorLink: "", textelement: "Review your appointments",)
+                WelcomeScreen(
+                  vectorLink: "",
+                  textelement: "Aaadhar update or Enrollment at your home",
+                ),
+                WelcomeScreen(
+                  vectorLink: "",
+                  textelement: "Select your own Time Slot",
+                ),
+                WelcomeScreen(
+                  vectorLink: "",
+                  textelement: "Review your appointments",
+                )
               ],
             ),
           ),
@@ -76,11 +109,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               controller: _controller,
               count: 3,
               effect: const ExpandingDotsEffect(
-                  dotWidth:  10.0,
-                  dotHeight:  10.0,
+                  dotWidth: 10.0,
+                  dotHeight: 10.0,
                   activeDotColor: Colors.white,
-                  dotColor: Color(0xFFFF855D)
-              ),
+                  dotColor: Color(0xFFFF855D)),
             ),
           )
         ],

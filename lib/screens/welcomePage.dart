@@ -32,6 +32,14 @@ class WelcomeScreen extends StatelessWidget {
                 ),
               ),
             ),
+            const SizedBox(
+              height: 15,
+            ),
+            Container(
+              height: 160,
+              width: 160,
+              child: Image.asset('assets/card.png'),
+            ),
           ],
         ),
       ),

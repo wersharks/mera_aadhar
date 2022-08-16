@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mera_aadhar/screens/home_page.dart';
 import 'package:mera_aadhar/screens/verification.dart';
 import 'package:mera_aadhar/services/auth/otp_signin.dart';
+import 'package:mera_aadhar/services/auth/operator_signin.dart';
+
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -17,7 +19,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => Auth())],
+      providers: [ChangeNotifierProvider(create: (context) => Auth()), 
+                  ChangeNotifierProvider(create: (context) => OperatorAuth())],
       child: MaterialApp(
         title: 'मेरा Aadhar',
         theme: ThemeData(

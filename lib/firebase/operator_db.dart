@@ -15,7 +15,7 @@ CollectionReference _collectionRef =
           .catchError((error) => print("Failed to add entry: $error"));
     }
 
-    Future<Operator?> getOperatorById(int operatorId) async {
+    Future<Operator?> getOperatorById(String operatorId) async {
         QuerySnapshot snap = await _collectionRef
                                     .where('operatorId', isEqualTo: operatorId)
                                     .limit(1)

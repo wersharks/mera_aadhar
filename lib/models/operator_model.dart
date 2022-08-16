@@ -1,5 +1,5 @@
 class Operator {
-  int? operatorId;
+  String? operatorId;
   String? centerLocation;
   String? name;
   String? picture;

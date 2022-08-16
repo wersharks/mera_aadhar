@@ -18,7 +18,10 @@ import 'package:mera_aadhar/fixtures/operator_fixture.dart';
 import 'package:mera_aadhar/models/operator_model.dart';
 import 'package:mera_aadhar/firebase/operator_db.dart';
 
+import 'package:mera_aadhar/api/map_api.dart';
+
 import 'package:flutter/foundation.dart';
+import 'package:mera_aadhar/services/auth/operator_signin.dart';
 
 class TestFirescreen extends StatelessWidget {
   const TestFirescreen({Key? key}) : super(key: key);
@@ -74,7 +77,7 @@ class TestFirescreen extends StatelessWidget {
           TextButton(
             child: Text("get operator from operator id"),
             onPressed: () {
-                int surabhiId = 42254; // DEBUG SURABHI ID IS THISSSS LETS MAKE HER WORK HARD AS OPERATOR
+                String surabhiId = "42254"; // DEBUG SURABHI ID IS THISSSS LETS MAKE HER WORK HARD AS OPERATOR
 
                 OperatorDB odb = new OperatorDB();
                 odb.getOperatorById(surabhiId).then((value){
@@ -84,6 +87,31 @@ class TestFirescreen extends StatelessWidget {
 
             },
           ),
+          TextButton(
+            child: Text("get nearby aadhar centers from fastapi"),
+            onPressed: () {
+              String lat = "30.360001";
+              String lon = "76.452232";
+              int rad = 10;
+              fetchMapdata(lat, lon, rad).then((val){
+                print(val.toJson());
+              });
+            },
+          ),
+          TextButton(
+            child: Text("login operator provider"),
+            onPressed: () {
+                Provider.of<OperatorAuth>(context,listen: false).setOperatorLogin("test1@test.com", "test1@test.com");
+                Provider.of<OperatorAuth>(context,listen: false).oplogin(context);
+            },
+          ),
+          TextButton(
+            child: Text("logout provider"),
+            onPressed: () {
+                Provider.of<OperatorAuth>(context,listen: false).oplogout(context);
+            },
+          ),
+
         ],
       ),
     ));

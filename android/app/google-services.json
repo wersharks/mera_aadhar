@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "800240519039",
+    "firebase_url": "https://sportyme-9927c-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "sportyme-9927c",
     "storage_bucket": "sportyme-9927c.appspot.com"
   },
@@ -13,6 +14,22 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "800240519039-o5sn2imoajqttj059rr0rmnhiorqgucc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shark.mera_aadhar",
+            "certificate_hash": "8dd9df9a0ce187ce20512b4cb4185466cecb0888"
+          }
+        },
+        {
+          "client_id": "800240519039-v4egc5shna4l9jqbljl4lbiu95mmcd71.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shark.mera_aadhar",
+            "certificate_hash": "7ba0925b6b8ed8286dc77bd1a855d631998a6f54"
+          }
+        },
         {
           "client_id": "800240519039-1eti7eqvbvgl9qj60s62sfevt9utsutn.apps.googleusercontent.com",
           "client_type": 3

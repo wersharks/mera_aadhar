@@ -98,11 +98,13 @@ class _EditAddressPageState extends State<EditAddressPage> {
                             child: Row(
                               children: const [
                                 Icon(Icons.search),
-                                TextField(
-                                  decoration: InputDecoration(
-                                    labelText: 'Search Location',
+                                Expanded(
+                                  child: TextField(
+                                    decoration: InputDecoration(
+                                      labelText: 'Search Location',
+                                    ),
+                                    textInputAction: TextInputAction.done,
                                   ),
-                                  textInputAction: TextInputAction.done,
                                 ),
                               ],
                             ),

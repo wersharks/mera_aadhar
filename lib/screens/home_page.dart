@@ -14,6 +14,9 @@ import 'serviceSelectionPage.dart';
 import 'onBoardingPage.dart';
 import 'loadingPage.dart';
 import 'package:mera_aadhar/testscreens/testfirebase.dart';
+import 'documentCheckPage.dart';
+import 'MapIntroductionPage.dart';
+import 'editAddressPage.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -48,6 +51,31 @@ class HomePage extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => OnBoardingScreen()));
             },
           ),
+
+          TextButton(
+            child: Text("Document Check Page"),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => DocumentCheckPage()));
+            },
+          ),
+
+          TextButton(
+            child: Text("Map Introduction Page"),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => MapIntroductionPage()));
+            },
+          ),
+
+          TextButton(
+            child: Text("Edit Address Page"),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => EditAddressPage()));
+            },
+          ),
+
 
           TextButton(
             child: Text("CLICK MAP"),

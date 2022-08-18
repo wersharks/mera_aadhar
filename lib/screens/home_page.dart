@@ -22,6 +22,8 @@ import 'documentCheckPage.dart';
 import 'MapIntroductionPage.dart';
 import 'editAddressPage.dart';
 import 'op_finishpage.dart';
+import 'op_welcomescreen.dart';
+import 'op_map.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -50,10 +52,22 @@ class HomePage extends StatelessWidget {
           TextButton(
             child: Text("Op-Finish Page"),
             onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => opFinishPage()));
+            },
+          ),
+          TextButton(
+            child: Text("Op-welcome screen"),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LoadingPage()));
+            },
+          ),
+          TextButton(
+            child: Text("Op-map"),
+            onPressed: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => opFinishPage()));
+                  context, MaterialPageRoute(builder: (context) => opmap()));
             },
           ),
           TextButton(
@@ -159,7 +173,6 @@ class HomePage extends StatelessWidget {
                       builder: (context) => OperatorSelectionScreen()));
             },
           ),
-          
           TextButton(
             child: Text("book operator page"),
             onPressed: () {

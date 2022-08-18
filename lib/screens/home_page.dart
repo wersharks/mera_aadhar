@@ -21,6 +21,7 @@ import 'package:mera_aadhar/testscreens/testfirebase.dart';
 import 'documentCheckPage.dart';
 import 'MapIntroductionPage.dart';
 import 'editAddressPage.dart';
+import 'op_finishpage.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -44,6 +45,15 @@ class HomePage extends StatelessWidget {
             onPressed: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => LoadingPage()));
+            },
+          ),
+          TextButton(
+            child: Text("Op-Finish Page"),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => opFinishPage()));
             },
           ),
           TextButton(
@@ -149,6 +159,7 @@ class HomePage extends StatelessWidget {
                       builder: (context) => OperatorSelectionScreen()));
             },
           ),
+          
           TextButton(
             child: Text("book operator page"),
             onPressed: () {

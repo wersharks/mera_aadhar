@@ -180,7 +180,7 @@ class _DocumentCheckPageState extends State<DocumentCheckPage> {
             TextButton(
               onPressed: () {},
               child: Text(
-                'Click here for list of other accepted documents',
+                'Click here for more information about the document needed.',
                 style: GoogleFonts.nunito(
                   textStyle: TextStyle(fontSize: 20, color: Colors.white),
                 ),

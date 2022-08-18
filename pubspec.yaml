@@ -51,6 +51,7 @@ dependencies:
   smooth_page_indicator: ^1.0.0+2
   google_fonts: ^3.0.1
   sliding_up_panel: ^2.0.0+1
+  mapmyindia_gl: ^0.2.2
   
 dev_dependencies:
   integration_test:

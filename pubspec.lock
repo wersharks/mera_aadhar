@@ -353,6 +353,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.1"
+  mapmyindia_gl:
+    dependency: "direct main"
+    description:
+      name: mapmyindia_gl
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.2"
+  mapmyindia_gl_platform_interface:
+    dependency: transitive
+    description:
+      name: mapmyindia_gl_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.10.2"
   matcher:
     dependency: transitive
     description:

@@ -1,6 +1,7 @@
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:mapmyindia_gl/mapmyindia_gl.dart';
 
 class MapIntroductionPage extends StatefulWidget {
   const MapIntroductionPage({Key? key}) : super(key: key);
@@ -10,6 +11,11 @@ class MapIntroductionPage extends StatefulWidget {
 }
 
 class _MapIntroductionPageState extends State<MapIntroductionPage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,16 +105,45 @@ class _MapIntroductionPageState extends State<MapIntroductionPage> {
             Stack(
               children: [
                 Expanded(
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      color: Color(0xFFF2F2F2),
+                  child: ClipRRect(
                       borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(30),
-                          topLeft: Radius.circular(30)),
+                            topRight: Radius.circular(30),
+                            topLeft: Radius.circular(30)),
+                      child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 600,
+                      child: MapmyIndiaMap(
+                        initialCameraPosition: CameraPosition(  
+                          target: LatLng(25.321684, 82.987289),  
+                          zoom: 14.0,  
+                        ),  
+                        onMapCreated: (map) =>  
+                        {  
+                          // mapController = map,
+                        },
+                      ),
                     ),
-                    width: MediaQuery.of(context).size.width,
-                    height: 600,
                   ),
+                  // child: Container(
+                  //   decoration: const BoxDecoration(
+                  //     color: Color(0xFFF2F2F2),
+                  //     borderRadius: BorderRadius.only(
+                  //         topRight: Radius.circular(30),
+                  //         topLeft: Radius.circular(30)),
+                  //   ),
+                  //   width: MediaQuery.of(context).size.width,
+                  //   height: 600,
+                  //   child: MapmyIndiaMap(
+                  //     initialCameraPosition: CameraPosition(  
+                  //       target: LatLng(25.321684, 82.987289),  
+                  //       zoom: 14.0,  
+                  //     ),  
+                  //     onMapCreated: (map) =>  
+                  //     {  
+                  //       // mapController = map,
+                  //     },
+                  //   ),
+                  // ),
                 ),
                 GestureDetector(
                   onTap: (){},

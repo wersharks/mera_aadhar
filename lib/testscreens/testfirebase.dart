@@ -22,6 +22,8 @@ import 'package:mera_aadhar/api/map_api.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:mera_aadhar/services/auth/operator_signin.dart';
+import 'dart:async';
+import 'package:mera_aadhar/models/operator_data_model.dart';
 
 class TestFirescreen extends StatelessWidget {
   const TestFirescreen({Key? key}) : super(key: key);
@@ -77,7 +79,7 @@ class TestFirescreen extends StatelessWidget {
           TextButton(
             child: Text("get operator from operator id"),
             onPressed: () {
-                String surabhiId = "42254"; // DEBUG SURABHI ID IS THISSSS LETS MAKE HER WORK HARD AS OPERATOR
+                String surabhiId = "abcdefgh"; // DEBUG SURABHI ID IS THISSSS LETS MAKE HER WORK HARD AS OPERATOR
 
                 OperatorDB odb = new OperatorDB();
                 odb.getOperatorById(surabhiId).then((value){
@@ -95,6 +97,34 @@ class TestFirescreen extends StatelessWidget {
               int rad = 10;
               fetchMapdata(lat, lon, rad).then((val){
                 print(val.toJson());
+              });
+            },
+          ),
+          TextButton(
+            child: Text("Dummy update operator loc data (realtime database)"),
+            onPressed: () {
+                String surabhiId = "abcdefgh";
+                OperatorData odata = OperatorFixture.dummyOperatorData();
+                odata.timestamp = DateTime.now().millisecondsSinceEpoch;
+                OperatorDB odp = new OperatorDB();
+                odp.setOperatorData(surabhiId, odata);
+            },
+          ),
+
+          TextButton(
+            child: Text("Subscribe operator live location (stream)"),
+            onPressed: () {
+              String surabhiId = "abcdefgh";
+              OperatorDB odp = new OperatorDB();
+              Stream<OperatorData> stream = odp.getOperatorLiveLocationById(surabhiId);
+              StreamSubscription<OperatorData> subscriber = stream.listen((OperatorData data) {
+                  print(data.toJson());
+              },
+              onError: (error) {
+                  print(error);
+              },
+              onDone: () {
+                  print('Stream closed!');
               });
             },
           ),

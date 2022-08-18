@@ -5,6 +5,7 @@ class Booking {
   String? phoneNo;
   BookingLocation? bookingLocation;
   Userdata? userdata;
+  int? confirmOtp;
   Paydata? paydata;
   String? bookingStatus;
   int? timestamp;
@@ -16,6 +17,7 @@ class Booking {
       this.phoneNo,
       this.bookingLocation,
       this.userdata,
+      this.confirmOtp,
       this.paydata,
       this.bookingStatus,
       this.timestamp});
@@ -31,6 +33,7 @@ class Booking {
     userdata = json['userdata'] != null
         ? new Userdata.fromJson(json['userdata'])
         : null;
+    confirmOtp = json['confirmOtp'];
     paydata =
         json['paydata'] != null ? new Paydata.fromJson(json['paydata']) : null;
     bookingStatus = json['bookingStatus'];
@@ -49,6 +52,7 @@ class Booking {
     if (this.userdata != null) {
       data['userdata'] = this.userdata!.toJson();
     }
+    data['confirmOtp'] = this.confirmOtp;
     if (this.paydata != null) {
       data['paydata'] = this.paydata!.toJson();
     }

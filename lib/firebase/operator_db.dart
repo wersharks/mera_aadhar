@@ -1,6 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mera_aadhar/models/operator_model.dart';
+import 'package:mera_aadhar/models/operator_data_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'dart:async';
+import 'dart:convert';
 
 class OperatorDB {
 
@@ -46,4 +50,24 @@ CollectionReference _collectionRef =
         return operators;
     }
 
+
+
+    // Realtime Database Events
+    Stream<OperatorData> getOperatorLiveLocationById(String operatorId){
+        DatabaseReference ref = FirebaseDatabase.instance.ref("operators/"+operatorId);
+
+        handleData(DatabaseEvent event, EventSink<OperatorData> sink) =>
+            sink.add(OperatorData.fromJson(jsonDecode(jsonEncode(event.snapshot.value))));
+
+        final transformer =
+            StreamTransformer<DatabaseEvent, OperatorData>.fromHandlers(handleData: handleData);
+
+        return ref.onValue.transform(transformer);
+    }
+
+    Future<void> setOperatorData(String operatorId, OperatorData opdata) async{
+        DatabaseReference ref = FirebaseDatabase.instance.ref("operators/"+operatorId);
+
+        await ref.set(opdata.toJson());
+    }
 }

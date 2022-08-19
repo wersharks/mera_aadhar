@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mera_aadhar/provider/booking.dart';
 import 'package:mera_aadhar/screens/home_page.dart';
 import 'package:mera_aadhar/screens/loadingPage.dart';
 import 'package:mera_aadhar/screens/verification.dart';
@@ -26,7 +27,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [ChangeNotifierProvider(create: (context) => Auth()), 
-                  ChangeNotifierProvider(create: (context) => OperatorAuth())],
+                  ChangeNotifierProvider(create: (context) => OperatorAuth()),
+                  ChangeNotifierProvider(create: (context)=>BookingProvider())],
       child: MaterialApp(
         title: 'मेरा Aadhar',
         theme: ThemeData(

@@ -1,6 +1,9 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:mera_aadhar/services/snackbar.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:mapmyindia_gl/mapmyindia_gl.dart';
 import 'package:location/location.dart';
@@ -20,7 +23,7 @@ class _MapIntroductionPageState extends State<MapIntroductionPage> {
   bool _liveUpdate = false;
   bool _permission = false;
   LocationData? _currentLocation;
-
+  String? address = "Getting...";
   // Symbol _mylocation = SymbolOptions(geometry: LatLng(25.321684, 82.987289));
 
   @override
@@ -55,6 +58,7 @@ class _MapIntroductionPageState extends State<MapIntroductionPage> {
         if (_permission) {
           location = await _locationService.getLocation();
           _currentLocation = location;
+          print(_currentLocation);
           // Symbol symbol = await _mapController.addSymbol(SymbolOptions(geometry: LatLng(_currentLocation!.latitude!, _currentLocation!.longitude!)));
 
         }
@@ -76,7 +80,30 @@ class _MapIntroductionPageState extends State<MapIntroductionPage> {
     }
   }
 
-  void addLocationMarker() async {}
+  void addLocationMarker() async {
+    Symbol symbol = await _mapController.addSymbol(SymbolOptions(
+        draggable: true,
+        iconSize: 3,
+        geometry:
+            LatLng(_currentLocation!.latitude!, _currentLocation!.longitude!)));
+  }
+
+  reverseGeocode(LatLng latlng) async {
+    try {
+      ReverseGeocodeResponse? result =
+          await MapmyIndiaReverseGeocode(location: latlng).callReverseGeocode();
+      if (result != null &&
+          result.results != null &&
+          result.results!.length > 0) {
+        address = result.results![0].formattedAddress!;
+      }
+      print(result);
+    } catch (e) {
+      if (e is PlatformException) {
+        showSnackBar('${e.code} --- ${e.message}', context);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +134,7 @@ class _MapIntroductionPageState extends State<MapIntroductionPage> {
                   size: 36,
                 ),
                 title: Text(
-                  'B-116 Hostel C, Thapar University Patiala',
+                  address!,
                   style: GoogleFonts.poppins(
                     textStyle:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
@@ -184,17 +211,17 @@ class _MapIntroductionPageState extends State<MapIntroductionPage> {
                       onUserLocationUpdated: (location) async {
                         print(
                             "Position: ${location.position.toString()}, Speed: ${location.speed}, Altitude: ${location.altitude}");
-                        Symbol symbol = await _mapController.addSymbol(
-                            SymbolOptions(
-                                draggable: true,
-                                iconSize: 3,
-                                geometry: LatLng(location.position.latitude,
-                                    location.position.longitude)));
                       },
-                      onMapCreated: (map) => {
-                        _mapController = map,
+                      onMapCreated: (map) async {
+                        _mapController = map;
                       },
-                      onStyleLoadedCallback: () => {addLocationMarker()},
+                      onStyleLoadedCallback: () {
+                        addLocationMarker();
+
+                        LatLng location = LatLng(_currentLocation!.latitude!,
+                            _currentLocation!.longitude!);
+                        reverseGeocode(location);
+                      },
                     ),
                   ),
                 )),

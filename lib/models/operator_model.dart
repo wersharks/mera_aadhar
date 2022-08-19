@@ -1,6 +1,7 @@
 class Operator {
   String? operatorId;
   String? centerLocation;
+  String? centerUid;
   String? name;
   String? picture;
   int? age;
@@ -15,6 +16,7 @@ class Operator {
   Operator(
       {this.operatorId,
       this.centerLocation,
+      this.centerUid,
       this.name,
       this.picture,
       this.age,
@@ -29,6 +31,7 @@ class Operator {
   Operator.fromJson(Map<String, dynamic> json) {
     operatorId = json['operatorId'];
     centerLocation = json['centerLocation'];
+    centerUid = json['centerUid'];
     name = json['name'];
     picture = json['picture'];
     age = json['age'];
@@ -45,6 +48,7 @@ class Operator {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['operatorId'] = this.operatorId;
     data['centerLocation'] = this.centerLocation;
+    data['centerUid'] = this.centerUid;
     data['name'] = this.name;
     data['picture'] = this.picture;
     data['age'] = this.age;

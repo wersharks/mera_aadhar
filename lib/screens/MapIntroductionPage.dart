@@ -1,7 +1,10 @@
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:mapmyindia_gl/mapmyindia_gl.dart';
+import 'package:location/location.dart';
+import 'dart:typed_data';
 
 class MapIntroductionPage extends StatefulWidget {
   const MapIntroductionPage({Key? key}) : super(key: key);
@@ -11,10 +14,74 @@ class MapIntroductionPage extends StatefulWidget {
 }
 
 class _MapIntroductionPageState extends State<MapIntroductionPage> {
+  late MapmyIndiaMapController _mapController;
+  String? _serviceError = '';
+  final Location _locationService = Location();
+  bool _liveUpdate = false;
+  bool _permission = false;
+  LocationData? _currentLocation;
+
+  // Symbol _mylocation = SymbolOptions(geometry: LatLng(25.321684, 82.987289));
+
   @override
   void initState() {
     super.initState();
+    initLocationService();
   }
+
+  Future<void> addImageFromAsset(String name, String assetName) async {  
+    final ByteData bytes = await rootBundle.load(assetName);  
+    final Uint8List list = bytes.buffer.asUint8List();  
+    return _mapController.addImage(name, list);  
+  }
+
+
+  void initLocationService() async {
+    LocationData? location;
+    bool serviceEnabled;
+    bool serviceRequestResult;
+
+    try {
+      serviceEnabled = await _locationService.serviceEnabled();
+
+      if (serviceEnabled) {
+        final permission = await _locationService.requestPermission();
+        _permission = permission == PermissionStatus.granted;
+
+        await _locationService.changeSettings(
+            accuracy: LocationAccuracy.high,
+            interval: 1000,
+        );
+
+        if (_permission) {
+          location = await _locationService.getLocation();
+          _currentLocation = location;
+          // Symbol symbol = await _mapController.addSymbol(SymbolOptions(geometry: LatLng(_currentLocation!.latitude!, _currentLocation!.longitude!)));
+
+        }
+      } else {
+        serviceRequestResult = await _locationService.requestService();
+        if (serviceRequestResult) {
+          initLocationService();
+          return;
+        }
+      }
+    } on PlatformException catch (e) {
+      debugPrint(e.toString());
+      if (e.code == 'PERMISSION_DENIED') {
+        _serviceError = e.message;
+      } else if (e.code == 'SERVICE_STATUS_ERROR') {
+        _serviceError = e.message;
+      }
+      location = null;
+    }
+  }
+  
+
+  void addLocationMarker() async {
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -116,34 +183,19 @@ class _MapIntroductionPageState extends State<MapIntroductionPage> {
                         initialCameraPosition: CameraPosition(  
                           target: LatLng(25.321684, 82.987289),  
                           zoom: 14.0,  
-                        ),  
+                        ),
+                        myLocationEnabled: true,
+                        myLocationTrackingMode: MyLocationTrackingMode.Tracking,
                         onMapCreated: (map) =>  
                         {  
-                          // mapController = map,
+                          _mapController = map,
+                        },
+                        onStyleLoadedCallback: () => {
+                          addLocationMarker()
                         },
                       ),
                     ),
-                  ),
-                  // child: Container(
-                  //   decoration: const BoxDecoration(
-                  //     color: Color(0xFFF2F2F2),
-                  //     borderRadius: BorderRadius.only(
-                  //         topRight: Radius.circular(30),
-                  //         topLeft: Radius.circular(30)),
-                  //   ),
-                  //   width: MediaQuery.of(context).size.width,
-                  //   height: 600,
-                  //   child: MapmyIndiaMap(
-                  //     initialCameraPosition: CameraPosition(  
-                  //       target: LatLng(25.321684, 82.987289),  
-                  //       zoom: 14.0,  
-                  //     ),  
-                  //     onMapCreated: (map) =>  
-                  //     {  
-                  //       // mapController = map,
-                  //     },
-                  //   ),
-                  // ),
+                  )
                 ),
                 GestureDetector(
                   onTap: (){},

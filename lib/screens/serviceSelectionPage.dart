@@ -1,5 +1,7 @@
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
+import 'package:mera_aadhar/screens/documentCheckPage.dart';
+import 'package:mera_aadhar/services/snackbar.dart';
 
 class ServiceSelectionPage extends StatefulWidget {
   const ServiceSelectionPage({Key? key}) : super(key: key);
@@ -10,8 +12,34 @@ class ServiceSelectionPage extends StatefulWidget {
 
 class _ServiceSelectionPageState extends State<ServiceSelectionPage> {
   @override
+  String? bookingType;
+  List<String> extraAbility = [];
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Container(
+            width: 60,
+            height: 60,
+            child: Icon(
+              Icons.arrow_forward,
+              size: 30,
+            ),
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                    colors: [Color(0xffF8774A), Color(0xffF8774A)],
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft))),
+        onPressed: () {
+          print(bookingType);
+          if (bookingType =='new'||bookingType=='update')
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => DocumentCheckPage()));
+          else
+            showSnackBar('Please select any option to continue', context);
+        },
+      ),
       backgroundColor: Color(0xFFFF4B3A),
       body: Column(
         children: [
@@ -47,9 +75,16 @@ class _ServiceSelectionPageState extends State<ServiceSelectionPage> {
                 child: Column(
                   children: [
                     GestureDetector(
-                      onTap: (){},
+                      onTap: () {
+                        if (bookingType == null || bookingType != 'new')
+                          bookingType = 'new';
+                        else
+                          bookingType = '';
+
+                        setState(() {});
+                      },
                       child: Container(
-                        height: 220,
+                        height: 200,
                         width: 390,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30),
@@ -57,9 +92,21 @@ class _ServiceSelectionPageState extends State<ServiceSelectionPage> {
                         child: Center(
                           child: Column(
                             children: [
-                              const SizedBox(
-                                height: 50,
-                              ),
+                              (bookingType != null && bookingType == 'new')
+                                  ? Align(
+                                      alignment: Alignment.topRight,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Image.asset(
+                                          'assets/checked.png',
+                                          width: 30,
+                                          height: 30,
+                                        ),
+                                      ),
+                                    )
+                                  : SizedBox(
+                                      height: 50,
+                                    ),
                               Container(
                                 child: Image.asset(
                                   'assets/card.png',
@@ -88,9 +135,15 @@ class _ServiceSelectionPageState extends State<ServiceSelectionPage> {
                       height: 6,
                     ),
                     GestureDetector(
-                      onTap: (){},
+                      onTap: () {
+                        if (bookingType == null || bookingType != 'update')
+                          bookingType = 'update';
+                        else
+                          bookingType = '';
+                        setState(() {});
+                      },
                       child: Container(
-                        height: 220,
+                        height: 200,
                         width: 390,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30),
@@ -98,9 +151,21 @@ class _ServiceSelectionPageState extends State<ServiceSelectionPage> {
                         child: Center(
                           child: Column(
                             children: [
-                              const SizedBox(
-                                height: 50,
-                              ),
+                              (bookingType != null && bookingType == 'update')
+                                  ? Align(
+                                      alignment: Alignment.topRight,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Image.asset(
+                                          'assets/checked.png',
+                                          width: 30,
+                                          height: 30,
+                                        ),
+                                      ),
+                                    )
+                                  : SizedBox(
+                                      height: 50,
+                                    ),
                               Container(
                                 child: Image.asset(
                                   'assets/fingerprint.png',
@@ -128,11 +193,33 @@ class _ServiceSelectionPageState extends State<ServiceSelectionPage> {
                     const SizedBox(
                       height: 6,
                     ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Choose if you are senior citizen or physically disabled, otherwise go ahead.',
+                        style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
                     Row(
                       children: [
                         Expanded(
                           child: GestureDetector(
-                            onTap: (){},
+                            onTap: () {
+                              if (extraAbility == null ||
+                                  !extraAbility.contains('senior'))
+                                extraAbility.add('senior');
+                              else
+                                extraAbility.remove('senior');
+                              print(extraAbility);
+                              setState(() {});
+                            },
                             child: Container(
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(30),
@@ -140,9 +227,23 @@ class _ServiceSelectionPageState extends State<ServiceSelectionPage> {
                               child: Center(
                                 child: Column(
                                   children: [
-                                    const SizedBox(
-                                      height: 50,
-                                    ),
+                                    (extraAbility != null &&
+                                            extraAbility.contains('senior'))
+                                        ? Align(
+                                            alignment: Alignment.topRight,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(10.0),
+                                              child: Image.asset(
+                                                'assets/checked.png',
+                                                width: 30,
+                                                height: 30,
+                                              ),
+                                            ),
+                                          )
+                                        : SizedBox(
+                                            height: 50,
+                                          ),
                                     Container(
                                       child: Image.asset(
                                         'assets/senior.png',
@@ -163,7 +264,7 @@ class _ServiceSelectionPageState extends State<ServiceSelectionPage> {
                                       ),
                                     ),
                                     const SizedBox(
-                                      height: 58,
+                                      height: 40,
                                     )
                                   ],
                                 ),
@@ -176,7 +277,15 @@ class _ServiceSelectionPageState extends State<ServiceSelectionPage> {
                         ),
                         Expanded(
                           child: GestureDetector(
-                            onTap: (){},
+                            onTap: () {
+                              if (extraAbility == null ||
+                                  !extraAbility.contains('phydisabled'))
+                                extraAbility.add('phydisabled');
+                              else
+                                extraAbility.remove('phydisabled');
+
+                              setState(() {});
+                            },
                             child: Container(
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(30),
@@ -184,9 +293,24 @@ class _ServiceSelectionPageState extends State<ServiceSelectionPage> {
                               child: Center(
                                 child: Column(
                                   children: [
-                                    const SizedBox(
-                                      height: 50,
-                                    ),
+                                    (extraAbility != null &&
+                                            extraAbility
+                                                .contains('phydisabled'))
+                                        ? Align(
+                                            alignment: Alignment.topRight,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(10.0),
+                                              child: Image.asset(
+                                                'assets/checked.png',
+                                                width: 30,
+                                                height: 30,
+                                              ),
+                                            ),
+                                          )
+                                        : SizedBox(
+                                            height: 50,
+                                          ),
                                     Container(
                                       child: Image.asset(
                                         'assets/disable.png',
@@ -207,7 +331,7 @@ class _ServiceSelectionPageState extends State<ServiceSelectionPage> {
                                       ),
                                     ),
                                     const SizedBox(
-                                      height: 58,
+                                      height: 40,
                                     )
                                   ],
                                 ),

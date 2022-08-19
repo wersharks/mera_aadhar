@@ -29,12 +29,11 @@ class _MapIntroductionPageState extends State<MapIntroductionPage> {
     initLocationService();
   }
 
-  Future<void> addImageFromAsset(String name, String assetName) async {  
-    final ByteData bytes = await rootBundle.load(assetName);  
-    final Uint8List list = bytes.buffer.asUint8List();  
-    return _mapController.addImage(name, list);  
+  Future<void> addImageFromAsset(String name, String assetName) async {
+    final ByteData bytes = await rootBundle.load(assetName);
+    final Uint8List list = bytes.buffer.asUint8List();
+    return _mapController.addImage(name, list);
   }
-
 
   void initLocationService() async {
     LocationData? location;
@@ -49,8 +48,8 @@ class _MapIntroductionPageState extends State<MapIntroductionPage> {
         _permission = permission == PermissionStatus.granted;
 
         await _locationService.changeSettings(
-            accuracy: LocationAccuracy.high,
-            interval: 1000,
+          accuracy: LocationAccuracy.high,
+          interval: 1000,
         );
 
         if (_permission) {
@@ -76,12 +75,8 @@ class _MapIntroductionPageState extends State<MapIntroductionPage> {
       location = null;
     }
   }
-  
 
-  void addLocationMarker() async {
-
-  }
-
+  void addLocationMarker() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -172,33 +167,39 @@ class _MapIntroductionPageState extends State<MapIntroductionPage> {
             Stack(
               children: [
                 Expanded(
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(30),
-                            topLeft: Radius.circular(30)),
-                      child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 600,
-                      child: MapmyIndiaMap(
-                        initialCameraPosition: CameraPosition(  
-                          target: LatLng(25.321684, 82.987289),  
-                          zoom: 14.0,  
-                        ),
-                        myLocationEnabled: true,
-                        myLocationTrackingMode: MyLocationTrackingMode.Tracking,
-                        onMapCreated: (map) =>  
-                        {  
-                          _mapController = map,
-                        },
-                        onStyleLoadedCallback: () => {
-                          addLocationMarker()
-                        },
+                    child: ClipRRect(
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(30),
+                      topLeft: Radius.circular(30)),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 600,
+                    child: MapmyIndiaMap(
+                      initialCameraPosition: CameraPosition(
+                        target: LatLng(25.321684, 82.987289),
+                        zoom: 14.0,
                       ),
+                      myLocationEnabled: true,
+                      myLocationTrackingMode: MyLocationTrackingMode.Tracking,
+                      onUserLocationUpdated: (location) async {
+                        print(
+                            "Position: ${location.position.toString()}, Speed: ${location.speed}, Altitude: ${location.altitude}");
+                        Symbol symbol = await _mapController.addSymbol(
+                            SymbolOptions(
+                                draggable: true,
+                                iconSize: 3,
+                                geometry: LatLng(location.position.latitude,
+                                    location.position.longitude)));
+                      },
+                      onMapCreated: (map) => {
+                        _mapController = map,
+                      },
+                      onStyleLoadedCallback: () => {addLocationMarker()},
                     ),
-                  )
-                ),
+                  ),
+                )),
                 GestureDetector(
-                  onTap: (){},
+                  onTap: () {},
                   child: Padding(
                     padding: EdgeInsets.all(25),
                     child: Container(

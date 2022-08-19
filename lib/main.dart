@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mera_aadhar/screens/home_page.dart';
+import 'package:mera_aadhar/screens/loadingPage.dart';
 import 'package:mera_aadhar/screens/verification.dart';
 import 'package:mera_aadhar/services/auth/otp_signin.dart';
 import 'package:mera_aadhar/services/auth/operator_signin.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: HomePage(),
+        home: LoadingPage(),
       ),
     );
   }

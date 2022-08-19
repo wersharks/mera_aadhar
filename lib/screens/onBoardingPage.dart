@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mera_aadhar/screens/modeSelectionPage.dart';
+import 'package:mera_aadhar/utilities/constants.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'welcomePage.dart';
 import 'dart:async';
@@ -37,7 +39,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
   void dispose() {
     super.dispose();
-    _timer?.cancel();
+    _timer.cancel();
   }
 
   @override
@@ -55,7 +57,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (BuildContext context) => ModeSelectPage()));},
                   child: Text(
                     "SKIP >>",
                     style: GoogleFonts.nunito(
@@ -86,6 +89,11 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           SizedBox(
             height: 500,
             child: PageView(
+              onPageChanged: (value) {
+                _currentPage = value;
+
+                setState(() {});
+              },
               controller: _controller,
               children: [
                 WelcomeScreen(
@@ -103,18 +111,35 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               ],
             ),
           ),
-          Container(
-            alignment: const Alignment(0, 0.75),
-            child: SmoothPageIndicator(
-              controller: _controller,
-              count: 3,
-              effect: const ExpandingDotsEffect(
-                  dotWidth: 10.0,
-                  dotHeight: 10.0,
-                  activeDotColor: Colors.white,
-                  dotColor: Color(0xFFFF855D)),
+          if (_currentPage != 2)
+            Container(
+              alignment: const Alignment(0, 0.75),
+              child: SmoothPageIndicator(
+                controller: _controller,
+                count: 3,
+                effect: const ExpandingDotsEffect(
+                    dotWidth: 10.0,
+                    dotHeight: 10.0,
+                    activeDotColor: Colors.white,
+                    dotColor: Color(0xFFFF855D)),
+              ),
             ),
-          )
+          if (_currentPage == 2)
+            SizedBox(
+              width: 325,
+              height: 68,
+              child: TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (BuildContext context) => ModeSelectPage()));
+                  },
+                  style: buttonStyle.copyWith(
+                      backgroundColor: MaterialStateProperty.all(Colors.white)),
+                  child: Text(
+                    'Get Started',
+                    style: kPoppinWhite.copyWith(color: Color(0xffFF460A)),
+                  )),
+            )
         ],
       ),
     );

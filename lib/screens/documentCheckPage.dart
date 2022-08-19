@@ -1,7 +1,10 @@
 import 'dart:ffi';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
+import 'package:mera_aadhar/screens/MapIntroductionPage.dart';
+import 'package:mera_aadhar/services/snackbar.dart';
 import 'package:mera_aadhar/utilities/size_config.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DocumentCheckPage extends StatefulWidget {
   const DocumentCheckPage({Key? key}) : super(key: key);
@@ -15,6 +18,13 @@ class _DocumentCheckPageState extends State<DocumentCheckPage> {
   bool poa = false;
   bool por = false;
   bool dob = false;
+  void call(String tel) async {
+    try {
+      await launch(tel);
+    } catch (_e) {
+      print(_e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -178,7 +188,10 @@ class _DocumentCheckPageState extends State<DocumentCheckPage> {
               height: 20,
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                call(
+                    'https://uidai.gov.in/images/commdoc/List_of_Acceptable_documents_July2022.pdf');
+              },
               child: Text(
                 'Click here for more information about the document needed.',
                 style: GoogleFonts.nunito(
@@ -193,7 +206,16 @@ class _DocumentCheckPageState extends State<DocumentCheckPage> {
           height: 60,
           width: 60,
           child: FloatingActionButton(
-            onPressed: () {},
+            onPressed: () {
+              if (poi && poa && por && dob)
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MapIntroductionPage()));
+              else
+                showSnackBar(
+                    'Please check all the documents to continue', context);
+            },
             backgroundColor: Colors.white,
             child: const Icon(
               Icons.arrow_forward,

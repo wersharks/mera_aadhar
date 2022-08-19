@@ -1,5 +1,7 @@
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
+import 'package:mera_aadhar/screens/verification.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ModeSelectPage extends StatefulWidget {
   const ModeSelectPage({Key? key}) : super(key: key);
@@ -9,6 +11,15 @@ class ModeSelectPage extends StatefulWidget {
 }
 
 class _ModeSelectPageState extends State<ModeSelectPage> {
+  @override
+  void call(String tel) async {
+    try {
+      await launch(tel);
+    } catch (_e) {
+      print(_e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +58,10 @@ class _ModeSelectPageState extends State<ModeSelectPage> {
                 child: Column(
                   children: [
                     GestureDetector(
-                      onTap: (){},
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (BuildContext context) => Verification()));
+                      },
                       child: Container(
                         height: 220,
                         width: 390,
@@ -76,8 +90,7 @@ class _ModeSelectPageState extends State<ModeSelectPage> {
                                   textStyle: const TextStyle(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 30,
-                                      color: Color(0xFFFF460A)
-                                  ),
+                                      color: Color(0xFFFF460A)),
                                 ),
                               ),
                             ],
@@ -89,7 +102,9 @@ class _ModeSelectPageState extends State<ModeSelectPage> {
                       height: 6,
                     ),
                     GestureDetector(
-                      onTap: (){},
+                      onTap: () async {
+                        call('tel:1947');
+                      },
                       child: Container(
                         height: 220,
                         width: 390,
@@ -118,8 +133,7 @@ class _ModeSelectPageState extends State<ModeSelectPage> {
                                   textStyle: const TextStyle(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 30,
-                                      color: Color(0xFFFF460A)
-                                  ),
+                                      color: Color(0xFFFF460A)),
                                 ),
                               ),
                             ],
@@ -131,7 +145,10 @@ class _ModeSelectPageState extends State<ModeSelectPage> {
                       height: 6,
                     ),
                     GestureDetector(
-                      onTap: (){},
+                      onTap: () {
+                        call(
+                            'https://uidai.gov.in/my-aadhaar/update-aadhaar.html');
+                      },
                       child: Container(
                         height: 220,
                         width: 390,
@@ -160,8 +177,7 @@ class _ModeSelectPageState extends State<ModeSelectPage> {
                                   textStyle: const TextStyle(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 30,
-                                      color: Color(0xFFFF460A)
-                                  ),
+                                      color: Color(0xFFFF460A)),
                                 ),
                               ),
                             ],

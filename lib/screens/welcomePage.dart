@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -5,9 +7,7 @@ class WelcomeScreen extends StatelessWidget {
   final String vectorLink;
   final String textelement;
 
-  WelcomeScreen(
-      {required this.vectorLink,
-      required this.textelement});
+  WelcomeScreen({required this.vectorLink, required this.textelement});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class WelcomeScreen extends StatelessWidget {
                 child: Text(
                   textelement,
                   style: GoogleFonts.nunito(
-                    textStyle: TextStyle(fontSize: 45, color: Colors.white),
+                    textStyle: TextStyle(fontSize: 40, color: Colors.white),
                   ),
                   textAlign: TextAlign.center,
                   maxLines: 4,

@@ -35,6 +35,29 @@ class TestFirescreen extends StatelessWidget {
       child: Column(
         children: [
           TextButton(
+            child: Text("Multistream operator data update"),
+            onPressed: () {
+                debugPrint("yay baby");
+                String lat = "30.360001";
+                String lon = "76.452232";
+                getAllOperatorsByMyLatLong(lat, lon).then((val){
+
+                  StreamSubscription<OperatorData> subscriber = val.stream.listen((OperatorData data) {
+                      print("received data: ${data.toJson()}");
+                  },
+                  onError: (error) {
+                      print("Error in multistream");
+                      print(error);
+                  },
+                  onDone: () {
+                      print('Stream closed!');
+                  });
+
+                });
+            },
+          ),
+
+          TextButton(
             child: Text("Add dummy booking for ph 8872276957"),
             onPressed: () {
                 debugPrint("init nwo dummy");

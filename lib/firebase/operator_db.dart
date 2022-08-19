@@ -46,7 +46,6 @@ CollectionReference _collectionRef =
                 operators.add(op);
             }
         });
-
         return operators;
     }
 

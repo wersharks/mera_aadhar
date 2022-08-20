@@ -11,6 +11,7 @@ import 'package:mera_aadhar/fixtures/nearby_center_fixture.dart';
 import 'package:mera_aadhar/firebase/operator_db.dart';
 import 'package:async/async.dart' show StreamGroup;
 import 'dart:developer';
+import 'package:geocode/geocode.dart';
 
 const API_ENDPOINT = "http://65.1.248.34:8080/";
 
@@ -32,6 +33,13 @@ Future<NearbyApiResponse> fetchMapdata(String lat, String lon, int rad) async {
 
 Future<NearbyApiResponse> fetchMapdataFixture(String lat, String lon, int rad) async {
   return NearbyApiFixture.dummyNearbyApi();
+}
+
+Future<String?> getAddressByLatLon(double lat, double lng) async{
+  GeoCode geoCode = GeoCode();
+  Address address = await geoCode.reverseGeocoding(latitude: lat, longitude: lng);
+  print(address.toString());
+  return "${address.streetAddress}, ${address.region}, ${address.postal},";
 }
 
 Future<StreamGroup<OperatorData>> getAllOperatorsByMyLatLong(String lat, String lon) async{

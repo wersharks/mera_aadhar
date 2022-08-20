@@ -113,13 +113,22 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
         place = ReverseGeocodePlace();
       }
       print(place.toJson());
-      String regexString = r'\[(\d+.\d+), (\d+.\d+)\]';
-      RegExp regExp = new RegExp(regexString);
-      var matches = regExp.allMatches(place.formattedAddress!);
-      //var match = matches.elementAt(0);
+      
+      if(place.lat == null || place.lng == null){
+        // If APIs Consumed
+        String regexString = r'\[(\d+.\d+), (\d+.\d+)\]';
+        RegExp regExp = new RegExp(regexString);
+        var matches = regExp.allMatches(place.formattedAddress!);
+        var match = matches.elementAt(0);
+        pinLocation = LatLng(double.parse(match.group(1)!), double.parse(match.group(2)!));
+        _locationText = (await getAddressByLatLon(pinLocation.latitude, pinLocation.longitude))!;
+      } else {
+        _locationText = place.formattedAddress!;
+        pinLocation = LatLng(double.parse(place.lat!), double.parse(place.lng!));
+      }
+
       setState(() {
       // _locationText = match.group(0)!;
-     pinLocation = LatLng(double.parse(place.lat!), double.parse(place.lng!));
         _mapController.easeCamera(CameraUpdate.newLatLngZoom(
                     pinLocation, 14));
         addOrUpdateLocationMarker(pinLocation);
@@ -134,7 +143,7 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
     return Scaffold(
       backgroundColor: Color(0xFFFF4B3A),
       body: SlidingUpPanel(
-        maxHeight: 280,
+        maxHeight: 350,
         minHeight: 150,
         backdropEnabled: true,
         color: Colors.transparent,

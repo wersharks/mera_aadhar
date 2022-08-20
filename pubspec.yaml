@@ -55,6 +55,8 @@ dependencies:
   mapmyindia_gl: ^0.2.2
   mapmyindia_place_widget: ^0.1.0
   url_launcher: ^6.1.5
+  geocode: ^1.0.1
+
 dev_dependencies:
   integration_test:
     sdk: flutter

@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mera_aadhar/screens/home_page.dart';
 import 'package:mera_aadhar/services/snackbar.dart';
+
 import 'package:provider/provider.dart';
 
 class Auth extends ChangeNotifier {

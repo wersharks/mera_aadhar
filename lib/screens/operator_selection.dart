@@ -29,6 +29,7 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
   LatLng pinLocation = LatLng(25.321684, 82.987289);
   Symbol? location_pin = null;
   var operatorMapPins = new Map();
+  String _locationText = "...";
 
   @override
   void initState() {
@@ -68,7 +69,8 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
     print("Show op ${odata.operatorId!} with latlon ${latlng.toJson()}");
     SymbolOptions symops = SymbolOptions(
         draggable: true,
-        iconSize: 1.5,
+        iconImage: "icon",
+        iconSize: 0.5,
         geometry: latlng);
 
     if(operatorMapPins.containsKey(odata.operatorId!)){
@@ -106,14 +108,16 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
         place = await openPlacePicker(
             PickerOption());
       } on PlatformException {
+        print("Platform exceeeeeeeeeeption0");
         place = ReverseGeocodePlace();
       }
-      print(json.encode(place.toJson()));
+      print(place.toJson());
       String regexString = r'\[(\d+.\d+), (\d+.\d+)\]';
       RegExp regExp = new RegExp(regexString);
       var matches = regExp.allMatches(place.formattedAddress!);
       var match = matches.elementAt(0);
       setState(() {
+        _locationText = match.group(0)!;
         pinLocation = LatLng(double.parse(match.group(1)!), double.parse(match.group(2)!));
         _mapController.easeCamera(CameraUpdate.newLatLngZoom(
                     pinLocation, 14));
@@ -153,7 +157,7 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
                   size: 36,
                 ),
                 title: Text(
-                  'B-116 Hostel C, Thapar University Patiala',
+                  _locationText,
                   style: GoogleFonts.poppins(
                     textStyle:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
@@ -233,7 +237,7 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
                         _mapController = map;
                       },
                       onStyleLoadedCallback: () {
-                        addImageFromAsset("icon", "assets/operator.png");
+                        addImageFromAsset("icon", "assets/operator_pin_icon.png");
                         openMapmyIndiaPlacePickerWidget();
                       },
                     ),

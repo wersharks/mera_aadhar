@@ -5,6 +5,8 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:flutter/services.dart';
 import 'package:mera_aadhar/api/map_api.dart';
 
+import 'package:mera_aadhar/screens/date_page.dart';
+
 import 'package:mera_aadhar/services/snackbar.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:mapmyindia_gl/mapmyindia_gl.dart';
@@ -134,6 +136,11 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
         addOrUpdateLocationMarker(pinLocation);
        // registerDeregisterOperators();
       });
+
+
+      // Change to time and slot
+      Navigator.push(context, MaterialPageRoute(builder: (context) => DatePage()));
+
   }
 
   @override

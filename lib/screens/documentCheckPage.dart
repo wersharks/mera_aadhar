@@ -2,6 +2,7 @@ import 'dart:ffi';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:mera_aadhar/screens/MapIntroductionPage.dart';
+import 'package:mera_aadhar/screens/operator_selection.dart';
 import 'package:mera_aadhar/services/snackbar.dart';
 import 'package:mera_aadhar/utilities/size_config.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -211,7 +212,10 @@ class _DocumentCheckPageState extends State<DocumentCheckPage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => MapIntroductionPage()));
+                        builder: (context) => OperatorSelectionScreen()));
+                    // MaterialPageRoute(
+                    //     builder: (context) => MapIntroductionPage()));
+
               else
                 showSnackBar(
                     'Please check all the documents to continue', context);

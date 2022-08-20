@@ -374,6 +374,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.10.2"
+  mapmyindia_place_widget:
+    dependency: "direct main"
+    description:
+      name: mapmyindia_place_widget
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0"
   matcher:
     dependency: transitive
     description:

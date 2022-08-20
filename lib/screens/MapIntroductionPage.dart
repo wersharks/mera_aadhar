@@ -8,6 +8,8 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:mapmyindia_gl/mapmyindia_gl.dart';
 import 'package:location/location.dart';
 import 'dart:typed_data';
+import 'package:mapmyindia_place_widget/mapmyindia_place_widget.dart';
+import 'dart:convert';
 
 class MapIntroductionPage extends StatefulWidget {
   const MapIntroductionPage({Key? key}) : super(key: key);
@@ -25,11 +27,14 @@ class _MapIntroductionPageState extends State<MapIntroductionPage> {
   LocationData? _currentLocation;
   String? address = "Getting...";
   // Symbol _mylocation = SymbolOptions(geometry: LatLng(25.321684, 82.987289));
+  Symbol? location_pin = null;
+  ReverseGeocodePlace? _place = null;
 
   @override
   void initState() {
     super.initState();
     initLocationService();
+    // openMapmyIndiaPlacePickerWidget();
   }
 
   Future<void> addImageFromAsset(String name, String assetName) async {
@@ -80,12 +85,24 @@ class _MapIntroductionPageState extends State<MapIntroductionPage> {
     }
   }
 
-  void addLocationMarker() async {
-    Symbol symbol = await _mapController.addSymbol(SymbolOptions(
-        draggable: true,
-        iconSize: 3,
-        geometry:
-            LatLng(_currentLocation!.latitude!, _currentLocation!.longitude!)));
+  void addOrUpdateLocationMarker(LatLng latlng) async {
+    print("Add or update location marker");
+    if(location_pin == null){
+      location_pin = await _mapController.addSymbol(SymbolOptions(
+          draggable: true,
+          iconSize: 1,
+          geometry: latlng));
+    } else {
+      _mapController.updateSymbol(location_pin!, SymbolOptions(
+          draggable: true,
+          iconSize: 1,
+          geometry: latlng));
+    }
+
+    await _mapController.easeCamera(
+            CameraUpdate.newLatLngZoom(
+                latlng, 14));
+
   }
 
   reverseGeocode(LatLng latlng) async {
@@ -103,6 +120,31 @@ class _MapIntroductionPageState extends State<MapIntroductionPage> {
         showSnackBar('${e.code} --- ${e.message}', context);
       }
     }
+  }
+
+  openMapmyIndiaPlacePickerWidget() async {
+    ReverseGeocodePlace place;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      place = await openPlacePicker(
+          PickerOption());
+    } on PlatformException {
+      place = ReverseGeocodePlace();
+    }
+    print(json.encode(place.toJson()));
+    addOrUpdateLocationMarker(LatLng(double.parse(place.lat!), double.parse(place.lng!)));
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    //LatLng(25.321684, 82.987289) setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    setState(() {
+      _place = place;
+    });
+  }
+
+  void addMarker() async {
+    // addOrUpdateLocationMarker(LatLng(25.321684, 82.987289));
   }
 
   @override
@@ -147,7 +189,11 @@ class _MapIntroductionPageState extends State<MapIntroductionPage> {
                       color: Color(0xFFB2B2B2),
                       fontSize: 16),
                 ),
-                trailing: Icon(Icons.edit),
+                trailing: IconButton(
+                  icon: new Icon(Icons.edit),
+                  highlightColor: Colors.pink,
+                  onPressed: (){openMapmyIndiaPlacePickerWidget();},
+                ),
               ),
               const SizedBox(
                 height: 30,
@@ -207,26 +253,33 @@ class _MapIntroductionPageState extends State<MapIntroductionPage> {
                         zoom: 14.0,
                       ),
                       myLocationEnabled: true,
-                      myLocationTrackingMode: MyLocationTrackingMode.Tracking,
+                      // myLocationTrackingMode: MyLocationTrackingMode.Tracking,
+                      
                       onUserLocationUpdated: (location) async {
                         print(
                             "Position: ${location.position.toString()}, Speed: ${location.speed}, Altitude: ${location.altitude}");
+                            addOrUpdateLocationMarker(location.position);
                       },
                       onMapCreated: (map) async {
                         _mapController = map;
                       },
                       onStyleLoadedCallback: () {
-                        addLocationMarker();
+                        addMarker();
+                        // print("Am here for sure");
+                        // _mapController.requestMyLocationLatLng().then((val){
+                        //   print("Not sure");
+                        //   addOrUpdateLocationMarker(val);
+                        // });
 
-                        LatLng location = LatLng(_currentLocation!.latitude!,
-                            _currentLocation!.longitude!);
-                        reverseGeocode(location);
+                        // LatLng location = LatLng(_currentLocation!.latitude!,
+                        //     _currentLocation!.longitude!);
+                        // reverseGeocode(location);
                       },
                     ),
                   ),
                 )),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {openMapmyIndiaPlacePickerWidget();},
                   child: Padding(
                     padding: EdgeInsets.all(25),
                     child: Container(

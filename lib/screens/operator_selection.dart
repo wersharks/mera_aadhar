@@ -1,6 +1,15 @@
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:flutter/services.dart';
+
+import 'package:mera_aadhar/services/snackbar.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:mapmyindia_gl/mapmyindia_gl.dart';
+import 'package:location/location.dart';
+import 'dart:typed_data';
+import 'package:mapmyindia_place_widget/mapmyindia_place_widget.dart';
+import 'dart:convert';
 
 class OperatorSelectionScreen extends StatefulWidget {
   const OperatorSelectionScreen({Key? key}) : super(key: key);
@@ -11,8 +20,64 @@ class OperatorSelectionScreen extends StatefulWidget {
 }
 
 class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
+  late MapmyIndiaMapController _mapController;
+  LatLng pinLocation = LatLng(25.321684, 82.987289);
+  Symbol? location_pin = null;
+
+  @override
+  void initState() {
+    super.initState();
+    // initLocationService();
+    // openMapmyIndiaPlacePickerWidget();
+  }
+
+  void addOrUpdateLocationMarker(LatLng latlng) async {
+    print("Add or update location marker");
+    if(location_pin == null){
+      location_pin = await _mapController.addSymbol(SymbolOptions(
+          draggable: true,
+          iconSize: 1.5,
+          geometry: latlng));
+    } else {
+      _mapController.updateSymbol(location_pin!, SymbolOptions(
+          draggable: true,
+          iconSize: 1.5,
+          geometry: latlng));
+    }
+
+    await _mapController.easeCamera(
+            CameraUpdate.newLatLngZoom(
+                latlng, 14));
+
+  }
+
+  openMapmyIndiaPlacePickerWidget() async {
+      ReverseGeocodePlace place;
+      // Platform messages may fail, so we use a try/catch PlatformException.
+      try {
+        place = await openPlacePicker(
+            PickerOption());
+      } on PlatformException {
+        place = ReverseGeocodePlace();
+      }
+      print(json.encode(place.toJson()));
+      String regexString = r'\[(\d+.\d+), (\d+.\d+)\]';
+      RegExp regExp = new RegExp(regexString);
+      var matches = regExp.allMatches(place.formattedAddress!);
+      var match = matches.elementAt(0);
+      setState(() {
+        pinLocation = LatLng(double.parse(match.group(1)!), double.parse(match.group(2)!));
+        _mapController.easeCamera(CameraUpdate.newLatLngZoom(
+                    pinLocation, 14));
+        addOrUpdateLocationMarker(pinLocation);
+        registerDeregisterOperators();
+      });
+  }
+
   @override
   Widget build(BuildContext context) {
+    print("Widget finally rebuild");
+    print(pinLocation);
     return Scaffold(
       backgroundColor: Color(0xFFFF4B3A),
       body: SlidingUpPanel(
@@ -53,7 +118,11 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
                       color: Color(0xFFB2B2B2),
                       fontSize: 16),
                 ),
-                trailing: Icon(Icons.edit),
+                trailing: IconButton(
+                  icon: new Icon(Icons.edit),
+                  highlightColor: Colors.pink,
+                  onPressed: (){openMapmyIndiaPlacePickerWidget();},
+                ),
               ),
               const SizedBox(
                 height: 30,
@@ -100,17 +169,27 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
             Stack(
               children: [
                 Expanded(
+                    child: ClipRRect(
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(30),
+                      topLeft: Radius.circular(30)),
                   child: Container(
-                    decoration: const BoxDecoration(
-                      color: Color(0xFFF2F2F2),
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(30),
-                          topLeft: Radius.circular(30)),
-                    ),
                     width: MediaQuery.of(context).size.width,
                     height: 600,
+                    child: MapmyIndiaMap(
+                      initialCameraPosition: CameraPosition(
+                        target: pinLocation,
+                        zoom: 14.0,
+                      ),
+                      onMapCreated: (map) async {
+                        _mapController = map;
+                      },
+                      onStyleLoadedCallback: () {
+                        openMapmyIndiaPlacePickerWidget();
+                      },
+                    ),
                   ),
-                ),
+                )),
                 GestureDetector(
                   onTap: () {},
                   child: Padding(

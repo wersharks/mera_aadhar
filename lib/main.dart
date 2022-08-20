@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mera_aadhar/provider/booking.dart';
+import 'package:mera_aadhar/provider/map.dart';
+
 import 'package:mera_aadhar/screens/home_page.dart';
 import 'package:mera_aadhar/screens/loadingPage.dart';
 import 'package:mera_aadhar/screens/verification.dart';
@@ -28,13 +30,14 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [ChangeNotifierProvider(create: (context) => Auth()), 
                   ChangeNotifierProvider(create: (context) => OperatorAuth()),
-                  ChangeNotifierProvider(create: (context)=>BookingProvider())],
+                  ChangeNotifierProvider(create: (context)=>BookingProvider()),
+                  ChangeNotifierProvider(create: (context)=>MapProvider()),],
       child: MaterialApp(
         title: 'मेरा Aadhar',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: HomePage(),
+        home: LoadingPage(),
       ),
     );
   }

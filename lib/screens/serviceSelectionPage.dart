@@ -67,8 +67,10 @@ class _ServiceSelectionPageState extends State<ServiceSelectionPage> {
               .booking
               .userdata!
               .phoneNo = FirebaseAuth.instance.currentUser!.phoneNumber;
-
-          print(bookingType);
+print(Provider.of<BookingProvider>(context, listen: false)
+              .booking.bookingType);
+          print(Provider.of<BookingProvider>(context, listen: false)
+              .booking.userdata!.type);
           if (bookingType == 'new' || bookingType == 'update')
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => DocumentCheckPage()));

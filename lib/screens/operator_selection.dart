@@ -1,5 +1,6 @@
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
+import 'package:mera_aadhar/provider/booking.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:flutter/services.dart';
 import 'package:mera_aadhar/api/map_api.dart';
@@ -11,7 +12,7 @@ import 'package:location/location.dart';
 import 'dart:typed_data';
 import 'package:mapmyindia_place_widget/mapmyindia_place_widget.dart';
 import 'dart:convert';
-
+import 'package:provider/provider.dart';
 import 'dart:async';
 import 'package:async/async.dart' show StreamGroup;
 import 'package:mera_aadhar/models/operator_data_model.dart';
@@ -117,8 +118,8 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
       var matches = regExp.allMatches(place.formattedAddress!);
       var match = matches.elementAt(0);
       setState(() {
-        _locationText = match.group(0)!;
-        pinLocation = LatLng(double.parse(match.group(1)!), double.parse(match.group(2)!));
+       _locationText = match.group(0)!;
+     pinLocation = LatLng(double.parse(place.lat!), double.parse(place.lng!));
         _mapController.easeCamera(CameraUpdate.newLatLngZoom(
                     pinLocation, 14));
         addOrUpdateLocationMarker(pinLocation);
@@ -164,7 +165,7 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
                   ),
                 ),
                 subtitle: Text(
-                  'Mobile Number: 9305895903',
+                  'Mobile Number: ${Provider.of<BookingProvider>(context,listen:false).booking.userdata!.phoneNo}',
                   style: GoogleFonts.poppins(
                       fontWeight: FontWeight.w500,
                       color: Color(0xFFB2B2B2),

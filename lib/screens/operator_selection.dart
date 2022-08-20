@@ -116,9 +116,9 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
       String regexString = r'\[(\d+.\d+), (\d+.\d+)\]';
       RegExp regExp = new RegExp(regexString);
       var matches = regExp.allMatches(place.formattedAddress!);
-      var match = matches.elementAt(0);
+      //var match = matches.elementAt(0);
       setState(() {
-       _locationText = match.group(0)!;
+      // _locationText = match.group(0)!;
      pinLocation = LatLng(double.parse(place.lat!), double.parse(place.lng!));
         _mapController.easeCamera(CameraUpdate.newLatLngZoom(
                     pinLocation, 14));

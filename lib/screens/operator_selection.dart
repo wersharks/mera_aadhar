@@ -2,6 +2,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:flutter/services.dart';
+import 'package:mera_aadhar/api/map_api.dart';
 
 import 'package:mera_aadhar/services/snackbar.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -10,6 +11,10 @@ import 'package:location/location.dart';
 import 'dart:typed_data';
 import 'package:mapmyindia_place_widget/mapmyindia_place_widget.dart';
 import 'dart:convert';
+
+import 'dart:async';
+import 'package:async/async.dart' show StreamGroup;
+import 'package:mera_aadhar/models/operator_data_model.dart';
 
 class OperatorSelectionScreen extends StatefulWidget {
   const OperatorSelectionScreen({Key? key}) : super(key: key);
@@ -23,6 +28,7 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
   late MapmyIndiaMapController _mapController;
   LatLng pinLocation = LatLng(25.321684, 82.987289);
   Symbol? location_pin = null;
+  var operatorMapPins = new Map();
 
   @override
   void initState() {
@@ -48,7 +54,48 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
     await _mapController.easeCamera(
             CameraUpdate.newLatLngZoom(
                 latlng, 14));
+  }
 
+  Future<void> addImageFromAsset(String name, String assetName) async {
+    final ByteData bytes = await rootBundle.load(assetName);
+    final Uint8List list = bytes.buffer.asUint8List();
+    return _mapController.addImage(name, list);
+  }
+
+  void addOrUpdateOperatorLocation(OperatorData odata) async {
+    LatLng latlng = LatLng(odata.loc!.lat!, odata.loc!.lon!);
+    print("Show op ${odata.operatorId!} with latlon ${latlng.toJson()}");
+    SymbolOptions symops = SymbolOptions(
+        draggable: true,
+        iconSize: 5,
+        geometry: latlng);
+
+    if(operatorMapPins.containsKey(odata.operatorId!)){
+      // Update marker
+      Symbol sym = operatorMapPins[odata.operatorId!];
+      _mapController.updateSymbol(sym, symops);
+    } else {
+      Symbol sym = await _mapController.addSymbol(symops);
+      operatorMapPins[odata.operatorId!] = sym;
+    }
+  }
+
+  void registerDeregisterOperators() async {
+      String lat = pinLocation.latitude.toString();
+      String lon = pinLocation.longitude.toString();
+      StreamGroup<OperatorData> streamgroup = await getAllOperatorsByMyLatLong(lat, lon);
+
+      StreamSubscription<OperatorData> subscriber = streamgroup.stream.listen((OperatorData data) {
+        addOrUpdateOperatorLocation(data);
+        print("received data: ${data.toJson()}");
+      },
+      onError: (error) {
+          print("Error in multistream");
+          print(error);
+      },
+      onDone: () {
+          print('Stream closed!');
+      });
   }
 
   openMapmyIndiaPlacePickerWidget() async {
@@ -185,6 +232,7 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
                         _mapController = map;
                       },
                       onStyleLoadedCallback: () {
+                        addImageFromAsset("icon", "assets/operator.png");
                         openMapmyIndiaPlacePickerWidget();
                       },
                     ),

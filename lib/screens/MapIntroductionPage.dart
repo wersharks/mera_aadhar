@@ -85,6 +85,7 @@ class _MapIntroductionPageState extends State<MapIntroductionPage> {
     }
   }
 
+
   void addOrUpdateLocationMarker(LatLng latlng) async {
     print("Add or update location marker");
     if(location_pin == null){

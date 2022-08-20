@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
+import 'package:mera_aadhar/provider/booking.dart';
 import 'package:mera_aadhar/screens/documentCheckPage.dart';
 import 'package:mera_aadhar/services/snackbar.dart';
+import 'package:provider/provider.dart';
 
 class ServiceSelectionPage extends StatefulWidget {
   const ServiceSelectionPage({Key? key}) : super(key: key);
@@ -32,8 +35,41 @@ class _ServiceSelectionPageState extends State<ServiceSelectionPage> {
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft))),
         onPressed: () {
+          (bookingType == 'update')
+              ? Provider.of<BookingProvider>(context, listen: false)
+                  .booking
+                  .bookingType = 0
+              : Provider.of<BookingProvider>(context, listen: false)
+                  .booking
+                  .bookingType = 1;
+          if (extraAbility == null)
+            Provider.of<BookingProvider>(context, listen: false)
+                .booking
+                .userdata!
+                .type = 0;
+          else if (extraAbility.contains('senior') &&
+              extraAbility.contains('phydisabled'))
+            Provider.of<BookingProvider>(context, listen: false)
+                .booking
+                .userdata!
+                .type = 3;
+          else if (extraAbility.contains('senior'))
+            Provider.of<BookingProvider>(context, listen: false)
+                .booking
+                .userdata!
+                .type = 2;
+          else if (extraAbility.contains('phydisabled'))
+            Provider.of<BookingProvider>(context, listen: false)
+                .booking
+                .userdata!
+                .type = 1;
+          Provider.of<BookingProvider>(context, listen: false)
+              .booking
+              .userdata!
+              .phoneNo = FirebaseAuth.instance.currentUser!.phoneNumber;
+
           print(bookingType);
-          if (bookingType =='new'||bookingType=='update')
+          if (bookingType == 'new' || bookingType == 'update')
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => DocumentCheckPage()));
           else

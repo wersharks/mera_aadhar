@@ -63,11 +63,12 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
   }
 
   void addOrUpdateOperatorLocation(OperatorData odata) async {
+    print("here");
     LatLng latlng = LatLng(odata.loc!.lat!, odata.loc!.lon!);
     print("Show op ${odata.operatorId!} with latlon ${latlng.toJson()}");
     SymbolOptions symops = SymbolOptions(
         draggable: true,
-        iconSize: 5,
+        iconSize: 1.5,
         geometry: latlng);
 
     if(operatorMapPins.containsKey(odata.operatorId!)){

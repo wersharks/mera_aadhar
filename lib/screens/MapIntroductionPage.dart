@@ -87,226 +87,229 @@ class _MapIntroductionPageState extends State<MapIntroductionPage> {
 
   void addOrUpdateLocationMarker(LatLng latlng) async {
     print("Add or update location marker");
-    if(location_pin == null){
-      location_pin = await _mapController.addSymbol(SymbolOptions(
-          draggable: true,
-          iconSize: 1,
-          geometry: latlng));
+    if (location_pin == null) {
+      location_pin = await _mapController.addSymbol(
+          SymbolOptions(draggable: true, iconSize: 1, geometry: latlng));
     } else {
-      _mapController.updateSymbol(location_pin!, SymbolOptions(
+      _mapController.updateSymbol(location_pin!,
+          SymbolOptions(draggable: true, iconSize: 1, geometry: latlng));
+    }
+
+    await _mapController.easeCamera(CameraUpdate.newLatLngZoom(latlng, 14));
+  }
+    void addLocationMarker() async {
+      Symbol symbol = await _mapController.addSymbol(SymbolOptions(
           draggable: true,
-          iconSize: 1,
-          geometry: latlng));
+          iconSize: 3,
+          geometry: LatLng(
+              _currentLocation!.latitude!, _currentLocation!.longitude!)));
     }
 
-    await _mapController.easeCamera(
-            CameraUpdate.newLatLngZoom(
-                latlng, 14));
-
-  }
-
-  reverseGeocode(LatLng latlng) async {
-    try {
-      ReverseGeocodeResponse? result =
-          await MapmyIndiaReverseGeocode(location: latlng).callReverseGeocode();
-      if (result != null &&
-          result.results != null &&
-          result.results!.length > 0) {
-        address = result.results![0].formattedAddress!;
-      }
-      print(result);
-    } catch (e) {
-      if (e is PlatformException) {
-        showSnackBar('${e.code} --- ${e.message}', context);
+    reverseGeocode(LatLng latlng) async {
+      try {
+        ReverseGeocodeResponse? result =
+            await MapmyIndiaReverseGeocode(location: latlng)
+                .callReverseGeocode();
+        if (result != null &&
+            result.results != null &&
+            result.results!.length > 0) {
+          address = result.results![0].formattedAddress!;
+        }
+        print(result);
+      } catch (e) {
+        if (e is PlatformException) {
+          showSnackBar('${e.code} --- ${e.message}', context);
+        }
       }
     }
-  }
 
-  openMapmyIndiaPlacePickerWidget() async {
-    ReverseGeocodePlace place;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      place = await openPlacePicker(
-          PickerOption());
-    } on PlatformException {
-      place = ReverseGeocodePlace();
+    openMapmyIndiaPlacePickerWidget() async {
+      ReverseGeocodePlace place;
+      // Platform messages may fail, so we use a try/catch PlatformException.
+      try {
+        place = await openPlacePicker(PickerOption());
+      } on PlatformException {
+        place = ReverseGeocodePlace();
+      }
+      print(json.encode(place.toJson()));
+      addOrUpdateLocationMarker(
+          LatLng(double.parse(place.lat!), double.parse(place.lng!)));
+      // If the widget was removed from the tree while the asynchronous platform
+      // message was in flight, we want to discard the reply rather than calling
+      //LatLng(25.321684, 82.987289) setState to update our non-existent appearance.
+      if (!mounted) return;
+
+      setState(() {
+        _place = place;
+      });
     }
-    print(json.encode(place.toJson()));
-    addOrUpdateLocationMarker(LatLng(double.parse(place.lat!), double.parse(place.lng!)));
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    //LatLng(25.321684, 82.987289) setState to update our non-existent appearance.
-    if (!mounted) return;
 
-    setState(() {
-      _place = place;
-    });
-  }
+    void addMarker() async {
+      // addOrUpdateLocationMarker(LatLng(25.321684, 82.987289));
+    }
 
-  void addMarker() async {
-    // addOrUpdateLocationMarker(LatLng(25.321684, 82.987289));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFFFF4B3A),
-      body: SlidingUpPanel(
-        maxHeight: 280,
-        minHeight: 150,
-        backdropEnabled: true,
-        color: Colors.transparent,
-        panel: Container(
-          height: 50,
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-          ),
-          child: Column(
-            children: [
-              const Icon(
-                Icons.arrow_drop_up_outlined,
-                size: 40,
-              ),
-              ListTile(
-                leading: const Icon(
-                  Icons.house,
-                  color: Colors.black,
-                  size: 36,
-                ),
-                title: Text(
-                  address!,
-                  style: GoogleFonts.poppins(
-                    textStyle:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-                  ),
-                ),
-                subtitle: Text(
-                  'Mobile Number: 9305895903',
-                  style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xFFB2B2B2),
-                      fontSize: 16),
-                ),
-                trailing: IconButton(
-                  icon: new Icon(Icons.edit),
-                  highlightColor: Colors.pink,
-                  onPressed: (){openMapmyIndiaPlacePickerWidget();},
-                ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              Container(
-                height: 70,
-                width: 315,
-                decoration: BoxDecoration(
-                    color: Color(0xFFF8774A),
-                    borderRadius: BorderRadius.circular(30)),
-                child: Center(
-                  child: Text(
-                    'Confirm Location',
-                    style: GoogleFonts.poppins(
-                        textStyle: const TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 15,
-                            color: Colors.white)),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        body: Column(
-          children: [
-            const SizedBox(
-              height: 30,
+    @override
+    Widget build(BuildContext context) {
+      return Scaffold(
+        backgroundColor: Color(0xFFFF4B3A),
+        body: SlidingUpPanel(
+          maxHeight: 280,
+          minHeight: 150,
+          backdropEnabled: true,
+          color: Colors.transparent,
+          panel: Container(
+            height: 50,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30), topRight: Radius.circular(30)),
             ),
-            Center(
-              child: CircleAvatar(
-                backgroundColor: Color(0xFFF4F4F4),
-                radius: 40,
-                child: Image.asset(
-                  'assets/aadharlogo.png',
-                  width: 35,
-                  height: 35,
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Stack(
+            child: Column(
               children: [
-                Expanded(
-                    child: ClipRRect(
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(30),
-                      topLeft: Radius.circular(30)),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 600,
-                    child: MapmyIndiaMap(
-                      initialCameraPosition: CameraPosition(
-                        target: LatLng(25.321684, 82.987289),
-                        zoom: 14.0,
-                      ),
-                      myLocationEnabled: true,
-                      // myLocationTrackingMode: MyLocationTrackingMode.Tracking,
-                      
-                      onUserLocationUpdated: (location) async {
-                        print(
-                            "Position: ${location.position.toString()}, Speed: ${location.speed}, Altitude: ${location.altitude}");
-                            addOrUpdateLocationMarker(location.position);
-                      },
-                      onMapCreated: (map) async {
-                        _mapController = map;
-                      },
-                      onStyleLoadedCallback: () {
-                        addMarker();
-                        // print("Am here for sure");
-                        // _mapController.requestMyLocationLatLng().then((val){
-                        //   print("Not sure");
-                        //   addOrUpdateLocationMarker(val);
-                        // });
-
-                        // LatLng location = LatLng(_currentLocation!.latitude!,
-                        //     _currentLocation!.longitude!);
-                        // reverseGeocode(location);
-                      },
+                const Icon(
+                  Icons.arrow_drop_up_outlined,
+                  size: 40,
+                ),
+                ListTile(
+                  leading: const Icon(
+                    Icons.house,
+                    color: Colors.black,
+                    size: 36,
+                  ),
+                  title: Text(
+                    address!,
+                    style: GoogleFonts.poppins(
+                      textStyle:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
                     ),
                   ),
-                )),
-                GestureDetector(
-                  onTap: () {openMapmyIndiaPlacePickerWidget();},
-                  child: Padding(
-                    padding: EdgeInsets.all(25),
-                    child: Container(
-                      height: 35,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: Colors.black),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(5),
-                        child: Text(
-                          'Edit Location',
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.poppins(
-                              textStyle: const TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.w500)),
-                        ),
-                      ),
+                  subtitle: Text(
+                    'Mobile Number: 9305895903',
+                    style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFFB2B2B2),
+                        fontSize: 16),
+                  ),
+                  trailing: IconButton(
+                    icon: new Icon(Icons.edit),
+                    highlightColor: Colors.pink,
+                    onPressed: () {
+                      openMapmyIndiaPlacePickerWidget();
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                Container(
+                  height: 70,
+                  width: 315,
+                  decoration: BoxDecoration(
+                      color: Color(0xFFF8774A),
+                      borderRadius: BorderRadius.circular(30)),
+                  child: Center(
+                    child: Text(
+                      'Confirm Location',
+                      style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 15,
+                              color: Colors.white)),
                     ),
                   ),
                 ),
               ],
             ),
-          ],
+          ),
+          body: Column(
+            children: [
+              const SizedBox(
+                height: 30,
+              ),
+              Center(
+                child: CircleAvatar(
+                  backgroundColor: Color(0xFFF4F4F4),
+                  radius: 40,
+                  child: Image.asset(
+                    'assets/aadharlogo.png',
+                    width: 35,
+                    height: 35,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Stack(
+                children: [
+                  Expanded(
+                      child: ClipRRect(
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(30),
+                        topLeft: Radius.circular(30)),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 600,
+                      child: MapmyIndiaMap(
+                          initialCameraPosition: CameraPosition(
+                            target: LatLng(25.321684, 82.987289),
+                            zoom: 14.0,
+                          ),
+                          myLocationEnabled: true,
+                          // myLocationTrackingMode: MyLocationTrackingMode.Tracking,
+
+                          onUserLocationUpdated: (location) async {
+                            print(
+                                "Position: ${location.position.toString()}, Speed: ${location.speed}, Altitude: ${location.altitude}");
+                            addOrUpdateLocationMarker(location.position);
+                          },
+                          onMapCreated: (map) async {
+                            _mapController = map;
+                          },
+                          onStyleLoadedCallback: () {
+                            addMarker();
+                          }
+                          // print("Am here for sure");
+                          // _mapController.requestMyLocationLatLng().then((val){
+                          //   print("Not sure");
+                          //   addOrUpdateLocationMarker(val);
+                          // });
+
+                          ),
+                    ),
+                  )),
+                  GestureDetector(
+                    onTap: () {
+                      openMapmyIndiaPlacePickerWidget();
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.all(25),
+                      child: Container(
+                        height: 35,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: Colors.black),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.all(5),
+                          child: Text(
+                            'Edit Location',
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.w500)),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
-}
+

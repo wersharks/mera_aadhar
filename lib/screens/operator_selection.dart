@@ -134,7 +134,7 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
         _mapController.easeCamera(CameraUpdate.newLatLngZoom(
                     pinLocation, 14));
         addOrUpdateLocationMarker(pinLocation);
-       // registerDeregisterOperators();
+       registerDeregisterOperators();
       });
 
 

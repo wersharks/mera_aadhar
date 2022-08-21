@@ -1,6 +1,6 @@
 class Booking {
   int? bookingId;
-  int? operatorId;
+  String? operatorId;
   int? bookingType;
   String? phoneNo;
   BookingLocation? bookingLocation;

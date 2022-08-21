@@ -143,6 +143,11 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
 
   }
 
+  void symbolCallback(BuildContext context, Symbol symbol) {
+    // Add callback
+
+  }
+
   @override
   Widget build(BuildContext context) {
     print("Widget finally rebuild");
@@ -252,6 +257,9 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
                       ),
                       onMapCreated: (map) async {
                         _mapController = map;
+                        _mapController.onSymbolTapped.add((Symbol symbol){
+                          symbolCallback(context, symbol);
+                        });
                       },
                       onStyleLoadedCallback: () {
                         addImageFromAsset("icon", "assets/operator_pin_icon.png");

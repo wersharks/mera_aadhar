@@ -13,7 +13,7 @@ import 'package:async/async.dart' show StreamGroup;
 import 'dart:developer';
 import 'package:geocode/geocode.dart';
 
-const API_ENDPOINT = "http://65.1.248.34:8080/";
+const API_ENDPOINT = "http://13.233.101.59:8080/";
 
 Future<NearbyApiResponse> fetchMapdata(String lat, String lon, int rad) async {
   final response = await http

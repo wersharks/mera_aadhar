@@ -3,17 +3,27 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class TimeTile extends StatelessWidget {
+class TimeTile extends StatefulWidget {
   String timeslot;
   bool isSelected;
   TimeTile({required this.timeslot, this.isSelected = false});
 
   @override
+  State<TimeTile> createState() => _TimeTileState();
+}
+
+class _TimeTileState extends State<TimeTile> {
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7.0, horizontal: 10),
       child: GestureDetector(
-        onTap: () {},
+        onTap: () {
+          widget.isSelected = true;
+          setState(() {
+            
+          });
+        },
         child: Container(
           height: 68,
           width: 360,
@@ -38,7 +48,7 @@ class TimeTile extends StatelessWidget {
                             width: 10,
                           ),
                           Text(
-                            timeslot,
+                            widget.timeslot,
                             style: GoogleFonts.poppins(
                               textStyle: const TextStyle(
                                   fontWeight: FontWeight.w500,
@@ -48,7 +58,7 @@ class TimeTile extends StatelessWidget {
                           ),
                         ],
                       ),
-                      if (isSelected)
+                      if (widget.isSelected)
                         Image.asset(
                           'assets/checked.png',
                           width: 30,

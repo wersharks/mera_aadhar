@@ -1,7 +1,10 @@
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
+import 'package:intl/intl.dart';
+import 'package:mera_aadhar/provider/booking.dart';
 import 'package:mera_aadhar/widgets/time_tile.dart';
+import 'package:provider/provider.dart';
 
 class SlotPage extends StatefulWidget {
   const SlotPage({Key? key}) : super(key: key);
@@ -11,8 +14,13 @@ class SlotPage extends StatefulWidget {
 }
 
 class _SlotPageState extends State<SlotPage> {
+  List<TimeTile> slots=[];
   @override
   Widget build(BuildContext context) {
+    if(Provider.of<BookingProvider>(context,listen:false).booking.slotType=='morning')
+    slots=Provider.of<BookingProvider>(context,listen:false).morning;
+    else if(Provider.of<BookingProvider>(context,listen:false).booking.slotType=='evening')
+    slots=Provider.of<BookingProvider>(context,listen:false).evening;
     return Scaffold(
       //  backgroundColor: Color(0xFFFF4B3A),
       body: Container(
@@ -91,7 +99,8 @@ class _SlotPageState extends State<SlotPage> {
                                   height: 20,
                                 ),
                                 Text(
-                                  'August 18, 2022',
+                               DateFormat.yMMMMd('en_US')
+                                      .format(Provider.of<BookingProvider>(context, listen: false).booking.date!).toString(),
                                   style: GoogleFonts.poppins(
                                     textStyle: const TextStyle(
                                         fontWeight: FontWeight.w500,
@@ -110,8 +119,8 @@ class _SlotPageState extends State<SlotPage> {
                                     thumbColor: Color(0xFFFF460A),
                                     isAlwaysShown: true,
                                     child: DatePicker(
-                                      DateTime.now(),
-                                      daysCount: 50,
+                                      Provider.of<BookingProvider>(context, listen: false).booking.date!,
+                                      daysCount: 15,
                                     ),
                                   ),
                                 ),
@@ -121,19 +130,12 @@ class _SlotPageState extends State<SlotPage> {
                         ),
                       ),
                       Expanded(
-                        child: ListView(
-                          children: [
-                            TimeTile(timeslot: '9:00 AM - 9:30 AM'),
-                            TimeTile(timeslot: '9:30 AM - 10:00 AM'),
-                            TimeTile(timeslot: '10:00 AM - 10:30 AM'),
-                            TimeTile(
-                              timeslot: '10:30 AM - 11:00 AM',
-                              isSelected: true,
-                            ),
-                            TimeTile(timeslot: '11:00 AM - 11:30 AM'),
-                            TimeTile(timeslot: '11:30 AM - 12:00 PM'),
-                          ],
-                        ),
+
+                        child:ListView(
+                          children:
+                        slots
+                        
+                        )
                       )
                     ],
                   ),

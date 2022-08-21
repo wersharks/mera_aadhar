@@ -1,6 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
+import 'package:intl/intl.dart';
+import 'package:mera_aadhar/provider/booking.dart';
+import 'package:mera_aadhar/screens/slot_page.dart';
+import 'package:provider/provider.dart';
+
+import '../services/snackbar.dart';
 
 class DatePage extends StatefulWidget {
   const DatePage({Key? key}) : super(key: key);
@@ -10,9 +17,49 @@ class DatePage extends StatefulWidget {
 }
 
 class _DatePageState extends State<DatePage> {
+  DateTime date = DateTime.now();
+  String? slotType;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Container(
+            width: 60,
+            height: 60,
+            child: Icon(
+              Icons.arrow_forward,
+              size: 30,
+            ),
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                    colors: [Color(0xffF8774A), Color(0xffF8774A)],
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft))),
+        onPressed: () {
+          (slotType == 'morning')
+              ? Provider.of<BookingProvider>(context, listen: false)
+                  .booking
+                  .slotType = 'morning'
+              : Provider.of<BookingProvider>(context, listen: false)
+                  .booking
+                  .slotType = 'evening';
+          Provider.of<BookingProvider>(context, listen: false).booking.date =
+              date;
+          print(Provider.of<BookingProvider>(context, listen: false)
+              .booking
+              .slotType);
+          print(Provider.of<BookingProvider>(context, listen: false)
+              .booking
+              .userdata!
+              .type);
+          if (slotType == 'morning' || slotType == 'evening')
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => SlotPage()));
+          else
+            showSnackBar('Please select any option to continue', context);
+        },
+      ),
       //  backgroundColor: Color(0xFFFF4B3A),
       body: Container(
         height: double.infinity,
@@ -90,7 +137,9 @@ class _DatePageState extends State<DatePage> {
                                   height: 20,
                                 ),
                                 Text(
-                                  'August 18, 2022',
+                                  DateFormat.yMMMMd('en_US')
+                                      .format(date)
+                                      .toString(),
                                   style: GoogleFonts.poppins(
                                     textStyle: const TextStyle(
                                         fontWeight: FontWeight.w500,
@@ -110,7 +159,12 @@ class _DatePageState extends State<DatePage> {
                                     isAlwaysShown: true,
                                     child: DatePicker(
                                       DateTime.now(),
-                                      daysCount: 50,
+                                      initialSelectedDate: DateTime.now(),
+                                      daysCount: 15,
+                                      onDateChange: (value) {
+                                        date = value;
+                                        setState(() {});
+                                      },
                                     ),
                                   ),
                                 ),
@@ -123,7 +177,14 @@ class _DatePageState extends State<DatePage> {
                         height: 6,
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          if (slotType == null || slotType != 'morning')
+                            slotType = 'morning';
+                          else
+                            slotType = '';
+
+                          setState(() {});
+                        },
                         child: Container(
                           height: 220,
                           width: 360,
@@ -133,9 +194,21 @@ class _DatePageState extends State<DatePage> {
                           child: Center(
                             child: Column(
                               children: [
-                                const SizedBox(
-                                  height: 50,
-                                ),
+                                (slotType != null && slotType == 'morning')
+                                    ? Align(
+                                        alignment: Alignment.topRight,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Image.asset(
+                                            'assets/checked.png',
+                                            width: 30,
+                                            height: 30,
+                                          ),
+                                        ),
+                                      )
+                                    : SizedBox(
+                                        height: 50,
+                                      ),
                                 Container(
                                   child: Image.asset(
                                     'assets/morning.png',
@@ -164,7 +237,14 @@ class _DatePageState extends State<DatePage> {
                         height: 6,
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          if (slotType == null || slotType != 'evening')
+                            slotType = 'evening';
+                          else
+                            slotType = '';
+
+                          setState(() {});
+                        },
                         child: Container(
                           height: 220,
                           width: 360,
@@ -174,9 +254,21 @@ class _DatePageState extends State<DatePage> {
                           child: Center(
                             child: Column(
                               children: [
-                                const SizedBox(
-                                  height: 50,
-                                ),
+                                (slotType != null && slotType == 'evening')
+                                    ? Align(
+                                        alignment: Alignment.topRight,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Image.asset(
+                                            'assets/checked.png',
+                                            width: 30,
+                                            height: 30,
+                                          ),
+                                        ),
+                                      )
+                                    : SizedBox(
+                                        height: 50,
+                                      ),
                                 Container(
                                   child: Image.asset(
                                     'assets/evening.png',

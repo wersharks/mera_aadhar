@@ -2,6 +2,7 @@ import 'dart:ffi';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:mera_aadhar/screens/MapIntroductionPage.dart';
+import 'package:mera_aadhar/screens/date_page.dart';
 import 'package:mera_aadhar/screens/operator_selection.dart';
 import 'package:mera_aadhar/services/snackbar.dart';
 import 'package:mera_aadhar/utilities/size_config.dart';
@@ -209,10 +210,14 @@ class _DocumentCheckPageState extends State<DocumentCheckPage> {
           child: FloatingActionButton(
             onPressed: () {
               if (poi && poa && por && dob)
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) => OperatorSelectionScreen()));
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => OperatorSelectionScreen()));
+                        builder: (context) => DatePage()));
                     // MaterialPageRoute(
                     //     builder: (context) => MapIntroductionPage()));
 

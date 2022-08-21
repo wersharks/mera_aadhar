@@ -1,6 +1,6 @@
 class Booking {
   int? bookingId;
-  String? operatorId;
+  int? operatorId;
   int? bookingType;
   String? phoneNo;
   BookingLocation? bookingLocation;
@@ -11,7 +11,7 @@ class Booking {
   String? slotTime;
   String? slotDate;
   int? timestamp;
-  String? slotType;
+ 
   DateTime? date;
 
   Booking(
@@ -26,7 +26,7 @@ class Booking {
       this.bookingStatus,
 
       this.timestamp,
-      this.slotType,
+    
       this.date});
 
 
@@ -48,7 +48,7 @@ class Booking {
     slotTime = json['slotTime'];
     slotDate = json['slotDate'];
     timestamp = json['timestamp'];
-    slotType = json['slotType'];
+   
     date = json['date'];
   }
 
@@ -72,7 +72,7 @@ class Booking {
     data['slotTime'] = this.slotTime;
     data['slotDate'] = this.slotDate;
     data['timestamp'] = this.timestamp;
-    data['slotType'] = this.slotType;
+
     data['date'] = this.date;
     return data;
   }

@@ -38,17 +38,13 @@ class _DatePageState extends State<DatePage> {
                     end: Alignment.bottomLeft))),
         onPressed: () {
           (slotType == 'morning')
-              ? Provider.of<BookingProvider>(context, listen: false)
-                  .booking
-                  .slotType = 'morning'
-              : Provider.of<BookingProvider>(context, listen: false)
-                  .booking
-                  .slotType = 'evening';
+              ? Provider.of<BookingProvider>(context, listen: false).slots =
+                  Provider.of<BookingProvider>(context, listen: false).morning
+              : Provider.of<BookingProvider>(context, listen: false).slots =
+                  Provider.of<BookingProvider>(context, listen: false).evening;
           Provider.of<BookingProvider>(context, listen: false).booking.date =
               date;
-          print(Provider.of<BookingProvider>(context, listen: false)
-              .booking
-              .slotType);
+
           print(Provider.of<BookingProvider>(context, listen: false)
               .booking
               .userdata!
@@ -117,9 +113,14 @@ class _DatePageState extends State<DatePage> {
                                       horizontal: 30),
                                   child: Row(
                                     children: [
-                                      const Icon(
-                                        Icons.arrow_back_ios,
-                                        color: Colors.black,
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Icon(
+                                          Icons.arrow_back_ios,
+                                          color: Colors.black,
+                                        ),
                                       ),
                                       Text(
                                         'Select Date and Time',

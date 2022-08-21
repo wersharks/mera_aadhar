@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:intl/intl.dart';
 import 'package:mera_aadhar/provider/booking.dart';
+import 'package:mera_aadhar/services/snackbar.dart';
 import 'package:mera_aadhar/widgets/time_tile.dart';
 import 'package:provider/provider.dart';
 
@@ -14,14 +15,62 @@ class SlotPage extends StatefulWidget {
 }
 
 class _SlotPageState extends State<SlotPage> {
-  List<TimeTile> slots=[];
+  List<TimeTile> slots = [];
   @override
   Widget build(BuildContext context) {
-    if(Provider.of<BookingProvider>(context,listen:false).booking.slotType=='morning')
-    slots=Provider.of<BookingProvider>(context,listen:false).morning;
-    else if(Provider.of<BookingProvider>(context,listen:false).booking.slotType=='evening')
-    slots=Provider.of<BookingProvider>(context,listen:false).evening;
+    // if (Provider.of<BookingProvider>(context).booking.slotType == 'morning')
+    //   slots = Provider.of<BookingProvider>(context).morning;
+    // else if (Provider.of<BookingProvider>(context).booking.slotType ==
+    //     'evening') slots = Provider.of<BookingProvider>(context).evening;
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Container(
+            width: 60,
+            height: 60,
+            child: Icon(
+              Icons.arrow_forward,
+              size: 30,
+            ),
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                    colors: [Color(0xffF8774A), Color(0xffF8774A)],
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft))),
+        onPressed: () {
+          if (Provider.of<BookingProvider>(context, listen: false)
+              .checkSlot()) {
+            Provider.of<BookingProvider>(context, listen: false).lodgeSlot();
+            Provider.of<BookingProvider>(context, listen: false).cleanSlots();
+            Navigator.pop(context);
+            Navigator.pop(context);
+          } else {
+            showSnackBar('Please select any slot to continue', context);
+          }
+
+          // (slotType == 'morning')
+          //     ? Provider.of<BookingProvider>(context, listen: false).slots
+
+          //          =Provider.of<BookingProvider>(context, listen: false)
+          //       .morning
+          //     :  Provider.of<BookingProvider>(context, listen: false).slots
+
+          //          =Provider.of<BookingProvider>(context, listen: false)
+          //       .evening;
+          // Provider.of<BookingProvider>(context, listen: false).booking.date =
+          //     date;
+
+          // print(Provider.of<BookingProvider>(context, listen: false)
+          //     .booking
+          //     .userdata!
+          //     .type);
+          // if (slotType == 'morning' || slotType == 'evening')
+          //   Navigator.push(
+          //       context, MaterialPageRoute(builder: (context) => SlotPage()));
+          // else
+          //   showSnackBar('Please select any option to continue', context);
+        },
+      ),
       //  backgroundColor: Color(0xFFFF4B3A),
       body: Container(
         height: double.infinity,
@@ -79,9 +128,14 @@ class _SlotPageState extends State<SlotPage> {
                                       horizontal: 30),
                                   child: Row(
                                     children: [
-                                      const Icon(
-                                        Icons.arrow_back_ios,
-                                        color: Colors.black,
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Icon(
+                                          Icons.arrow_back_ios,
+                                          color: Colors.black,
+                                        ),
                                       ),
                                       Text(
                                         'Select Date and Time',
@@ -99,8 +153,13 @@ class _SlotPageState extends State<SlotPage> {
                                   height: 20,
                                 ),
                                 Text(
-                               DateFormat.yMMMMd('en_US')
-                                      .format(Provider.of<BookingProvider>(context, listen: false).booking.date!).toString(),
+                                  DateFormat.yMMMMd('en_US')
+                                      .format(Provider.of<BookingProvider>(
+                                              context,
+                                              listen: false)
+                                          .booking
+                                          .date!)
+                                      .toString(),
                                   style: GoogleFonts.poppins(
                                     textStyle: const TextStyle(
                                         fontWeight: FontWeight.w500,
@@ -119,7 +178,15 @@ class _SlotPageState extends State<SlotPage> {
                                     thumbColor: Color(0xFFFF460A),
                                     isAlwaysShown: true,
                                     child: DatePicker(
-                                      Provider.of<BookingProvider>(context, listen: false).booking.date!,
+                                      Provider.of<BookingProvider>(context,
+                                              listen: false)
+                                          .booking
+                                          .date!,
+                                      initialSelectedDate:
+                                          Provider.of<BookingProvider>(context,
+                                                  listen: false)
+                                              .booking
+                                              .date!,
                                       daysCount: 15,
                                     ),
                                   ),
@@ -130,13 +197,26 @@ class _SlotPageState extends State<SlotPage> {
                         ),
                       ),
                       Expanded(
+                          child: ListView.builder(
+                              itemCount: Provider.of<BookingProvider>(context)
+                                  .slots
+                                  .length,
+                              itemBuilder: (context, index) {
+                                return TimeTile(
+                                  timeslot:
+                                      Provider.of<BookingProvider>(context)
+                                          .slots[index]
+                                          .timeslot,
+                                  index: index,
+                                  isSelected:
+                                      Provider.of<BookingProvider>(context)
+                                          .slots[index]
+                                          .isSelected,
+                                );
+                              }
+                              //
 
-                        child:ListView(
-                          children:
-                        slots
-                        
-                        )
-                      )
+                              ))
                     ],
                   ),
                 ),

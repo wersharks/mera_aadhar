@@ -210,14 +210,14 @@ class _DocumentCheckPageState extends State<DocumentCheckPage> {
           child: FloatingActionButton(
             onPressed: () {
               if (poi && poa && por && dob)
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (context) => OperatorSelectionScreen()));
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => DatePage()));
+                        builder: (context) => OperatorSelectionScreen()));
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) => DatePage()));
                     // MaterialPageRoute(
                     //     builder: (context) => MapIntroductionPage()));
 

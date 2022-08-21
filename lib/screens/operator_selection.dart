@@ -261,7 +261,8 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
                   ),
                 )),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {                        openMapmyIndiaPlacePickerWidget();
+},
                   child: Padding(
                     padding: EdgeInsets.all(25),
                     child: Container(
@@ -282,7 +283,7 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
                                 color: Colors.black,
                               ),
                               Text(
-                                'Appointments',
+                                'Edit Location',
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.poppins(
                                     textStyle: const TextStyle(

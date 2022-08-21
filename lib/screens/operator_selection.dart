@@ -32,7 +32,7 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
   LatLng pinLocation = LatLng(25.321684, 82.987289);
   Symbol? location_pin = null;
   var operatorMapPins = new Map();
-  String _locationText = "...";
+  String _locationText = "Loading data...";
 
   @override
   void initState() {

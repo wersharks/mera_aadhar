@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:mera_aadhar/provider/booking.dart';
 import 'package:mera_aadhar/utilities/constants.dart';
 import 'package:mera_aadhar/utilities/size_config.dart';
 import 'package:mera_aadhar/widgets/my_card.dart';
 import 'package:mera_aadhar/widgets/operator_booked_card.dart';
+import 'package:provider/provider.dart';
 
 class OperatorBooked extends StatefulWidget {
   const OperatorBooked({Key? key}) : super(key: key);
@@ -24,6 +26,10 @@ class _OperatorBookedState extends State<OperatorBooked> {
     super.didChangeDependencies();
     SizeConfig().init(context);
   }
+
+    void cancelCurrentBookingAndExit() async {
+      // TODO: Implement here
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -96,12 +102,16 @@ class _OperatorBookedState extends State<OperatorBooked> {
               ),
             ),
           ),
-          OperatorBookedCard(
-              name: 'Surabhi Mishra',
-              phoneNo: '+919958613100',
-              rating: '4.5',
-              task: 'Aadhar Updation',
-              time: '9.30 - 10.30'),
+          Consumer<BookingProvider>(
+            builder: (context, provider, child) {
+              return OperatorBookedCard(
+              name: provider.focusOperator.name!,
+              phoneNo: provider.focusOperator.phoneNo!,
+              rating: provider.focusOperator.ratings!,
+              task: provider.booking.bookingType! == 0 ? 'Aadhar Updation' : 'Aadhar Enrollment',
+              time: provider.booking.slotTime!);
+            },
+          ),
           SizedBox(
             height: 20,
           ),
@@ -109,10 +119,16 @@ class _OperatorBookedState extends State<OperatorBooked> {
             'Confirmation OTP',
             style: oTextStyle.copyWith(fontWeight: FontWeight.normal),
           ),
-          Text(
-            '2468',
-            style: oTextStyle.copyWith(fontWeight: FontWeight.bold),
+          Consumer<BookingProvider>(
+            builder: (context, provider, child) {
+              return Text(
+                provider.booking.confirmOtp!,
+                style: oTextStyle.copyWith(fontWeight: FontWeight.bold),
+              );
+            },
           ),
+
+          
           SizedBox(
             height: 55,
           ),
@@ -121,7 +137,9 @@ class _OperatorBookedState extends State<OperatorBooked> {
               height: getProportionateScreenHeight(60),
               child: TextButton(
                   style: buttonStyle,
-                  onPressed: () async {},
+                  onPressed: () async {
+                    cancelCurrentBookingAndExit();
+                  },
                   child: Text(
                     'Cancel',
                     style: buttonTextStyle,

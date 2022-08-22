@@ -1,6 +1,13 @@
+import 'dart:math';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
+import 'package:mera_aadhar/firebase/booking_db.dart';
+import 'package:mera_aadhar/models/booking_model.dart';
 import 'package:mera_aadhar/provider/booking.dart';
+import 'package:mera_aadhar/screens/operator_booked.dart';
+import 'package:mera_aadhar/services/auth/otp_signin.dart';
 import 'package:mera_aadhar/widgets/operator_book_card.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:flutter/services.dart';
@@ -22,6 +29,9 @@ import 'package:mera_aadhar/models/operator_data_model.dart';
 import 'package:mera_aadhar/firebase/operator_db.dart';
 import 'package:tuple/tuple.dart';
 import 'package:mera_aadhar/models/operator_model.dart';
+import 'package:mera_aadhar/utilities/constants.dart';
+import 'package:mera_aadhar/utilities/size_config.dart';
+import 'dart:math' as math; 
 
 class OperatorSelectionScreen extends StatefulWidget {
   const OperatorSelectionScreen({Key? key}) : super(key: key);
@@ -40,6 +50,12 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
   String _locationText = "Loading data...";
   Map<String, Operator> idToOperator = {};
   Symbol? lastClicked;
+
+  final _chars = '123456789';
+  Random _rnd = Random();
+
+  String generatePin(int length) => String.fromCharCodes(Iterable.generate(
+      length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 
   @override
   void initState() {
@@ -162,9 +178,15 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
   }
 
   void symbolCallback(BuildContext context, Symbol symbol) async {
+    if(symbol == location_pin) return;
     // if last called not null then dehilight symbol
     if(lastClicked != null){
       utilHighlightOperator(lastClicked!, false);
+      if(lastClicked! == symbol){
+        Provider.of<BookingProvider>(context, listen: false).removeFocus();
+        lastClicked = null;
+        return;
+      }
     }
     utilHighlightOperator(symbol, true);
 
@@ -175,6 +197,34 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
     lastClicked = symbol;
   }
 
+
+  void bookOperatorButton(BuildContext context) async {
+    // Finally book this operator for this booking!
+    // Main part! First collect all the data:
+      int randomNumber = int.parse(generatePin(8));
+
+      Booking bookin = Provider.of<BookingProvider>(context, listen: false).booking;
+      Operator oper = Provider.of<BookingProvider>(context, listen: false).focusOperator;
+      String phno = FirebaseAuth.instance.currentUser!.phoneNumber!;
+      
+      bookin.bookingId = randomNumber;
+      bookin.operatorId = oper.operatorId!;
+      bookin.phoneNo = phno;
+      bookin.bookingLocation = new BookingLocation(lat: location_pin!.options.geometry!.latitude, lon: location_pin!.options.geometry!.longitude);
+      bookin.userdata = new Userdata(phoneNo: phno, locationText: _locationText);
+      bookin.confirmOtp = generatePin(4);
+      bookin.timestamp = DateTime.now().millisecondsSinceEpoch;
+      print(bookin.toJson());
+
+      BookingDB bdb = new BookingDB();
+      bdb.addNewBooking(bookin).then((value){
+        showSnackBar("Operator successfully booked!", context);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => OperatorBooked()));
+      });
+    // Navigator.push(context, MaterialPageRoute(builder: (context) => OperatorBooked()));
+  }
+
+
   @override
   Widget build(BuildContext context) {
     print("Widget finally rebuild");
@@ -182,7 +232,7 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
     return Scaffold(
       backgroundColor: Color(0xFFFF4B3A),
       body: SlidingUpPanel(
-        maxHeight: 360,
+        maxHeight: 370,
         minHeight: 150,
         backdropEnabled: true,
         color: Colors.transparent,
@@ -275,23 +325,25 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
                       const SizedBox(
                       height: 10,
                     ),
-                    Container(
-                      height: 70,
-                      width: 315,
-                      decoration: BoxDecoration(
-                          color: Color(0xFFF8774A),
-                          borderRadius: BorderRadius.circular(30)),
-                      child: Center(
-                        child: Text(
-                          'Book operator',
-                          style: GoogleFonts.poppins(
-                              textStyle: const TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 15,
-                                  color: Colors.white)),
+                    TextButton(
+                    style: buttonStyle,
+                    onPressed: () {
+                          bookOperatorButton(context);
+                    },
+                    child: Container(
+                          height: 50,
+                          width: 315,
+                          decoration: BoxDecoration(
+                              // color: Color(0xFFF8774A),
+                              borderRadius: BorderRadius.circular(30)),
+                        child: const Center(
+                          child: Text(
+                            'Book operator',
+                            style: buttonTextStyle,
+                          ),
                         ),
-                      ),
                     ),
+                    )
                   ],
                 );
               }),

@@ -3,7 +3,7 @@ import 'dart:convert';
 
 class BookingFixture {
     static Booking dummyBooking(){
-        Map<String, dynamic> data = jsonDecode('{"bookingId":2421,"operatorId":"abcdefgh","bookingType":0,"phoneNo":"+918872276957","bookingLocation":{"lat":23.25564,"lon":21.22134},"userdata":{"phoneNo":"+918872276957","type":0,"locationText":"Hostel O, Tiet"},"confirmOtp":4547,"paydata":{"type":"CASH","receipt":null,"status":"Success"},"bookingStatus":"Completed","slotTime":"4:15 AM","slotDate":"21 Aug 2022","timestamp":1660465314}');
+        Map<String, dynamic> data = jsonDecode('{"bookingId":1,"operatorId":"abcdefgh","bookingType":0,"phoneNo":"+918872276957","bookingLocation":{"lat":23.25564,"lon":21.22134},"userdata":{"phoneNo":"nil","type":0,"locationText":"Hostel O, Tiet"},"confirmOtp":"1234","paydata":{"type":"CASH","receipt":null,"status":"Success"},"bookingStatus":"Inprogress","slotTime":"01:00 AM","slotDate":"01 Jan 1998","timestamp":1660465314}');
         final Booking bookin = Booking.fromJson(data);
         return bookin;
     }

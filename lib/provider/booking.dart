@@ -16,6 +16,12 @@ class BookingProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+
+  void removeFocus(){
+    isOpSelected = false;
+    notifyListeners();
+  }
+
   List<TimeTile> morning = [
     TimeTile(
       timeslot: '9:00 AM - 9:30 AM',

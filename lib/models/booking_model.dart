@@ -5,7 +5,7 @@ class Booking {
   String? phoneNo;
   BookingLocation? bookingLocation;
   Userdata? userdata;
-  int? confirmOtp;
+  String? confirmOtp;
   Paydata? paydata;
   String? bookingStatus;
   String? slotTime;

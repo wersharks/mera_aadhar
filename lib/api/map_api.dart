@@ -12,6 +12,7 @@ import 'package:mera_aadhar/firebase/operator_db.dart';
 import 'package:async/async.dart' show StreamGroup;
 import 'dart:developer';
 import 'package:geocode/geocode.dart';
+import 'package:tuple/tuple.dart';
 
 const API_ENDPOINT = "http://13.233.101.59:8080/";
 
@@ -42,7 +43,7 @@ Future<String?> getAddressByLatLon(double lat, double lng) async{
   return "${address.streetAddress}, ${address.region}, ${address.postal},";
 }
 
-Future<StreamGroup<OperatorData>> getAllOperatorsByMyLatLong(String lat, String lon) async{
+Future<Tuple2<Map<String, Operator>, StreamGroup<OperatorData>>> getAllOperatorsByMyLatLong(String lat, String lon) async{
   int rad = 5;
   NearbyApiResponse nearby = await fetchMapdataFixture(lat, lon, rad);
   while(nearby.len == null || nearby.len! == 0){
@@ -53,7 +54,7 @@ Future<StreamGroup<OperatorData>> getAllOperatorsByMyLatLong(String lat, String 
   print("fetch nearby api response, data ${nearby.toJson()}");
   OperatorDB odb = new OperatorDB();
   // Cache this in provider perhaps
-  List<String> operatorIdLst = [];
+  Map<String, Operator> operatorIdMapOp = new Map();
   StreamGroup<OperatorData> streams = new StreamGroup<OperatorData>();
 
   for(final data in nearby.data!){
@@ -61,7 +62,7 @@ Future<StreamGroup<OperatorData>> getAllOperatorsByMyLatLong(String lat, String 
     List<Operator> operators = await odb.getOperatorsByLatLong(latlon);
     for(final oper in operators){
       print("found operator in vicinity with id! ${oper.operatorId!} with ${latlon}");
-      operatorIdLst.add(oper.operatorId!);
+      operatorIdMapOp[oper.operatorId!] = oper;
       // Maybe cache to special provider map
       Stream<OperatorData>? opdata = await odb.getOperatorLiveLocationById(oper.operatorId!);
       if(opdata != null)
@@ -70,5 +71,5 @@ Future<StreamGroup<OperatorData>> getAllOperatorsByMyLatLong(String lat, String 
   }
 
   streams.close();
-  return streams;
+  return new Tuple2(operatorIdMapOp, streams);
 }

@@ -20,6 +20,8 @@ import 'dart:async';
 import 'package:async/async.dart' show StreamGroup;
 import 'package:mera_aadhar/models/operator_data_model.dart';
 import 'package:mera_aadhar/firebase/operator_db.dart';
+import 'package:tuple/tuple.dart';
+import 'package:mera_aadhar/models/operator_model.dart';
 
 class OperatorSelectionScreen extends StatefulWidget {
   const OperatorSelectionScreen({Key? key}) : super(key: key);
@@ -35,8 +37,8 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
   Symbol? location_pin = null;
   var operatorMapPins = new Map();
   var symbolIdToOperatorId = new Map();
-  bool isOpSelected = false;
   String _locationText = "Loading data...";
+  Map<String, Operator> idToOperator = {};
 
   @override
   void initState() {
@@ -84,8 +86,9 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
   void registerDeregisterOperators() async {
     String lat = pinLocation.latitude.toString();
     String lon = pinLocation.longitude.toString();
-    StreamGroup<OperatorData> streamgroup =
-        await getAllOperatorsByMyLatLong(lat, lon);
+    Tuple2<Map<String, Operator>, StreamGroup<OperatorData>> rdata = await getAllOperatorsByMyLatLong(lat, lon);
+    StreamGroup<OperatorData> streamgroup = rdata.item2;
+    idToOperator = rdata.item1;
 
     StreamSubscription<OperatorData> subscriber =
         streamgroup.stream.listen((OperatorData data) {
@@ -139,10 +142,9 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
 
   void symbolCallback(BuildContext context, Symbol symbol) async {
     // Add callback
-    Provider.of<BookingProvider>(context, listen: false).setOperator(
-        (await OperatorDB().getOperatorById(symbolIdToOperatorId[symbol.id]))!);
-    isOpSelected = true;
-    print(symbolIdToOperatorId[symbol.id]);
+    Operator opclick = idToOperator[symbolIdToOperatorId[symbol.id]]!;
+    Provider.of<BookingProvider>(context, listen: false).setOperator(opclick);
+    print("Clicked op id ${symbolIdToOperatorId[symbol.id]} with name ${opclick.name}");
   }
 
   @override
@@ -163,7 +165,9 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(30), topRight: Radius.circular(30)),
           ),
-          child: (!isOpSelected)
+          child: Consumer<BookingProvider>(
+              builder: (context, provider, child) {
+                return (!provider.isOpSelected)
               ? Column(
                   children: [
                     const Icon(
@@ -226,27 +230,21 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
                       Icons.arrow_drop_up_outlined,
                       size: 40,
                     ),
-                    Consumer<BookingProvider>(
-                      builder: (context, provider, child) {
-                        print("Print operator ");
-                        return OperatorBookCard(
-                              name: provider
-                                  .focusOperator
-                                  .name!,
-                              rating:
-                                      provider
-                                      .focusOperator
-                                      .ratings!,
-                              reviews: Map.fromIterable(
-                                      provider
-                                      .focusOperator
-                                      .reviews!,
-                                  key: (v) => v[0],
-                                  value: (v) => v),
-                            );         
-                      },
-                    ),
-                    const SizedBox(
+                    OperatorBookCard(
+                      name: provider
+                          .focusOperator
+                          .name!,
+                      rating: provider
+                              .focusOperator
+                              .ratings!,
+                      reviews: Map.fromIterable(
+                              provider
+                              .focusOperator
+                              .reviews!,
+                          key: (v) => v[0],
+                          value: (v) => v),
+                      ),       
+                      const SizedBox(
                       height: 10,
                     ),
                     Container(
@@ -267,7 +265,113 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
                       ),
                     ),
                   ],
-                ),
+                );
+              }),
+          // (!isOpSelected)
+          //     ? Column(
+          //         children: [
+          //           const Icon(
+          //             Icons.arrow_drop_up_outlined,
+          //             size: 40,
+          //           ),
+          //           ListTile(
+          //             leading: const Icon(
+          //               Icons.house,
+          //               color: Colors.black,
+          //               size: 36,
+          //             ),
+          //             title: Text(
+          //               _locationText,
+          //               style: GoogleFonts.poppins(
+          //                 textStyle: TextStyle(
+          //                     fontWeight: FontWeight.bold, fontSize: 17),
+          //               ),
+          //             ),
+          //             subtitle: Text(
+          //               'Mobile Number: ${Provider.of<BookingProvider>(context, listen: false).booking.userdata!.phoneNo}',
+          //               style: GoogleFonts.poppins(
+          //                   fontWeight: FontWeight.w500,
+          //                   color: Color(0xFFB2B2B2),
+          //                   fontSize: 16),
+          //             ),
+          //             trailing: IconButton(
+          //               icon: new Icon(Icons.edit),
+          //               highlightColor: Colors.pink,
+          //               onPressed: () {
+          //                 openMapmyIndiaPlacePickerWidget();
+          //               },
+          //             ),
+          //           ),
+          //           const SizedBox(
+          //             height: 30,
+          //           ),
+          //           Container(
+          //             height: 70,
+          //             width: 315,
+          //             decoration: BoxDecoration(
+          //                 color: Color(0xFFF8774A),
+          //                 borderRadius: BorderRadius.circular(30)),
+          //             child: Center(
+          //               child: Text(
+          //                 'Select an operator for yourself',
+          //                 style: GoogleFonts.poppins(
+          //                     textStyle: const TextStyle(
+          //                         fontWeight: FontWeight.w500,
+          //                         fontSize: 15,
+          //                         color: Colors.white)),
+          //               ),
+          //             ),
+          //           ),
+          //         ],
+          //       )
+          //     : Column(
+          //         children: [
+          //           const Icon(
+          //             Icons.arrow_drop_up_outlined,
+          //             size: 40,
+          //           ),
+          //           // OperatorBookCard(
+          //           //   name: provider
+          //           //       .focusOperator
+          //           //       .name!,
+          //           //   rating: provider
+          //           //           .focusOperator
+          //           //           .ratings!,
+          //           //   reviews: Map.fromIterable(
+          //           //           provider
+          //           //           .focusOperator
+          //           //           .reviews!,
+          //           //       key: (v) => v[0],
+          //           //       value: (v) => v),
+          //           //   ),       
+          //           // Consumer<BookingProvider>(
+          //           //   builder: (context, provider, child) {
+                         
+          //           //   },
+          //           // ),
+          //           const SizedBox(
+          //             height: 10,
+          //           ),
+          //           Container(
+          //             height: 70,
+          //             width: 315,
+          //             decoration: BoxDecoration(
+          //                 color: Color(0xFFF8774A),
+          //                 borderRadius: BorderRadius.circular(30)),
+          //             child: Center(
+          //               child: Text(
+          //                 'Book operator',
+          //                 style: GoogleFonts.poppins(
+          //                     textStyle: const TextStyle(
+          //                         fontWeight: FontWeight.w500,
+          //                         fontSize: 15,
+          //                         color: Colors.white)),
+          //               ),
+          //             ),
+          //           ),
+          //         ],
+          //       ),
+
         ),
         body: Column(
           children: [

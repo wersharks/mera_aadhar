@@ -8,8 +8,10 @@ import 'package:mera_aadhar/widgets/time_tile.dart';
 class BookingProvider extends ChangeNotifier {
   Booking booking = BookingFixture.dummyBooking();
   Operator focusOperator = OperatorFixture.dummySurabhi();
+  bool isOpSelected = false;
 
   void setOperator(Operator op){
+    isOpSelected = true;
     focusOperator = op;
     notifyListeners();
   }

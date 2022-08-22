@@ -40,20 +40,20 @@ class TestFirescreen extends StatelessWidget {
                 debugPrint("yay baby");
                 String lat = "30.360001";
                 String lon = "76.452232";
-                getAllOperatorsByMyLatLong(lat, lon).then((val){
+                // getAllOperatorsByMyLatLong(lat, lon).then((val){
 
-                  StreamSubscription<OperatorData> subscriber = val.stream.listen((OperatorData data) {
-                      print("received data: ${data.toJson()}");
-                  },
-                  onError: (error) {
-                      print("Error in multistream");
-                      print(error);
-                  },
-                  onDone: () {
-                      print('Stream closed!');
-                  });
+                //   StreamSubscription<OperatorData> subscriber = val.stream.listen((OperatorData data) {
+                //       print("received data: ${data.toJson()}");
+                //   },
+                //   onError: (error) {
+                //       print("Error in multistream");
+                //       print(error);
+                //   },
+                //   onDone: () {
+                //       print('Stream closed!');
+                //   });
 
-                });
+                // });
             },
           ),
 

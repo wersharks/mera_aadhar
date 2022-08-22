@@ -65,7 +65,6 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
   }
 
   void addOrUpdateOperatorLocation(OperatorData odata) async {
-    print("here");
     LatLng latlng = LatLng(odata.loc!.lat!, odata.loc!.lon!);
     print("Show op ${odata.operatorId!} with latlon ${latlng.toJson()}");
     SymbolOptions symops = SymbolOptions(
@@ -140,12 +139,9 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
 
   void symbolCallback(BuildContext context, Symbol symbol) async {
     // Add callback
-    Provider.of<BookingProvider>(context, listen: false).operator =
-        (await OperatorDB().getOperatorById(symbolIdToOperatorId[symbol.id]))!;
+    Provider.of<BookingProvider>(context, listen: false).setOperator(
+        (await OperatorDB().getOperatorById(symbolIdToOperatorId[symbol.id]))!);
     isOpSelected = true;
-    setState(() {
-      
-    });
     print(symbolIdToOperatorId[symbol.id]);
   }
 
@@ -230,20 +226,25 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
                       Icons.arrow_drop_up_outlined,
                       size: 40,
                     ),
-                    OperatorBookCard(
-                      name: Provider.of<BookingProvider>(context, listen: false)
-                          .operator
-                          .name!,
-                      rating:
-                          Provider.of<BookingProvider>(context, listen: false)
-                              .operator
-                              .ratings!,
-                      reviews: Map.fromIterable(
-                          Provider.of<BookingProvider>(context, listen: false)
-                              .operator
-                              .reviews!,
-                          key: (v) => v[0],
-                          value: (v) => v),
+                    Consumer<BookingProvider>(
+                      builder: (context, provider, child) {
+                        print("Print operator ");
+                        return OperatorBookCard(
+                              name: provider
+                                  .focusOperator
+                                  .name!,
+                              rating:
+                                      provider
+                                      .focusOperator
+                                      .ratings!,
+                              reviews: Map.fromIterable(
+                                      provider
+                                      .focusOperator
+                                      .reviews!,
+                                  key: (v) => v[0],
+                                  value: (v) => v),
+                            );         
+                      },
                     ),
                     const SizedBox(
                       height: 10,

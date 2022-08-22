@@ -7,7 +7,13 @@ import 'package:mera_aadhar/widgets/time_tile.dart';
 
 class BookingProvider extends ChangeNotifier {
   Booking booking = BookingFixture.dummyBooking();
-  Operator operator = OperatorFixture.dummySurabhi();
+  Operator focusOperator = OperatorFixture.dummySurabhi();
+
+  void setOperator(Operator op){
+    focusOperator = op;
+    notifyListeners();
+  }
+
   List<TimeTile> morning = [
     TimeTile(
       timeslot: '9:00 AM - 9:30 AM',

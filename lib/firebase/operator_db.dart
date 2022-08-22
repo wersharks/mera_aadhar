@@ -52,8 +52,11 @@ CollectionReference _collectionRef =
 
 
     // Realtime Database Events
-    Stream<OperatorData> getOperatorLiveLocationById(String operatorId){
+    Future<Stream<OperatorData>?> getOperatorLiveLocationById(String operatorId) async{
         DatabaseReference ref = FirebaseDatabase.instance.ref("operators/"+operatorId);
+        DatabaseEvent event = await ref.once();
+
+        if(event.snapshot.value == null) return null;
 
         handleData(DatabaseEvent event, EventSink<OperatorData> sink) =>
             sink.add(OperatorData.fromJson(jsonDecode(jsonEncode(event.snapshot.value))));

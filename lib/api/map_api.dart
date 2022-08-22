@@ -60,11 +60,12 @@ Future<StreamGroup<OperatorData>> getAllOperatorsByMyLatLong(String lat, String 
     String latlon = data.lat!+"-"+data.lon!;
     List<Operator> operators = await odb.getOperatorsByLatLong(latlon);
     for(final oper in operators){
-      print("found operator in vicinity with id! ${oper.operatorId!}");
+      print("found operator in vicinity with id! ${oper.operatorId!} with ${latlon}");
       operatorIdLst.add(oper.operatorId!);
       // Maybe cache to special provider map
-      Stream<OperatorData> opdata = await odb.getOperatorLiveLocationById(oper.operatorId!);
-      streams.add(opdata);
+      Stream<OperatorData>? opdata = await odb.getOperatorLiveLocationById(oper.operatorId!);
+      if(opdata != null)
+        streams.add(opdata);
     }
   }
 

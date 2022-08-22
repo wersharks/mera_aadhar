@@ -39,12 +39,23 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
   var symbolIdToOperatorId = new Map();
   String _locationText = "Loading data...";
   Map<String, Operator> idToOperator = {};
+  Symbol? lastClicked;
 
   @override
   void initState() {
     super.initState();
     // initLocationService();
     // openMapmyIndiaPlacePickerWidget();
+  }
+
+  SymbolOptions createNormalSymbol(LatLng latLng){
+    return SymbolOptions(
+        draggable: true, iconImage: "icon", iconSize: 0.5, geometry: latLng);
+  }
+
+  SymbolOptions createHighlightSymbol(LatLng latLng){
+    return SymbolOptions(
+        draggable: true, iconImage: "iconhigh", iconSize: 0.75, geometry: latLng);
   }
 
   void addOrUpdateLocationMarker(LatLng latlng) async {
@@ -69,8 +80,7 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
   void addOrUpdateOperatorLocation(OperatorData odata) async {
     LatLng latlng = LatLng(odata.loc!.lat!, odata.loc!.lon!);
     print("Show op ${odata.operatorId!} with latlon ${latlng.toJson()}");
-    SymbolOptions symops = SymbolOptions(
-        draggable: true, iconImage: "icon", iconSize: 0.5, geometry: latlng);
+    SymbolOptions symops = createNormalSymbol(latlng);
 
     if (operatorMapPins.containsKey(odata.operatorId!)) {
       // Update marker
@@ -140,11 +150,29 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
         context, MaterialPageRoute(builder: (context) => DatePage()));
   }
 
+  void utilHighlightOperator(Symbol symbol, bool highlight) async {
+    SymbolOptions change;
+    if(highlight){
+      change = createHighlightSymbol(symbol.options.geometry!);
+    }
+    else {
+      change = createNormalSymbol(symbol.options.geometry!);
+    }
+    await _mapController.updateSymbol(symbol, change);
+  }
+
   void symbolCallback(BuildContext context, Symbol symbol) async {
-    // Add callback
+    // if last called not null then dehilight symbol
+    if(lastClicked != null){
+      utilHighlightOperator(lastClicked!, false);
+    }
+    utilHighlightOperator(symbol, true);
+
     Operator opclick = idToOperator[symbolIdToOperatorId[symbol.id]]!;
     Provider.of<BookingProvider>(context, listen: false).setOperator(opclick);
     print("Clicked op id ${symbolIdToOperatorId[symbol.id]} with name ${opclick.name}");
+
+    lastClicked = symbol;
   }
 
   @override
@@ -267,111 +295,6 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
                   ],
                 );
               }),
-          // (!isOpSelected)
-          //     ? Column(
-          //         children: [
-          //           const Icon(
-          //             Icons.arrow_drop_up_outlined,
-          //             size: 40,
-          //           ),
-          //           ListTile(
-          //             leading: const Icon(
-          //               Icons.house,
-          //               color: Colors.black,
-          //               size: 36,
-          //             ),
-          //             title: Text(
-          //               _locationText,
-          //               style: GoogleFonts.poppins(
-          //                 textStyle: TextStyle(
-          //                     fontWeight: FontWeight.bold, fontSize: 17),
-          //               ),
-          //             ),
-          //             subtitle: Text(
-          //               'Mobile Number: ${Provider.of<BookingProvider>(context, listen: false).booking.userdata!.phoneNo}',
-          //               style: GoogleFonts.poppins(
-          //                   fontWeight: FontWeight.w500,
-          //                   color: Color(0xFFB2B2B2),
-          //                   fontSize: 16),
-          //             ),
-          //             trailing: IconButton(
-          //               icon: new Icon(Icons.edit),
-          //               highlightColor: Colors.pink,
-          //               onPressed: () {
-          //                 openMapmyIndiaPlacePickerWidget();
-          //               },
-          //             ),
-          //           ),
-          //           const SizedBox(
-          //             height: 30,
-          //           ),
-          //           Container(
-          //             height: 70,
-          //             width: 315,
-          //             decoration: BoxDecoration(
-          //                 color: Color(0xFFF8774A),
-          //                 borderRadius: BorderRadius.circular(30)),
-          //             child: Center(
-          //               child: Text(
-          //                 'Select an operator for yourself',
-          //                 style: GoogleFonts.poppins(
-          //                     textStyle: const TextStyle(
-          //                         fontWeight: FontWeight.w500,
-          //                         fontSize: 15,
-          //                         color: Colors.white)),
-          //               ),
-          //             ),
-          //           ),
-          //         ],
-          //       )
-          //     : Column(
-          //         children: [
-          //           const Icon(
-          //             Icons.arrow_drop_up_outlined,
-          //             size: 40,
-          //           ),
-          //           // OperatorBookCard(
-          //           //   name: provider
-          //           //       .focusOperator
-          //           //       .name!,
-          //           //   rating: provider
-          //           //           .focusOperator
-          //           //           .ratings!,
-          //           //   reviews: Map.fromIterable(
-          //           //           provider
-          //           //           .focusOperator
-          //           //           .reviews!,
-          //           //       key: (v) => v[0],
-          //           //       value: (v) => v),
-          //           //   ),       
-          //           // Consumer<BookingProvider>(
-          //           //   builder: (context, provider, child) {
-                         
-          //           //   },
-          //           // ),
-          //           const SizedBox(
-          //             height: 10,
-          //           ),
-          //           Container(
-          //             height: 70,
-          //             width: 315,
-          //             decoration: BoxDecoration(
-          //                 color: Color(0xFFF8774A),
-          //                 borderRadius: BorderRadius.circular(30)),
-          //             child: Center(
-          //               child: Text(
-          //                 'Book operator',
-          //                 style: GoogleFonts.poppins(
-          //                     textStyle: const TextStyle(
-          //                         fontWeight: FontWeight.w500,
-          //                         fontSize: 15,
-          //                         color: Colors.white)),
-          //               ),
-          //             ),
-          //           ),
-          //         ],
-          //       ),
-
         ),
         body: Column(
           children: [
@@ -417,6 +340,7 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
                       onStyleLoadedCallback: () {
                         addImageFromAsset(
                             "icon", "assets/operator_pin_icon.png");
+                        addImageFromAsset("iconhigh", "assets/icon_op_yellow.png");
                         openMapmyIndiaPlacePickerWidget();
                       },
                     ),

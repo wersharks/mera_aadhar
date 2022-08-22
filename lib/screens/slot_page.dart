@@ -48,27 +48,7 @@ class _SlotPageState extends State<SlotPage> {
             showSnackBar('Please select any slot to continue', context);
           }
 
-          // (slotType == 'morning')
-          //     ? Provider.of<BookingProvider>(context, listen: false).slots
 
-          //          =Provider.of<BookingProvider>(context, listen: false)
-          //       .morning
-          //     :  Provider.of<BookingProvider>(context, listen: false).slots
-
-          //          =Provider.of<BookingProvider>(context, listen: false)
-          //       .evening;
-          // Provider.of<BookingProvider>(context, listen: false).booking.date =
-          //     date;
-
-          // print(Provider.of<BookingProvider>(context, listen: false)
-          //     .booking
-          //     .userdata!
-          //     .type);
-          // if (slotType == 'morning' || slotType == 'evening')
-          //   Navigator.push(
-          //       context, MaterialPageRoute(builder: (context) => SlotPage()));
-          // else
-          //   showSnackBar('Please select any option to continue', context);
         },
       ),
       //  backgroundColor: Color(0xFFFF4B3A),

@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
+import 'package:mera_aadhar/fixtures/operator_fixture.dart';
 import 'package:mera_aadhar/models/booking_model.dart';
 import 'package:mera_aadhar/fixtures/booking_fixture.dart';
+import 'package:mera_aadhar/models/operator_model.dart';
 import 'package:mera_aadhar/widgets/time_tile.dart';
 
 class BookingProvider extends ChangeNotifier {
   Booking booking = BookingFixture.dummyBooking();
+  Operator operator = OperatorFixture.dummySurabhi();
   List<TimeTile> morning = [
     TimeTile(
       timeslot: '9:00 AM - 9:30 AM',

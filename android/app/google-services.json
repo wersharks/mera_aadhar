@@ -46,6 +46,49 @@
             {
               "client_id": "800240519039-1eti7eqvbvgl9qj60s62sfevt9utsutn.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "800240519039-q11hdqb88bifpasnd9f18ru14vbvrttd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.shark.meraOperator"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:800240519039:android:ec49bf6dbc60cba451bc4a",
+        "android_client_info": {
+          "package_name": "com.shark.mera_operator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "800240519039-1eti7eqvbvgl9qj60s62sfevt9utsutn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCy24LszFzZ92VaIuL9CR0fid13JXBZLgw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "800240519039-1eti7eqvbvgl9qj60s62sfevt9utsutn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "800240519039-q11hdqb88bifpasnd9f18ru14vbvrttd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.shark.meraOperator"
+              }
             }
           ]
         }

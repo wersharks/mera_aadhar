@@ -137,18 +137,18 @@ class TestFirescreen extends StatelessWidget {
           TextButton(
             child: Text("Subscribe operator live location (stream)"),
             onPressed: () {
-              String surabhiId = "abcdefgh";
-              OperatorDB odp = new OperatorDB();
-              Stream<OperatorData> stream = odp.getOperatorLiveLocationById(surabhiId);
-              StreamSubscription<OperatorData> subscriber = stream.listen((OperatorData data) {
-                  print(data.toJson());
-              },
-              onError: (error) {
-                  print(error);
-              },
-              onDone: () {
-                  print('Stream closed!');
-              });
+              // String surabhiId = "abcdefgh";
+              // OperatorDB odp = new OperatorDB();
+              // Stream<OperatorData> stream = await odp.getOperatorLiveLocationById(surabhiId);
+              // StreamSubscription<OperatorData> subscriber = stream.listen((OperatorData data) {
+              //     print(data.toJson());
+              // },
+              // onError: (error) {
+              //     print(error);
+              // },
+              // onDone: () {
+              //     print('Stream closed!');
+              // });
             },
           ),
           TextButton(

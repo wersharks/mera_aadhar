@@ -143,6 +143,9 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
     Provider.of<BookingProvider>(context, listen: false).operator =
         (await OperatorDB().getOperatorById(symbolIdToOperatorId[symbol.id]))!;
     isOpSelected = true;
+    setState(() {
+      
+    });
     print(symbolIdToOperatorId[symbol.id]);
   }
 
@@ -303,7 +306,7 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
                         _mapController = map;
                         _mapController.onSymbolTapped.add((Symbol symbol) {
                           symbolCallback(context, symbol);
-                          setState(() {});
+                       //   setState(() {});
                         });
                       },
                       onStyleLoadedCallback: () {

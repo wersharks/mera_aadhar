@@ -16,6 +16,12 @@ class SlotPage extends StatefulWidget {
 
 class _SlotPageState extends State<SlotPage> {
   List<TimeTile> slots = [];
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     // if (Provider.of<BookingProvider>(context).booking.slotType == 'morning')
@@ -47,8 +53,6 @@ class _SlotPageState extends State<SlotPage> {
           } else {
             showSnackBar('Please select any slot to continue', context);
           }
-
-
         },
       ),
       //  backgroundColor: Color(0xFFFF4B3A),
@@ -182,6 +186,34 @@ class _SlotPageState extends State<SlotPage> {
                                   .slots
                                   .length,
                               itemBuilder: (context, index) {
+                                bool boolHandler = true;
+
+                                DateFormat dateFormat =
+                                    DateFormat("yyyy-MM-dd HH:mm:ss");
+                                DateTime date = DateTime.now();
+                                //DateTime date =  dateFormat.parse('2022-08-26 15:05:00');
+                                DateTime dateTime = dateFormat.parse(
+                                    '${date.year}-${date.month}-${date.day} ${Provider.of<BookingProvider>(context).slots[index].timeslot.substring(0, 4)}:00');
+                                print(Provider.of<BookingProvider>(context)
+                                    .slots[index]
+                                    .timeslot
+                                    .substring(5, 7));
+                                if (Provider.of<BookingProvider>(context)
+                                        .slots[index]
+                                        .timeslot
+                                        .substring(5, 7) ==
+                                    'PM') {
+                                  dateTime = dateTime.add(Duration(hours: 12));
+                                }
+                                print(date.difference(dateTime));
+                                if (date.isAfter(dateTime)
+
+                                    //||    date.difference(dateTime) <=      Duration(minutes: 30)
+                                    ) {
+                                  boolHandler = false;
+                                }
+//if()
+
                                 return TimeTile(
                                   timeslot:
                                       Provider.of<BookingProvider>(context)
@@ -192,6 +224,7 @@ class _SlotPageState extends State<SlotPage> {
                                       Provider.of<BookingProvider>(context)
                                           .slots[index]
                                           .isSelected,
+                                  isEnabled: boolHandler,
                                 );
                               }
                               //

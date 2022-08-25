@@ -17,16 +17,31 @@ class DatePage extends StatefulWidget {
 }
 
 class _DatePageState extends State<DatePage> {
-  DateTime ?realDate;  
+  DateTime? realDate;
   DateTime date = DateTime.now();
+  String? slotType;
+  bool isMorningSlot = true;
   @override
   void initState() {
-    
+    bool flag = false;
+    DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
+    DateTime dateTime =
+        dateFormat.parse('${date.year}-${date.month}-${date.day} 17:00:00');
+    DateTime dateTime1 =
+        dateFormat.parse('${date.year}-${date.month}-${date.day} 12:00:00');
+    if (date.isAfter(dateTime)) {
+      realDate = date.add(Duration(days: 1));
+      flag = true;
+    } else {
+      realDate = date;
+    }
+
+    if (date.isAfter(dateTime1) && flag == false) {
+      isMorningSlot = false;
+    }
     super.initState();
   }
 
-
-  String? slotType;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +66,7 @@ class _DatePageState extends State<DatePage> {
               : Provider.of<BookingProvider>(context, listen: false).slots =
                   Provider.of<BookingProvider>(context, listen: false).evening;
           Provider.of<BookingProvider>(context, listen: false).booking.date =
-              date;
+              realDate;
 
           print(Provider.of<BookingProvider>(context, listen: false)
               .booking
@@ -147,7 +162,7 @@ class _DatePageState extends State<DatePage> {
                                 ),
                                 Text(
                                   DateFormat.yMMMMd('en_US')
-                                      .format(date)
+                                      .format(realDate!)
                                       .toString(),
                                   style: GoogleFonts.poppins(
                                     textStyle: const TextStyle(
@@ -167,11 +182,11 @@ class _DatePageState extends State<DatePage> {
                                     thumbColor: Color(0xFFFF460A),
                                     isAlwaysShown: true,
                                     child: DatePicker(
-                                      DateTime.now(),
-                                      initialSelectedDate: DateTime.now(),
+                                      realDate!,
+                                      initialSelectedDate: realDate,
                                       daysCount: 15,
                                       onDateChange: (value) {
-                                        date = value;
+                                        realDate = value;
                                         setState(() {});
                                       },
                                     ),
@@ -187,11 +202,12 @@ class _DatePageState extends State<DatePage> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          if (slotType == null || slotType != 'morning')
-                            slotType = 'morning';
-                          else
-                            slotType = '';
-
+                          if (isMorningSlot == true) {
+                            if (slotType == null || slotType != 'morning')
+                              slotType = 'morning';
+                            else
+                              slotType = '';
+                          }
                           setState(() {});
                         },
                         child: Container(
@@ -199,7 +215,8 @@ class _DatePageState extends State<DatePage> {
                           width: 360,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30),
-                              color: Colors.white),
+                              color:
+                                  (isMorningSlot) ? Colors.white : Colors.grey),
                           child: Center(
                             child: Column(
                               children: [

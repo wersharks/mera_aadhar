@@ -9,8 +9,12 @@ class TimeTile extends StatefulWidget {
   String timeslot;
   bool isSelected;
   int index;
+  bool isEnabled;
   TimeTile(
-      {required this.timeslot, this.isSelected = false, required this.index});
+      {required this.timeslot,
+      this.isSelected = false,
+      required this.index,
+      this.isEnabled = true});
 
   @override
   State<TimeTile> createState() => _TimeTileState();
@@ -23,30 +27,33 @@ class _TimeTileState extends State<TimeTile> {
       padding: const EdgeInsets.symmetric(vertical: 7.0, horizontal: 10),
       child: GestureDetector(
         onTap: () {
-          if (widget.isSelected == false) {
-            widget.isSelected = true;
-            Provider.of<BookingProvider>(context, listen: false)
-                .slots[widget.index]
-                .isSelected = true;
-          } else {
-            widget.isSelected = false;
-             Provider.of<BookingProvider>(context, listen: false)
-                .slots[widget.index]
-                .isSelected = false;
-          }
+          if (widget.isEnabled) {
+            if (widget.isSelected == false) {
+              widget.isSelected = true;
+              Provider.of<BookingProvider>(context, listen: false)
+                  .slots[widget.index]
+                  .isSelected = true;
+            } else {
+              widget.isSelected = false;
+              Provider.of<BookingProvider>(context, listen: false)
+                  .slots[widget.index]
+                  .isSelected = false;
+            }
 
-          setState(() {});
-          Provider.of<BookingProvider>(context, listen: false)
-              .slotHandler(widget.index);
-          print(Provider.of<BookingProvider>(context, listen: false)
+            setState(() {});
+            Provider.of<BookingProvider>(context, listen: false)
+                .slotHandler(widget.index);
+            print(Provider.of<BookingProvider>(context, listen: false)
                 .slots[widget.index]
                 .isSelected);
+          }
         },
         child: Container(
           height: 68,
           width: 360,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30), color: Colors.white),
+              borderRadius: BorderRadius.circular(30),
+              color: (widget.isEnabled) ? Colors.white : Colors.grey),
           child: Center(
             child: Column(
               children: [

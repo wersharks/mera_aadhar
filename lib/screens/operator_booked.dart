@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:mera_aadhar/firebase/booking_db.dart';
 import 'package:mera_aadhar/provider/booking.dart';
+import 'package:mera_aadhar/screens/finish_page.dart';
 import 'package:mera_aadhar/utilities/constants.dart';
 import 'package:mera_aadhar/utilities/size_config.dart';
 import 'package:mera_aadhar/widgets/my_card.dart';
@@ -18,7 +20,22 @@ class OperatorBooked extends StatefulWidget {
 class _OperatorBookedState extends State<OperatorBooked> {
   @override
   void initState() {
+    // int bookingId = Provider.of<BookingProvider>(context, listen: false).booking.bookingId!;
+    // print("book id completed $bookingId");
+    // var bdb = BookingDB();
+    // bdb.registerForBookingCompleted(bookingId, (){
+    //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => FinishPage()));});
+
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          int bookingId = Provider.of<BookingProvider>(context, listen: false).booking.bookingId!;
+          print("book id completed $bookingId");
+          var bdb = BookingDB();
+          bdb.registerForBookingCompleted(bookingId, (){
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => FinishPage()));});
+    });
+
   }
 
   @override
@@ -28,6 +45,7 @@ class _OperatorBookedState extends State<OperatorBooked> {
   }
 
     void cancelCurrentBookingAndExit() async {
+      print("cancel");
       // TODO: Implement here
     }
 
@@ -143,7 +161,9 @@ class _OperatorBookedState extends State<OperatorBooked> {
                   child: Text(
                     'Cancel',
                     style: buttonTextStyle,
-                  )))
+                  )
+                )
+            ),
         ],
       )),
     );

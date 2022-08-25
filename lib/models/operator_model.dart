@@ -13,6 +13,8 @@ class Operator {
   bool? isOperatorActive;
   int? timestamp;
 
+  bool isOpFree = true;
+
   Operator(
       {this.operatorId,
       this.centerLocation,

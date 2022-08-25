@@ -33,6 +33,23 @@ CollectionReference _collectionRef =
         else return null;
     }
 
+
+    void registerForBookingCompleted(int bookingId, Function() f) async {
+      print("okay regis $bookingId");
+        _collectionRef
+          .where('bookingId', isEqualTo: bookingId)
+          // .orderBy('timestamp', descending: true)
+          .snapshots()
+          .listen((QuerySnapshot querySnapshot){
+              Booking b = Booking.fromJson(querySnapshot.docs[0].data() as Map<String, dynamic>);
+              if(b.bookingStatus! == "Completed"){
+                print("Okay, success");
+                f();
+              }
+            }
+          );
+    }
+
     Future<List<Booking>> getOperatorIdBooking(String oId) async {
         FirebaseAuth auth = FirebaseAuth.instance;
         QuerySnapshot snap = await _collectionRef

@@ -66,13 +66,19 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
 
   SymbolOptions createNormalSymbol(LatLng latLng) {
     return SymbolOptions(
-        draggable: true, iconImage: "icon", iconSize: 0.5, geometry: latLng);
+        draggable: true, iconImage: "opgreen", iconSize: 0.5, geometry: latLng);
   }
+
+  SymbolOptions createRedSymbol(LatLng latLng) {
+    return SymbolOptions(
+        draggable: true, iconImage: "opred", iconSize: 0.5, geometry: latLng);
+  }
+
 
   SymbolOptions createHighlightSymbol(LatLng latLng) {
     return SymbolOptions(
         draggable: true,
-        iconImage: "iconhigh",
+        iconImage: "opgreenselec",
         iconSize: 0.75,
         geometry: latLng);
   }
@@ -99,7 +105,14 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
   void addOrUpdateOperatorLocation(OperatorData odata) async {
     LatLng latlng = LatLng(odata.loc!.lat!, odata.loc!.lon!);
     print("Show op ${odata.operatorId!} with latlon ${latlng.toJson()}");
-    SymbolOptions symops = createNormalSymbol(latlng);
+    Operator operator = idToOperator[odata.operatorId!]!;
+
+    SymbolOptions symops;
+    if(operator.isOpFree){
+      symops = createNormalSymbol(latlng);
+    } else {
+      symops = createRedSymbol(latlng);
+    }
 
     if (operatorMapPins.containsKey(odata.operatorId!)) {
       // Update marker
@@ -196,6 +209,8 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
 
   void symbolCallback(BuildContext context, Symbol symbol) async {
     if (symbol == location_pin) return;
+    Operator opclick = idToOperator[symbolIdToOperatorId[symbol.id]]!;
+    if(opclick.isOpFree == false) return;
     // if last called not null then dehilight symbol
     if (lastClicked != null) {
       utilHighlightOperator(lastClicked!, false);
@@ -207,7 +222,6 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
     }
     utilHighlightOperator(symbol, true);
 
-    Operator opclick = idToOperator[symbolIdToOperatorId[symbol.id]]!;
     Provider.of<BookingProvider>(context, listen: false).setOperator(opclick);
     panelController.open();
     setState(() {
@@ -419,6 +433,13 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
                           });
                         },
                         onStyleLoadedCallback: () {
+                          addImageFromAsset(
+                              "opgreen", "assets/op_lightgreen.png");
+                          addImageFromAsset(
+                              "opgreenselec", "assets/op_darkgreen.png");
+                          addImageFromAsset(
+                              "opred", "assets/op_red.png");
+
                           addImageFromAsset(
                               "icon", "assets/operator_pin_icon.png");
                           addImageFromAsset(

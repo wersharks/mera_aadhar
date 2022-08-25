@@ -100,8 +100,9 @@ Future<Tuple2<Map<String, Operator>, StreamGroup<OperatorData>>> getAllOperators
       print("found operator in vicinity with id! ${oper.operatorId!} with ${latlon}");
 
       if(!(await isOperatorBookingAvaliable(oper, date, time))){
-        print("unavaliable operator, skipping!");
-        continue;
+        print("unavaliable operator, marking red!");
+        // continue;
+        oper.isOpFree = false;
       }
 
       operatorIdMapOp[oper.operatorId!] = oper;

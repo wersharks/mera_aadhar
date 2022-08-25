@@ -151,7 +151,7 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
       var match = matches.elementAt(0);
       pinLocation =
           LatLng(double.parse(match.group(1)!), double.parse(match.group(2)!));
-      _locationText = (await getAddressByLatLon(
+      _locationText = (await getAddressByLatLonNomin(
           pinLocation.latitude, pinLocation.longitude))!;
     } else {
       _locationText = place.formattedAddress!;

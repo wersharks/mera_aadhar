@@ -112,11 +112,11 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
     }
   }
 
-  void registerDeregisterOperators() async {
+  void registerDeregisterOperators(DateTime date, String time) async {
     String lat = pinLocation.latitude.toString();
     String lon = pinLocation.longitude.toString();
     Tuple2<Map<String, Operator>, StreamGroup<OperatorData>> rdata =
-        await getAllOperatorsByMyLatLong(lat, lon);
+        await getAllOperatorsByMyLatLong(lat, lon, date, time);
     StreamGroup<OperatorData> streamgroup = rdata.item2;
     idToOperator = rdata.item1;
 
@@ -132,7 +132,7 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
     });
   }
 
-  openMapmyIndiaPlacePickerWidget() async {
+  openMapmyIndiaPlacePickerWidget(BuildContext context) async {
     ReverseGeocodePlace place;
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
@@ -158,16 +158,30 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
       pinLocation = LatLng(double.parse(place.lat!), double.parse(place.lng!));
     }
 
-    setState(() {
+    // setState(() {
       // _locationText = match.group(0)!;
       _mapController.easeCamera(CameraUpdate.newLatLngZoom(pinLocation, 14));
       addOrUpdateLocationMarker(pinLocation);
-      registerDeregisterOperators();
-    });
+
+    // });
 
     // Change to time and slot
-    Navigator.push(
+    await Navigator.push(
         context, MaterialPageRoute(builder: (context) => DatePage()));
+
+    
+
+    DateTime? date = Provider.of<BookingProvider>(context, listen: false).booking.date;
+    String? time = Provider.of<BookingProvider>(context, listen: false).booking.slotTime;
+
+    while(date == null || time == null){
+      showSnackBar("Please select a valid date and time!!", context);
+      await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => DatePage()));
+      date = Provider.of<BookingProvider>(context, listen: false).booking.date;
+      time = Provider.of<BookingProvider>(context, listen: false).booking.slotTime;
+    }
+    registerDeregisterOperators(date, time);
   }
 
   void utilHighlightOperator(Symbol symbol, bool highlight) async {
@@ -291,7 +305,7 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
                             icon: new Icon(Icons.edit),
                             highlightColor: Colors.pink,
                             onPressed: () {
-                              openMapmyIndiaPlacePickerWidget();
+                              openMapmyIndiaPlacePickerWidget(context);
                             },
                           ),
                         ),
@@ -403,14 +417,14 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
                               "icon", "assets/operator_pin_icon.png");
                           addImageFromAsset(
                               "iconhigh", "assets/icon_op_yellow.png");
-                          openMapmyIndiaPlacePickerWidget();
+                          openMapmyIndiaPlacePickerWidget(context);
                         },
                       ),
                     ),
                   )),
                   GestureDetector(
                     onTap: () {
-                      openMapmyIndiaPlacePickerWidget();
+                      openMapmyIndiaPlacePickerWidget(context);
                     },
                     child: Padding(
                       padding: EdgeInsets.all(25),

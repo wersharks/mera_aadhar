@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mera_aadhar/language_handler.dart';
 import 'package:mera_aadhar/screens/modeSelectionPage.dart';
 import 'package:mera_aadhar/utilities/constants.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -97,15 +98,16 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               controller: _controller,
               children: [
                 WelcomeScreen(
-                  vectorLink: "",
+                  vectorLink: "assets/card.png",
                   textelement: "Aadhar updation or Enrollment at your home",
+               //   textelement: translatedStrings["aadharUpdationOrEnrollmentAtYourHome"],
                 ),
                 WelcomeScreen(
-                  vectorLink: "",
+                  vectorLink: "assets/time.png",
                   textelement: "Select your own Time Slot",
                 ),
                 WelcomeScreen(
-                  vectorLink: "",
+                  vectorLink: "assets/review.png",
                   textelement: "Review your appointments",
                 )
               ],

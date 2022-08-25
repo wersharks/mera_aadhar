@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mera_aadhar/screens/language_selector.dart';
 import 'package:mera_aadhar/screens/modeSelectionPage.dart';
 import 'package:mera_aadhar/screens/onBoardingPage.dart';
 import 'package:mera_aadhar/screens/serviceSelectionPage.dart';
@@ -20,7 +21,7 @@ class _LoadingPageState extends State<LoadingPage> {
       (FirebaseAuth.instance.currentUser!=null)? Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (BuildContext context) => ServiceSelectionPage())):
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (BuildContext context) => OnBoardingScreen()));
+          builder: (BuildContext context) => LanguageSelectorScreen()));
     });
     return Scaffold(
         body: Container(

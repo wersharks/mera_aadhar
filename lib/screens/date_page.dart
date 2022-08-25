@@ -17,7 +17,15 @@ class DatePage extends StatefulWidget {
 }
 
 class _DatePageState extends State<DatePage> {
+  DateTime ?realDate;  
   DateTime date = DateTime.now();
+  @override
+  void initState() {
+    
+    super.initState();
+  }
+
+
   String? slotType;
   @override
   Widget build(BuildContext context) {

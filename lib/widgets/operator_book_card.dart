@@ -1,17 +1,22 @@
+import 'dart:typed_data';
+
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
+import 'package:mera_aadhar/services/fetch_image.dart';
 import 'package:mera_aadhar/utilities/constants.dart';
 import 'package:mera_aadhar/utilities/size_config.dart';
 
 class OperatorBookCard extends StatelessWidget {
   String name;
   String rating;
+  String image;
   Map<String, String> reviews;
   OperatorBookCard(
       {required this.name,
       required this.rating,
-      this.reviews = const {"": "No reviews yet"}});
+      this.reviews = const {"": "No reviews yet"},
+      required this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +26,38 @@ class OperatorBookCard extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(20),
-            child: Image.asset(
-              'assets/operator.png',
-              width: 130,
-              height: 160,
-              fit: BoxFit.fill,
-            ),
+            child: FutureBuilder<Uint8List?>(
+                future: fetchImage(image),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(
+                        child: Text(
+                      'Something went wrong',
+                      style: kPoppinBlack,
+                    ));
+                  }
+
+                  if (snapshot.hasData && !snapshot.data!.isNotEmpty) {
+                    return Text("Error");
+                  }
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return Image.memory(
+                      snapshot.data!,
+                      width: 130,
+                      height: 160,
+                      fit: BoxFit.fill,
+                    );
+                  }
+
+                  return Center(
+                    child: Image.asset(
+                      'assets/loading.gif',
+                      width: 130,
+                      height: 160,
+                      fit: BoxFit.fill,
+                    ),
+                  );
+                }),
           ),
           SizedBox(
             width: 10,
@@ -64,7 +95,6 @@ class OperatorBookCard extends StatelessWidget {
                           padding: EdgeInsets.zero,
                           itemCount: reviews.length,
                           itemBuilder: (context, i) {
-                         
                             return Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [

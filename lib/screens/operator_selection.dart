@@ -31,7 +31,7 @@ import 'package:tuple/tuple.dart';
 import 'package:mera_aadhar/models/operator_model.dart';
 import 'package:mera_aadhar/utilities/constants.dart';
 import 'package:mera_aadhar/utilities/size_config.dart';
-import 'dart:math' as math; 
+import 'dart:math' as math;
 
 class OperatorSelectionScreen extends StatefulWidget {
   const OperatorSelectionScreen({Key? key}) : super(key: key);
@@ -64,14 +64,17 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
     // openMapmyIndiaPlacePickerWidget();
   }
 
-  SymbolOptions createNormalSymbol(LatLng latLng){
+  SymbolOptions createNormalSymbol(LatLng latLng) {
     return SymbolOptions(
         draggable: true, iconImage: "icon", iconSize: 0.5, geometry: latLng);
   }
 
-  SymbolOptions createHighlightSymbol(LatLng latLng){
+  SymbolOptions createHighlightSymbol(LatLng latLng) {
     return SymbolOptions(
-        draggable: true, iconImage: "iconhigh", iconSize: 0.75, geometry: latLng);
+        draggable: true,
+        iconImage: "iconhigh",
+        iconSize: 0.75,
+        geometry: latLng);
   }
 
   void addOrUpdateLocationMarker(LatLng latlng) async {
@@ -112,7 +115,8 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
   void registerDeregisterOperators() async {
     String lat = pinLocation.latitude.toString();
     String lon = pinLocation.longitude.toString();
-    Tuple2<Map<String, Operator>, StreamGroup<OperatorData>> rdata = await getAllOperatorsByMyLatLong(lat, lon);
+    Tuple2<Map<String, Operator>, StreamGroup<OperatorData>> rdata =
+        await getAllOperatorsByMyLatLong(lat, lon);
     StreamGroup<OperatorData> streamgroup = rdata.item2;
     idToOperator = rdata.item1;
 
@@ -168,21 +172,20 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
 
   void utilHighlightOperator(Symbol symbol, bool highlight) async {
     SymbolOptions change;
-    if(highlight){
+    if (highlight) {
       change = createHighlightSymbol(symbol.options.geometry!);
-    }
-    else {
+    } else {
       change = createNormalSymbol(symbol.options.geometry!);
     }
     await _mapController.updateSymbol(symbol, change);
   }
 
   void symbolCallback(BuildContext context, Symbol symbol) async {
-    if(symbol == location_pin) return;
+    if (symbol == location_pin) return;
     // if last called not null then dehilight symbol
-    if(lastClicked != null){
+    if (lastClicked != null) {
       utilHighlightOperator(lastClicked!, false);
-      if(lastClicked! == symbol){
+      if (lastClicked! == symbol) {
         Provider.of<BookingProvider>(context, listen: false).removeFocus();
         lastClicked = null;
         return;
@@ -192,38 +195,42 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
 
     Operator opclick = idToOperator[symbolIdToOperatorId[symbol.id]]!;
     Provider.of<BookingProvider>(context, listen: false).setOperator(opclick);
-    print("Clicked op id ${symbolIdToOperatorId[symbol.id]} with name ${opclick.name}");
+    print(
+        "Clicked op id ${symbolIdToOperatorId[symbol.id]} with name ${opclick.name}");
 
     lastClicked = symbol;
   }
 
-
   void bookOperatorButton(BuildContext context) async {
     // Finally book this operator for this booking!
     // Main part! First collect all the data:
-      int randomNumber = int.parse(generatePin(8));
+    int randomNumber = int.parse(generatePin(8));
 
-      Booking bookin = Provider.of<BookingProvider>(context, listen: false).booking;
-      Operator oper = Provider.of<BookingProvider>(context, listen: false).focusOperator;
-      String phno = FirebaseAuth.instance.currentUser!.phoneNumber!;
-      
-      bookin.bookingId = randomNumber;
-      bookin.operatorId = oper.operatorId!;
-      bookin.phoneNo = phno;
-      bookin.bookingLocation = new BookingLocation(lat: location_pin!.options.geometry!.latitude, lon: location_pin!.options.geometry!.longitude);
-      bookin.userdata = new Userdata(phoneNo: phno, locationText: _locationText);
-      bookin.confirmOtp = generatePin(4);
-      bookin.timestamp = DateTime.now().millisecondsSinceEpoch;
-      print(bookin.toJson());
+    Booking bookin =
+        Provider.of<BookingProvider>(context, listen: false).booking;
+    Operator oper =
+        Provider.of<BookingProvider>(context, listen: false).focusOperator;
+    String phno = FirebaseAuth.instance.currentUser!.phoneNumber!;
 
-      BookingDB bdb = new BookingDB();
-      bdb.addNewBooking(bookin).then((value){
-        showSnackBar("Operator successfully booked!", context);
-        Navigator.push(context, MaterialPageRoute(builder: (context) => OperatorBooked()));
-      });
+    bookin.bookingId = randomNumber;
+    bookin.operatorId = oper.operatorId!;
+    bookin.phoneNo = phno;
+    bookin.bookingLocation = new BookingLocation(
+        lat: location_pin!.options.geometry!.latitude,
+        lon: location_pin!.options.geometry!.longitude);
+    bookin.userdata = new Userdata(phoneNo: phno, locationText: _locationText);
+    bookin.confirmOtp = generatePin(4);
+    bookin.timestamp = DateTime.now().millisecondsSinceEpoch;
+    print(bookin.toJson());
+
+    BookingDB bdb = new BookingDB();
+    bdb.addNewBooking(bookin).then((value) {
+      showSnackBar("Operator successfully booked!", context);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => OperatorBooked()));
+    });
     // Navigator.push(context, MaterialPageRoute(builder: (context) => OperatorBooked()));
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -243,110 +250,105 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(30), topRight: Radius.circular(30)),
           ),
-          child: Consumer<BookingProvider>(
-              builder: (context, provider, child) {
-                return (!provider.isOpSelected)
-              ? Column(
-                  children: [
-                    const Icon(
-                      Icons.arrow_drop_up_outlined,
-                      size: 40,
-                    ),
-                    ListTile(
-                      leading: const Icon(
-                        Icons.house,
-                        color: Colors.black,
-                        size: 36,
+          child: Consumer<BookingProvider>(builder: (context, provider, child) {
+            return (!provider.isOpSelected)
+                ? Column(
+                    children: [
+                      const Icon(
+                        Icons.arrow_drop_up_outlined,
+                        size: 40,
                       ),
-                      title: Text(
-                        _locationText,
-                        style: GoogleFonts.poppins(
-                          textStyle: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 17),
+                      ListTile(
+                        leading: const Icon(
+                          Icons.house,
+                          color: Colors.black,
+                          size: 36,
                         ),
-                      ),
-                      subtitle: Text(
-                        'Mobile Number: ${Provider.of<BookingProvider>(context, listen: false).booking.userdata!.phoneNo}',
-                        style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xFFB2B2B2),
-                            fontSize: 16),
-                      ),
-                      trailing: IconButton(
-                        icon: new Icon(Icons.edit),
-                        highlightColor: Colors.pink,
-                        onPressed: () {
-                          openMapmyIndiaPlacePickerWidget();
-                        },
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    Container(
-                      height: 70,
-                      width: 315,
-                      decoration: BoxDecoration(
-                          color: Color(0xFFF8774A),
-                          borderRadius: BorderRadius.circular(30)),
-                      child: Center(
-                        child: Text(
-                          'Select an operator for yourself',
+                        title: Text(
+                          _locationText,
                           style: GoogleFonts.poppins(
-                              textStyle: const TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 15,
-                                  color: Colors.white)),
+                            textStyle: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 17),
+                          ),
+                        ),
+                        subtitle: Text(
+                          'Mobile Number: ${Provider.of<BookingProvider>(context, listen: false).booking.userdata!.phoneNo}',
+                          style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFFB2B2B2),
+                              fontSize: 16),
+                        ),
+                        trailing: IconButton(
+                          icon: new Icon(Icons.edit),
+                          highlightColor: Colors.pink,
+                          onPressed: () {
+                            openMapmyIndiaPlacePickerWidget();
+                          },
                         ),
                       ),
-                    ),
-                  ],
-                )
-              : Column(
-                  children: [
-                    const Icon(
-                      Icons.arrow_drop_up_outlined,
-                      size: 40,
-                    ),
-                    OperatorBookCard(
-                      name: provider
-                          .focusOperator
-                          .name!,
-                      rating: provider
-                              .focusOperator
-                              .ratings!,
-                      reviews: Map.fromIterable(
-                              provider
-                              .focusOperator
-                              .reviews!,
-                          key: (v) => v[0],
-                          value: (v) => v),
-                      ),       
                       const SizedBox(
-                      height: 10,
-                    ),
-                    TextButton(
-                    style: buttonStyle,
-                    onPressed: () {
+                        height: 30,
+                      ),
+                      Container(
+                        height: 70,
+                        width: 315,
+                        decoration: BoxDecoration(
+                            color: Color(0xFFF8774A),
+                            borderRadius: BorderRadius.circular(30)),
+                        child: Center(
+                          child: Text(
+                            'Select an operator for yourself',
+                            style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 15,
+                                    color: Colors.white)),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                : Column(
+                    children: [
+                      const Icon(
+                        Icons.arrow_drop_up_outlined,
+                        size: 40,
+                      ),
+                      OperatorBookCard(
+                        name: provider.focusOperator.name!,
+                        rating: provider.focusOperator.ratings!,
+                        reviews: Map.fromIterable(
+                            provider.focusOperator.reviews!,
+                            key: (v) => v[0],
+                            value: (v) => v),
+                        image:
+                            "operator/${provider.focusOperator.operatorId.toString()}.jpg",
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextButton(
+                        style: buttonStyle,
+                        onPressed: () {
                           bookOperatorButton(context);
-                    },
-                    child: Container(
+                        },
+                        child: Container(
                           height: 50,
                           width: 315,
                           decoration: BoxDecoration(
                               // color: Color(0xFFF8774A),
                               borderRadius: BorderRadius.circular(30)),
-                        child: const Center(
-                          child: Text(
-                            'Book operator',
-                            style: buttonTextStyle,
+                          child: const Center(
+                            child: Text(
+                              'Book operator',
+                              style: buttonTextStyle,
+                            ),
                           ),
                         ),
-                    ),
-                    )
-                  ],
-                );
-              }),
+                      )
+                    ],
+                  );
+          }),
         ),
         body: Column(
           children: [
@@ -386,13 +388,14 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
                         _mapController = map;
                         _mapController.onSymbolTapped.add((Symbol symbol) {
                           symbolCallback(context, symbol);
-                       //   setState(() {});
+                          //   setState(() {});
                         });
                       },
                       onStyleLoadedCallback: () {
                         addImageFromAsset(
                             "icon", "assets/operator_pin_icon.png");
-                        addImageFromAsset("iconhigh", "assets/icon_op_yellow.png");
+                        addImageFromAsset(
+                            "iconhigh", "assets/icon_op_yellow.png");
                         openMapmyIndiaPlacePickerWidget();
                       },
                     ),

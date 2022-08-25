@@ -47,6 +47,7 @@ class _BookOperatorScreenScreenState extends State<BookOperatorScreenScreen> {
                   'aviralg': 'bad operator',
                   'rishagbh': 'average operator gg'
                 },
+                image: 'bhb',
               ),
               const SizedBox(
                 height: 10,

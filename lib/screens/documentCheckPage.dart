@@ -214,12 +214,12 @@ class _DocumentCheckPageState extends State<DocumentCheckPage> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => OperatorSelectionScreen()));
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (context) => DatePage()));
-                    // MaterialPageRoute(
-                    //     builder: (context) => MapIntroductionPage()));
+              // Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (context) => DatePage()));
+              // MaterialPageRoute(
+              //     builder: (context) => MapIntroductionPage()));
 
               else
                 showSnackBar(

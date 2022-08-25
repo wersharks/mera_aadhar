@@ -78,11 +78,11 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           Center(
             child: CircleAvatar(
               backgroundColor: Colors.white,
-              radius: 65,
+              radius: 50,
               child: Image.asset(
-                'assets/aadharlogo.png',
-                width: 80,
-                height: 80,
+                'assets/logooo.png',
+                width: 100,
+                height: 100,
               ),
             ),
           ),
@@ -98,7 +98,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               children: [
                 WelcomeScreen(
                   vectorLink: "",
-                  textelement: "Aaadhar update or Enrollment at your home",
+                  textelement: "Aadhar updation or Enrollment at your home",
                 ),
                 WelcomeScreen(
                   vectorLink: "",

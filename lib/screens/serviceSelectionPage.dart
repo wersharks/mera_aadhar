@@ -85,6 +85,7 @@ print(Provider.of<BookingProvider>(context, listen: false)
           const SizedBox(
             height: 30,
           ),
+
           GestureDetector(
             onTap: () {
                 Provider.of<Auth>(context, listen: false).logout(context);
@@ -97,10 +98,9 @@ print(Provider.of<BookingProvider>(context, listen: false)
                   'assets/aadharlogo.png',
                   width: 35,
                   height: 35,
-                ),
-              ),
-            ),
-          ),
+                ),))),
+
+        
           const SizedBox(
             height: 9,
           ),
@@ -240,7 +240,7 @@ print(Provider.of<BookingProvider>(context, listen: false)
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        'Choose if you are senior citizen or physically disabled, otherwise go ahead.',
+                        'Choose if you are a senior citizen or differently abled, otherwise go ahead.',
                         style: GoogleFonts.poppins(
                           textStyle: const TextStyle(
                             fontWeight: FontWeight.w500,
@@ -366,7 +366,7 @@ print(Provider.of<BookingProvider>(context, listen: false)
                                       height: 10,
                                     ),
                                     Text(
-                                      'Physically Disabled',
+                                      'Differently Abled',
                                       style: GoogleFonts.poppins(
                                         textStyle: const TextStyle(
                                             fontWeight: FontWeight.w500,

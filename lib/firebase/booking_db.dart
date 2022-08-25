@@ -33,4 +33,22 @@ CollectionReference _collectionRef =
         else return null;
     }
 
+    Future<List<Booking>> getOperatorIdBooking(String oId) async {
+        FirebaseAuth auth = FirebaseAuth.instance;
+        QuerySnapshot snap = await _collectionRef
+                                    .where('operatorId', isEqualTo: oId)
+                                    .orderBy('timestamp', descending: true)
+                                    .get();
+
+        List<Booking> bookins = [];
+        for(int i=0; i<snap.size; i++){
+            Booking b = Booking.fromJson(snap.docs[i].data() as Map<String, dynamic>);
+            if(b.bookingStatus! == "Completed") continue;
+            bookins.add(b);
+        }
+
+        return bookins;
+    }
+
+
 }

@@ -49,7 +49,7 @@ class Booking {
     slotDate = json['slotDate'];
     timestamp = json['timestamp'];
    
-    date = json['date'];
+    date = json['date'] != null ? json['date'].toDate() : null;
   }
 
   Map<String, dynamic> toJson() {

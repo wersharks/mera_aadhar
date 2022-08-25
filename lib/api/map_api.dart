@@ -3,7 +3,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:mera_aadhar/firebase/booking_db.dart';
 import 'package:mera_aadhar/fixtures/nearby_center_fixture.dart';
+import 'package:mera_aadhar/models/booking_model.dart';
 import 'package:mera_aadhar/models/operator_model.dart';
 import 'package:mera_aadhar/models/operator_data_model.dart';
 import 'package:mera_aadhar/models/nearby_api_model.dart';
@@ -61,7 +63,23 @@ Future<String?> getAddressByLatLon(double lat, double lng) async{
   return "${address.streetAddress}, ${address.region}, ${address.postal},";
 }
 
-Future<Tuple2<Map<String, Operator>, StreamGroup<OperatorData>>> getAllOperatorsByMyLatLong(String lat, String lon) async{
+Future<bool> isOperatorBookingAvaliable(Operator operator, DateTime date, String time) async {
+  BookingDB bdb = BookingDB();
+  List<Booking> opBooking = await bdb.getOperatorIdBooking(operator.operatorId!);
+  for(int i=0; i<opBooking.length; i++){
+    Booking bookin = opBooking[i];
+    if(bookin.bookingStatus == "Completed") continue;
+    if(bookin.date!.difference(date).inDays == 0){
+      if(bookin.slotTime! == time){
+        print("${bookin.slotTime} == $time and ${bookin.date} == $date");
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+Future<Tuple2<Map<String, Operator>, StreamGroup<OperatorData>>> getAllOperatorsByMyLatLong(String lat, String lon, DateTime date, String time) async{
   int rad = 5;
   NearbyApiResponse nearby = await fetchMapdataFixture(lat, lon, rad);
   while(nearby.len == null || nearby.len! == 0){
@@ -80,6 +98,12 @@ Future<Tuple2<Map<String, Operator>, StreamGroup<OperatorData>>> getAllOperators
     List<Operator> operators = await odb.getOperatorsByLatLong(latlon);
     for(final oper in operators){
       print("found operator in vicinity with id! ${oper.operatorId!} with ${latlon}");
+
+      if(!(await isOperatorBookingAvaliable(oper, date, time))){
+        print("unavaliable operator, skipping!");
+        continue;
+      }
+
       operatorIdMapOp[oper.operatorId!] = oper;
       // Maybe cache to special provider map
       Stream<OperatorData>? opdata = await odb.getOperatorLiveLocationById(oper.operatorId!);

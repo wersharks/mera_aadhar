@@ -240,11 +240,11 @@ print(Provider.of<BookingProvider>(context, listen: false)
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        'Choose if you are a senior citizen or differently abled, otherwise go ahead.',
+                        'Choose if you are a senior citizen (age>60) or differently abled, otherwise go ahead.',
                         style: GoogleFonts.poppins(
                           textStyle: const TextStyle(
                             fontWeight: FontWeight.w500,
-                            fontSize: 15,
+                            fontSize: 13,
                             color: Colors.black,
                           ),
                         ),

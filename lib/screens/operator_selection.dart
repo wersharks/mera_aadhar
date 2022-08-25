@@ -50,7 +50,7 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
   String _locationText = "Loading data...";
   Map<String, Operator> idToOperator = {};
   Symbol? lastClicked;
-
+  PanelController panelController = PanelController();
   final _chars = '123456789';
   Random _rnd = Random();
 
@@ -195,6 +195,10 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
 
     Operator opclick = idToOperator[symbolIdToOperatorId[symbol.id]]!;
     Provider.of<BookingProvider>(context, listen: false).setOperator(opclick);
+    panelController.open();
+    setState(() {
+
+    });
     print(
         "Clicked op id ${symbolIdToOperatorId[symbol.id]} with name ${opclick.name}");
 
@@ -221,6 +225,7 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
     bookin.userdata = new Userdata(phoneNo: phno, locationText: _locationText);
     bookin.confirmOtp = generatePin(4);
     bookin.timestamp = DateTime.now().millisecondsSinceEpoch;
+
     print(bookin.toJson());
 
     BookingDB bdb = new BookingDB();
@@ -238,212 +243,221 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
     print(pinLocation);
     return Scaffold(
       backgroundColor: Color(0xFFFF4B3A),
-      body: SlidingUpPanel(
-        maxHeight: 370,
-        minHeight: 150,
-        backdropEnabled: true,
-        color: Colors.transparent,
-        panel: Container(
-          height: 50,
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-          ),
-          child: Consumer<BookingProvider>(builder: (context, provider, child) {
-            return (!provider.isOpSelected)
-                ? Column(
-                    children: [
-                      const Icon(
-                        Icons.arrow_drop_up_outlined,
-                        size: 40,
-                      ),
-                      ListTile(
-                        leading: const Icon(
-                          Icons.house,
-                          color: Colors.black,
-                          size: 36,
+      body: Consumer<BookingProvider>(builder: (context, provider, child) {
+        return SlidingUpPanel(
+          controller: panelController,
+          defaultPanelState:
+              (provider.isOpSelected) ? PanelState.OPEN : PanelState.CLOSED,
+          maxHeight: 370,
+          minHeight: 150,
+          backdropEnabled: true,
+          color: Colors.transparent,
+          panel: Container(
+              height: 50,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30)),
+              ),
+              child: (!provider.isOpSelected)
+                  ? Column(
+                      children: [
+                        const Icon(
+                          Icons.arrow_drop_up_outlined,
+                          size: 40,
                         ),
-                        title: Text(
-                          _locationText,
-                          style: GoogleFonts.poppins(
-                            textStyle: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 17),
+                        ListTile(
+                          leading: const Icon(
+                            Icons.house,
+                            color: Colors.black,
+                            size: 36,
                           ),
-                        ),
-                        subtitle: Text(
-                          'Mobile Number: ${Provider.of<BookingProvider>(context, listen: false).booking.userdata!.phoneNo}',
-                          style: GoogleFonts.poppins(
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xFFB2B2B2),
-                              fontSize: 16),
-                        ),
-                        trailing: IconButton(
-                          icon: new Icon(Icons.edit),
-                          highlightColor: Colors.pink,
-                          onPressed: () {
-                            openMapmyIndiaPlacePickerWidget();
-                          },
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      Container(
-                        height: 70,
-                        width: 315,
-                        decoration: BoxDecoration(
-                            color: Color(0xFFF8774A),
-                            borderRadius: BorderRadius.circular(30)),
-                        child: Center(
-                          child: Text(
-                            'Select an operator for yourself',
+                          title: Text(
+                            _locationText,
                             style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 15,
-                                    color: Colors.white)),
+                              textStyle: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 17),
+                            ),
+                          ),
+                          subtitle: Text(
+                            'Mobile Number: ${Provider.of<BookingProvider>(context, listen: false).booking.userdata!.phoneNo}',
+                            style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFFB2B2B2),
+                                fontSize: 16),
+                          ),
+                          trailing: IconButton(
+                            icon: new Icon(Icons.edit),
+                            highlightColor: Colors.pink,
+                            onPressed: () {
+                              openMapmyIndiaPlacePickerWidget();
+                            },
                           ),
                         ),
-                      ),
-                    ],
-                  )
-                : Column(
-                    children: [
-                      const Icon(
-                        Icons.arrow_drop_up_outlined,
-                        size: 40,
-                      ),
-                      OperatorBookCard(
-                        name: provider.focusOperator.name!,
-                        rating: provider.focusOperator.ratings!,
-                        reviews: Map.fromIterable(
-                            provider.focusOperator.reviews!,
-                            key: (v) => v[0],
-                            value: (v) => v),
-                        image:
-                            "operator/${provider.focusOperator.operatorId.toString()}.jpg",
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      TextButton(
-                        style: buttonStyle,
-                        onPressed: () {
-                          bookOperatorButton(context);
-                        },
-                        child: Container(
-                          height: 50,
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Container(
+                          height: 70,
                           width: 315,
                           decoration: BoxDecoration(
-                              // color: Color(0xFFF8774A),
+                              color: Color(0xFFF8774A),
                               borderRadius: BorderRadius.circular(30)),
-                          child: const Center(
+                          child: Center(
                             child: Text(
-                              'Book operator',
-                              style: buttonTextStyle,
+                              'Select an operator for yourself',
+                              style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 15,
+                                      color: Colors.white)),
                             ),
                           ),
                         ),
-                      )
+
+                      
                     ],
-                  );
-          }),
-        ),
-        body: Column(
-          children: [
-            const SizedBox(
-              height: 30,
-            ),
-            Center(
-              child: CircleAvatar(
-                backgroundColor: Color(0xFFF4F4F4),
-                radius: 40,
-                child: Image.asset(
-                  'assets/aadharlogo.png',
-                  width: 55,
-                  height: 55,
+                  
+          )
+        
+        
+                  : Column(
+                      children: [
+                        const Icon(
+                          Icons.arrow_drop_up_outlined,
+                          size: 40,
+                        ),
+                        OperatorBookCard(
+                          name: provider.focusOperator.name!,
+                          rating: provider.focusOperator.ratings!,
+                          reviews: Map.fromIterable(
+                              provider.focusOperator.reviews!,
+                              key: (v) => v[0],
+                              value: (v) => v),
+                          image:
+                              "operator/${provider.focusOperator.operatorId.toString()}.jpg",
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        TextButton(
+                          style: buttonStyle,
+                          onPressed: () {
+                            bookOperatorButton(context);
+                          },
+                          child: Container(
+                            height: 50,
+                            width: 315,
+                            decoration: BoxDecoration(
+                                // color: Color(0xFFF8774A),
+                                borderRadius: BorderRadius.circular(30)),
+                            child: const Center(
+                              child: Text(
+                                'Book operator',
+                                style: buttonTextStyle,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    )),
+          body: Column(
+            children: [
+              const SizedBox(
+                height: 30,
+              ),
+              Center(
+                child: CircleAvatar(
+                  backgroundColor: Color(0xFFF4F4F4),
+                  radius: 40,
+                  child: Image.asset(
+                    'assets/aadharlogo.png',
+                    width: 55,
+                    height: 55,
+                  ),
+
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Stack(
-              children: [
-                Expanded(
-                    child: ClipRRect(
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(30),
-                      topLeft: Radius.circular(30)),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 600,
-                    child: MapmyIndiaMap(
-                      initialCameraPosition: CameraPosition(
-                        target: pinLocation,
-                        zoom: 14.0,
-                      ),
-                      onMapCreated: (map) async {
-                        _mapController = map;
-                        _mapController.onSymbolTapped.add((Symbol symbol) {
-                          symbolCallback(context, symbol);
-                          //   setState(() {});
-                        });
-                      },
-                      onStyleLoadedCallback: () {
-                        addImageFromAsset(
-                            "icon", "assets/operator_pin_icon.png");
-                        addImageFromAsset(
-                            "iconhigh", "assets/icon_op_yellow.png");
-                        openMapmyIndiaPlacePickerWidget();
-                      },
-                    ),
-                  ),
-                )),
-                GestureDetector(
-                  onTap: () {
-                    openMapmyIndiaPlacePickerWidget();
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.all(25),
+              const SizedBox(
+                height: 10,
+              ),
+              Stack(
+                children: [
+                  Expanded(
+                      child: ClipRRect(
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(30),
+                        topLeft: Radius.circular(30)),
                     child: Container(
-                      height: 35,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: Colors.black),
+                      width: MediaQuery.of(context).size.width,
+                      height: 600,
+                      child: MapmyIndiaMap(
+                        initialCameraPosition: CameraPosition(
+                          target: pinLocation,
+                          zoom: 14.0,
+                        ),
+                        onMapCreated: (map) async {
+                          _mapController = map;
+                          _mapController.onSymbolTapped.add((Symbol symbol) {
+                            symbolCallback(context, symbol);
+                            //   setState(() {});
+                          });
+                        },
+                        onStyleLoadedCallback: () {
+                          addImageFromAsset(
+                              "icon", "assets/operator_pin_icon.png");
+                          addImageFromAsset(
+                              "iconhigh", "assets/icon_op_yellow.png");
+                          openMapmyIndiaPlacePickerWidget();
+                        },
                       ),
-                      child: Padding(
-                        padding: EdgeInsets.all(5),
-                        child: SizedBox(
-                          width: 140,
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.arrow_back_ios,
-                                color: Colors.black,
-                              ),
-                              Text(
-                                'Edit Location',
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.poppins(
-                                    textStyle: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500)),
-                              ),
-                            ],
+                    ),
+                  )),
+                  GestureDetector(
+                    onTap: () {
+                      openMapmyIndiaPlacePickerWidget();
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.all(25),
+                      child: Container(
+                        height: 35,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: Colors.black),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.all(5),
+                          child: SizedBox(
+                            width: 140,
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.arrow_back_ios,
+                                  color: Colors.black,
+                                ),
+                                Text(
+                                  'Edit Location',
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.poppins(
+                                      textStyle: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500)),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
+                ],
+              ),
+            ],
+          ),
+        );
+      }),
     );
   }
 }

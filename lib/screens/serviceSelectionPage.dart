@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:mera_aadhar/provider/booking.dart';
 import 'package:mera_aadhar/screens/documentCheckPage.dart';
+import 'package:mera_aadhar/services/auth/otp_signin.dart';
 import 'package:mera_aadhar/services/snackbar.dart';
 import 'package:provider/provider.dart';
 
@@ -84,17 +85,22 @@ print(Provider.of<BookingProvider>(context, listen: false)
           const SizedBox(
             height: 30,
           ),
-          Center(
-            child: CircleAvatar(
-              backgroundColor: Colors.white,
-              radius: 40,
-              child: Image.asset(
-                'assets/aadharlogo.png',
-                width: 55,
-                height: 55,
-              ),
-            ),
-          ),
+
+          GestureDetector(
+            onTap: () {
+                Provider.of<Auth>(context, listen: false).logout(context);
+              },
+            child: Center(
+              child: CircleAvatar(
+                backgroundColor: Colors.white,
+                radius: 40,
+                child: Image.asset(
+                  'assets/aadharlogo.png',
+                  width: 35,
+                  height: 35,
+                ),))),
+
+        
           const SizedBox(
             height: 9,
           ),

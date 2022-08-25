@@ -35,8 +35,8 @@ class _ModeSelectPageState extends State<ModeSelectPage> {
               radius: 40,
               child: Image.asset(
                 'assets/aadharlogo.png',
-                width: 35,
-                height: 35,
+                width: 55,
+                height: 55,
               ),
             ),
           ),

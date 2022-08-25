@@ -78,11 +78,11 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           Center(
             child: CircleAvatar(
               backgroundColor: Colors.white,
-              radius: 50,
+              radius: 40,
               child: Image.asset(
-                'assets/logooo.png',
-                width: 100,
-                height: 100,
+                'assets/aadharlogo.png',
+                width: 55,
+                height: 55,
               ),
             ),
           ),
@@ -102,11 +102,11 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 ),
                 WelcomeScreen(
                   vectorLink: "",
-                  textelement: "Select your own Time Slot",
+                  textelement: "Select your own Time Slot & operator",
                 ),
                 WelcomeScreen(
                   vectorLink: "",
-                  textelement: "Review your appointments",
+                  textelement: "Review your on-going appointments",
                 )
               ],
             ),

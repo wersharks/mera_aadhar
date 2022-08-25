@@ -31,10 +31,13 @@ class OperatorBookCard extends StatelessWidget {
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return Center(
-                        child: Text(
-                      'Something went wrong',
-                      style: kPoppinBlack,
-                    ));
+                    child: Image.asset(
+                      'assets/operator.png',
+                      width: 130,
+                      height: 160,
+                      fit: BoxFit.fill,
+                    ),
+                  );
                   }
 
                   if (snapshot.hasData && !snapshot.data!.isNotEmpty) {

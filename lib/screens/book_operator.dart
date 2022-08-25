@@ -17,6 +17,7 @@ class _BookOperatorScreenScreenState extends State<BookOperatorScreenScreen> {
     return Scaffold(
       backgroundColor: Color(0xFFFF4B3A),
       body: SlidingUpPanel(
+        defaultPanelState: PanelState.OPEN,
         maxHeight: 375,
         minHeight: 150,
         backdropEnabled: true,
@@ -42,7 +43,7 @@ class _BookOperatorScreenScreenState extends State<BookOperatorScreenScreen> {
                   'rohan': 'good operator',
                   'aviral': 'bad operator',
                   'rishabh': 'average operator gg',
-                   'hskg': 'nice op',
+                  'hskg': 'nice op',
                   'rohagn': 'good operator',
                   'aviralg': 'bad operator',
                   'rishagbh': 'average operator gg'

@@ -3,9 +3,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:mera_aadhar/fixtures/nearby_center_fixture.dart';
 import 'package:mera_aadhar/models/operator_model.dart';
 import 'package:mera_aadhar/models/operator_data_model.dart';
 import 'package:mera_aadhar/models/nearby_api_model.dart';
+import 'package:mera_aadhar/models/osm_reverse_geo.dart' as OSM;
+
 import 'package:mera_aadhar/fixtures/nearby_center_fixture.dart';
 
 import 'package:mera_aadhar/firebase/operator_db.dart';
@@ -34,6 +37,21 @@ Future<NearbyApiResponse> fetchMapdata(String lat, String lon, int rad) async {
 
 Future<NearbyApiResponse> fetchMapdataFixture(String lat, String lon, int rad) async {
   return NearbyApiFixture.dummyNearbyApi();
+}
+
+Future<String?> getAddressByLatLonNomin(double lat, double lng) async {
+  int zoom = 14;
+  String path = "https://nominatim.openstreetmap.org/reverse.php?format=json&lat=$lat&lon=$lng&zoom=$zoom";
+  final response = await http
+    .get(Uri.parse(path));
+
+  if (response.statusCode == 200) {
+    var res = OSM.OSMReverse.fromJson(jsonDecode(response.body));
+    return res.displayName;
+  } else {
+    return "Unknown Location";
+  }
+
 }
 
 Future<String?> getAddressByLatLon(double lat, double lng) async{

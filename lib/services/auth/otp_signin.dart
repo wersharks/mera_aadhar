@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mera_aadhar/screens/home_page.dart';
 import 'package:mera_aadhar/screens/operator_selection.dart';
+import 'package:mera_aadhar/screens/serviceSelectionPage.dart';
 import 'package:mera_aadhar/services/snackbar.dart';
 
 import 'package:provider/provider.dart';
@@ -86,7 +87,7 @@ void getToken() async {
         if (_firebaseUser != null) {
           Navigator.of(context).popUntil((route) => route.isFirst);
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => OperatorSelectionScreen()));
+              context, MaterialPageRoute(builder: (context) => ServiceSelectionPage()));
           showSnackBar('Logged In!', context);
         }
       }).catchError((e) => showSnackBar(

@@ -43,12 +43,12 @@ class _ServiceSelectionPageState extends State<ServiceSelectionPage> {
               : Provider.of<BookingProvider>(context, listen: false)
                   .booking
                   .bookingType = 1;
-          if (extraAbility == null)
-            Provider.of<BookingProvider>(context, listen: false)
+          if(extraAbility==null)
+          Provider.of<BookingProvider>(context, listen: false)
                 .booking
                 .userdata!
                 .type = 0;
-          else if (extraAbility.contains('senior') &&
+           else if (extraAbility.contains('senior') &&
               extraAbility.contains('phydisabled'))
             Provider.of<BookingProvider>(context, listen: false)
                 .booking
@@ -64,6 +64,8 @@ class _ServiceSelectionPageState extends State<ServiceSelectionPage> {
                 .booking
                 .userdata!
                 .type = 1;
+              
+            
           Provider.of<BookingProvider>(context, listen: false)
               .booking
               .userdata!

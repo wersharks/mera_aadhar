@@ -74,7 +74,6 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
         draggable: true, iconImage: "opred", iconSize: 0.5, geometry: latLng);
   }
 
-
   SymbolOptions createHighlightSymbol(LatLng latLng) {
     return SymbolOptions(
         draggable: true,
@@ -102,13 +101,22 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
     return _mapController.addImage(name, list);
   }
 
+  List<Operator> getActiveOperators() {
+    List<Operator> act = [];
+    for (var v in symbolIdToOperatorId.values) {
+      Operator op = idToOperator[v]!;
+      act.add(op);
+    }
+    return act;
+  }
+
   void addOrUpdateOperatorLocation(OperatorData odata) async {
     LatLng latlng = LatLng(odata.loc!.lat!, odata.loc!.lon!);
     print("Show op ${odata.operatorId!} with latlon ${latlng.toJson()}");
     Operator operator = idToOperator[odata.operatorId!]!;
 
     SymbolOptions symops;
-    if(operator.isOpFree){
+    if (operator.isOpFree) {
       symops = createNormalSymbol(latlng);
     } else {
       symops = createRedSymbol(latlng);
@@ -172,9 +180,9 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
     }
 
     // setState(() {
-      // _locationText = match.group(0)!;
-      _mapController.easeCamera(CameraUpdate.newLatLngZoom(pinLocation, 14));
-      addOrUpdateLocationMarker(pinLocation);
+    // _locationText = match.group(0)!;
+    _mapController.easeCamera(CameraUpdate.newLatLngZoom(pinLocation, 14));
+    addOrUpdateLocationMarker(pinLocation);
 
     // });
 
@@ -182,17 +190,18 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
     await Navigator.push(
         context, MaterialPageRoute(builder: (context) => DatePage()));
 
-    
+    DateTime? date =
+        Provider.of<BookingProvider>(context, listen: false).booking.date;
+    String? time =
+        Provider.of<BookingProvider>(context, listen: false).booking.slotTime;
 
-    DateTime? date = Provider.of<BookingProvider>(context, listen: false).booking.date;
-    String? time = Provider.of<BookingProvider>(context, listen: false).booking.slotTime;
-
-    while(date == null || time == null){
+    while (date == null || time == null) {
       showSnackBar("Please select a valid date and time!!", context);
       await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => DatePage()));
+          context, MaterialPageRoute(builder: (context) => DatePage()));
       date = Provider.of<BookingProvider>(context, listen: false).booking.date;
-      time = Provider.of<BookingProvider>(context, listen: false).booking.slotTime;
+      time =
+          Provider.of<BookingProvider>(context, listen: false).booking.slotTime;
     }
     registerDeregisterOperators(date, time);
   }
@@ -210,7 +219,7 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
   void symbolCallback(BuildContext context, Symbol symbol) async {
     if (symbol == location_pin) return;
     Operator opclick = idToOperator[symbolIdToOperatorId[symbol.id]]!;
-    if(opclick.isOpFree == false) return;
+    if (opclick.isOpFree == false) return;
     // if last called not null then dehilight symbol
     if (lastClicked != null) {
       utilHighlightOperator(lastClicked!, false);
@@ -224,9 +233,7 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
 
     Provider.of<BookingProvider>(context, listen: false).setOperator(opclick);
     panelController.open();
-    setState(() {
-
-    });
+    setState(() {});
     print(
         "Clicked op id ${symbolIdToOperatorId[symbol.id]} with name ${opclick.name}");
 
@@ -250,7 +257,10 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
     bookin.bookingLocation = new BookingLocation(
         lat: location_pin!.options.geometry!.latitude,
         lon: location_pin!.options.geometry!.longitude);
-    bookin.userdata = new Userdata(phoneNo: phno, locationText: _locationText);
+    bookin.userdata = new Userdata(
+        phoneNo: phno,
+        locationText: _locationText,
+        type: bookin.userdata!.type);
     bookin.confirmOtp = generatePin(4);
     bookin.timestamp = DateTime.now().millisecondsSinceEpoch;
 
@@ -343,28 +353,38 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
                             ),
                           ),
                         ),
-
-                      
-                    ],
-                  
-          )
-        
-        
+                      ],
+                    )
                   : Column(
                       children: [
                         const Icon(
                           Icons.arrow_drop_up_outlined,
                           size: 40,
                         ),
-                        OperatorBookCard(
-                          name: provider.focusOperator.name!,
-                          rating: provider.focusOperator.ratings!,
-                          reviews: Map.fromIterable(
-                              provider.focusOperator.reviews!,
-                              key: (v) => v[0],
-                              value: (v) => v),
-                          image:
-                              "operator/${provider.focusOperator.operatorId.toString()}.jpg",
+                        SizedBox(
+                          height: 240,
+                          child: PageView.builder(
+                            onPageChanged: (val) {
+                              Provider.of<BookingProvider>(context,
+                                      listen: false)
+                                  .setOperator(getActiveOperators()[val]);
+                            },
+                            scrollDirection: Axis.horizontal,
+                            itemCount: getActiveOperators().length,
+                            itemBuilder: (context, int i) {
+                              return OperatorBookCard(
+                                name: getActiveOperators()[i].name.toString(),
+                                rating:
+                                    getActiveOperators()[i].ratings.toString(),
+                                reviews: Map.fromIterable(
+                                    getActiveOperators()[i].reviews!,
+                                    key: (v) => v[0],
+                                    value: (v) => v),
+                                image:
+                                    "operator/${getActiveOperators()[i].operatorId.toString()}.jpg",
+                              );
+                            },
+                          ),
                         ),
                         const SizedBox(
                           height: 10,
@@ -404,7 +424,6 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
                     width: 55,
                     height: 55,
                   ),
-
                 ),
               ),
               const SizedBox(
@@ -437,8 +456,7 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
                               "opgreen", "assets/op_lightgreen.png");
                           addImageFromAsset(
                               "opgreenselec", "assets/op_darkgreen.png");
-                          addImageFromAsset(
-                              "opred", "assets/op_red.png");
+                          addImageFromAsset("opred", "assets/op_red.png");
 
                           addImageFromAsset(
                               "icon", "assets/operator_pin_icon.png");

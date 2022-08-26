@@ -47,6 +47,7 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
   Symbol? location_pin = null;
   var operatorMapPins = new Map();
   var symbolIdToOperatorId = new Map();
+  var operatorIdToCurrent= new Map<String, OperatorData>();
   String _locationText = "Loading data...";
   Map<String, Operator> idToOperator = {};
   Symbol? lastClicked;
@@ -131,6 +132,8 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
       operatorMapPins[odata.operatorId!] = sym;
       symbolIdToOperatorId[sym.id] = odata.operatorId!;
     }
+
+    operatorIdToCurrent[odata.operatorId!] = odata;
   }
 
   void registerDeregisterOperators(DateTime date, String time) async {
@@ -216,20 +219,14 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
     await _mapController.updateSymbol(symbol, change);
   }
 
+  void highlastdelight() async {
+    
+  }
+
   void symbolCallback(BuildContext context, Symbol symbol) async {
     if (symbol == location_pin) return;
     Operator opclick = idToOperator[symbolIdToOperatorId[symbol.id]]!;
-    if (opclick.isOpFree == false) return;
-    // if last called not null then dehilight symbol
-    if (lastClicked != null) {
-      utilHighlightOperator(lastClicked!, false);
-      if (lastClicked! == symbol) {
-        Provider.of<BookingProvider>(context, listen: false).removeFocus();
-        lastClicked = null;
-        return;
-      }
-    }
-    utilHighlightOperator(symbol, true);
+
 
     Provider.of<BookingProvider>(context, listen: false).setOperator(opclick);
     panelController.open();
@@ -365,9 +362,13 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
                           height: 240,
                           child: PageView.builder(
                             onPageChanged: (val) {
+                              var op = getActiveOperators()[val];
                               Provider.of<BookingProvider>(context,
                                       listen: false)
-                                  .setOperator(getActiveOperators()[val]);
+                                  .setOperator(op);
+                                  _mapController.animateCamera(CameraUpdate.newLatLngZoom(
+                                      LatLng(operatorIdToCurrent[op.operatorId!]!.loc!.lat!, operatorIdToCurrent[op.operatorId!]!.loc!.lon!),
+                                      14));
                             },
                             scrollDirection: Axis.horizontal,
                             itemCount: getActiveOperators().length,

@@ -27,6 +27,7 @@ import 'dart:async';
 import 'package:async/async.dart' show StreamGroup;
 import 'package:mera_aadhar/models/operator_data_model.dart';
 import 'package:mera_aadhar/firebase/operator_db.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:tuple/tuple.dart';
 import 'package:mera_aadhar/models/operator_model.dart';
 import 'package:mera_aadhar/utilities/constants.dart';
@@ -42,12 +43,13 @@ class OperatorSelectionScreen extends StatefulWidget {
 }
 
 class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
+  late PageController _controller = PageController();
   late MapmyIndiaMapController _mapController;
   LatLng pinLocation = LatLng(25.321684, 82.987289);
   Symbol? location_pin = null;
   var operatorMapPins = new Map();
   var symbolIdToOperatorId = new Map();
-  var operatorIdToCurrent= new Map<String, OperatorData>();
+  var operatorIdToCurrent = new Map<String, OperatorData>();
   String _locationText = "Loading data...";
   Map<String, Operator> idToOperator = {};
   Symbol? lastClicked;
@@ -219,14 +221,11 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
     await _mapController.updateSymbol(symbol, change);
   }
 
-  void highlastdelight() async {
-    
-  }
+  void highlastdelight() async {}
 
   void symbolCallback(BuildContext context, Symbol symbol) async {
     if (symbol == location_pin) return;
     Operator opclick = idToOperator[symbolIdToOperatorId[symbol.id]]!;
-
 
     Provider.of<BookingProvider>(context, listen: false).setOperator(opclick);
     panelController.open();
@@ -361,13 +360,21 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
                         SizedBox(
                           height: 240,
                           child: PageView.builder(
+                            controller: _controller,
                             onPageChanged: (val) {
                               var op = getActiveOperators()[val];
                               Provider.of<BookingProvider>(context,
                                       listen: false)
                                   .setOperator(op);
-                                  _mapController.animateCamera(CameraUpdate.newLatLngZoom(
-                                      LatLng(operatorIdToCurrent[op.operatorId!]!.loc!.lat!, operatorIdToCurrent[op.operatorId!]!.loc!.lon!),
+                              _mapController.animateCamera(
+                                  CameraUpdate.newLatLngZoom(
+                                      LatLng(
+                                          operatorIdToCurrent[op.operatorId!]!
+                                              .loc!
+                                              .lat!,
+                                          operatorIdToCurrent[op.operatorId!]!
+                                              .loc!
+                                              .lon!),
                                       14));
                             },
                             scrollDirection: Axis.horizontal,
@@ -385,6 +392,18 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
                                     "operator/${getActiveOperators()[i].operatorId.toString()}.jpg",
                               );
                             },
+                          ),
+                        ),
+                        Container(
+                          alignment: const Alignment(0, 0.75),
+                          child: SmoothPageIndicator(
+                            controller: _controller,
+                            count: getActiveOperators().length,
+                            effect: const ExpandingDotsEffect(
+                                dotWidth: 10.0,
+                                dotHeight: 10.0,
+                                activeDotColor: Color(0xFFFF855D),
+                                dotColor: Color.fromARGB(255, 238, 180, 161)),
                           ),
                         ),
                         const SizedBox(

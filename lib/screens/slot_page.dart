@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:intl/intl.dart';
 import 'package:mera_aadhar/provider/booking.dart';
+import 'package:mera_aadhar/screens/operator_selection.dart';
 import 'package:mera_aadhar/services/snackbar.dart';
 import 'package:mera_aadhar/widgets/time_tile.dart';
 import 'package:provider/provider.dart';
@@ -48,6 +49,10 @@ class _SlotPageState extends State<SlotPage> {
               .checkSlot()) {
             Provider.of<BookingProvider>(context, listen: false).lodgeSlot();
             Provider.of<BookingProvider>(context, listen: false).cleanSlots();
+            print(Provider.of<BookingProvider>(context, listen: false)
+                .booking
+                .slotTime);
+            
             Navigator.pop(context);
             Navigator.pop(context);
           } else {

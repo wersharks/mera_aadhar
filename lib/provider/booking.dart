@@ -181,15 +181,16 @@ class BookingProvider extends ChangeNotifier {
 
   void lodgeSlot() {
     for (int i = 0; i < 6; i++) {
-      if (slots[i].isSelected = true) {
+      if (slots[i].isSelected == true) {
         booking.slotTime = slots[i].timeslot;
+        print(booking.slotTime);
       }
     }
   }
 
   void lodgeLanguage() {
     for (int i = 0; i < languages.length; i++) {
-      if (languages[i].isLSelected = true) {
+      if (languages[i].isLSelected == true) {
         selectedLanguage = languages[i].language;
       }
     }

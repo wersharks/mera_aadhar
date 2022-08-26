@@ -17,8 +17,8 @@ class DatePage extends StatefulWidget {
 }
 
 class _DatePageState extends State<DatePage> {
-  DateTime? realDate;
-  DateTime? dynamicDate;
+  DateTime? realDate = DateTime.now();
+  DateTime? dynamicDate = DateTime.now();
   DateTime date = DateTime.now();
   String? slotType;
   bool isMorningSlot = true;
@@ -27,10 +27,10 @@ class _DatePageState extends State<DatePage> {
     print("init called00");
     bool flag = false;
     DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
-    DateTime dateTime =
-        dateFormat.parse('${date.year}-${date.month}-${date.day} 17:00:00');
-    DateTime dateTime1 =
-        dateFormat.parse('${date.year}-${date.month}-${date.day} 12:00:00');
+    DateTime dateTime = dateFormat.parse(
+        '${dynamicDate!.year}-${dynamicDate!.month}-${dynamicDate!.day} 17:00:00');
+    DateTime dateTime1 = dateFormat.parse(
+        '${dynamicDate!.year}-${dynamicDate!.month}-${dynamicDate!.day} 12:00:00');
     if (date.isAfter(dateTime)) {
       realDate = date.add(Duration(days: 1));
       dynamicDate = realDate;
@@ -69,7 +69,10 @@ class _DatePageState extends State<DatePage> {
                   Provider.of<BookingProvider>(context, listen: false).morning
               : Provider.of<BookingProvider>(context, listen: false).slots =
                   Provider.of<BookingProvider>(context, listen: false).evening;
-          Provider.of<BookingProvider>(context, listen: false).booking.date =
+                  
+          Provider.of<BookingProvider>(context, listen: false).booking.slotDate =
+              dynamicDate.toString();
+                  Provider.of<BookingProvider>(context, listen: false).booking.date =
               dynamicDate;
           print(dynamicDate);
           print(Provider.of<BookingProvider>(context, listen: false)
@@ -191,6 +194,20 @@ class _DatePageState extends State<DatePage> {
                                       daysCount: 15,
                                       onDateChange: (value) {
                                         dynamicDate = value;
+                                        if (value.isAfter(date)) {
+                                          isMorningSlot = true;
+                                          
+                                        }
+                                 
+    DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
+  
+    DateTime dateTime1 = dateFormat.parse(
+        '${dynamicDate!.year}-${dynamicDate!.month}-${dynamicDate!.day} 12:00:00');
+   
+
+    if (date.isAfter(dateTime1)) {
+      isMorningSlot = false;
+    }
                                         setState(() {});
                                       },
                                     ),

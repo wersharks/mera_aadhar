@@ -52,7 +52,7 @@ class _SlotPageState extends State<SlotPage> {
             print(Provider.of<BookingProvider>(context, listen: false)
                 .booking
                 .slotTime);
-            
+
             Navigator.pop(context);
             Navigator.pop(context);
           } else {
@@ -192,32 +192,47 @@ class _SlotPageState extends State<SlotPage> {
                                   .length,
                               itemBuilder: (context, index) {
                                 bool boolHandler = true;
-
+                                print(Provider.of<BookingProvider>(context,
+                                        listen: false)
+                                    .booking
+                                    .slotDate!);
+                                print("here");
                                 DateFormat dateFormat =
                                     DateFormat("yyyy-MM-dd HH:mm:ss");
                                 DateTime date = DateTime.now();
-                                //DateTime date =  dateFormat.parse('2022-08-26 15:05:00');
-                                DateTime dateTime = dateFormat.parse(
-                                    '${date.year}-${date.month}-${date.day} ${Provider.of<BookingProvider>(context).slots[index].timeslot.substring(0, 4)}:00');
-                                print(Provider.of<BookingProvider>(context)
-                                    .slots[index]
-                                    .timeslot
-                                    .substring(5, 7));
-                                if (Provider.of<BookingProvider>(context)
-                                        .slots[index]
-                                        .timeslot
-                                        .substring(5, 7) ==
-                                    'PM') {
-                                  dateTime = dateTime.add(Duration(hours: 12));
-                                }
-                                print(date.difference(dateTime));
-                                if (date.isAfter(dateTime)
+                                DateTime dateTime2 = dateFormat.parse(
+                                    Provider.of<BookingProvider>(context)
+                                        .booking
+                                        .slotDate!);
+                                if (date.isAfter(dateTime2)) {
+                                   print(Provider.of<BookingProvider>(context,
+                                        listen: false)
+                                    .booking
+                                    .slotDate!);
+                                print("there");
+                                  //DateTime date =  dateFormat.parse('2022-08-26 15:05:00');
+                                  DateTime dateTime = dateFormat.parse(
+                                      '${date.year}-${date.month}-${date.day} ${Provider.of<BookingProvider>(context).slots[index].timeslot.substring(0, 4)}:00');
+                                  print(Provider.of<BookingProvider>(context)
+                                      .slots[index]
+                                      .timeslot
+                                      .substring(5, 7));
+                                  if (Provider.of<BookingProvider>(context)
+                                          .slots[index]
+                                          .timeslot
+                                          .substring(5, 7) ==
+                                      'PM') {
+                                    dateTime =
+                                        dateTime.add(Duration(hours: 12));
+                                  }
+                                  print(date.difference(dateTime));
+                                  if (date.isAfter(dateTime)
 
-                                    //||    date.difference(dateTime) <=      Duration(minutes: 30)
-                                    ) {
-                                  boolHandler = false;
+                                      //||    date.difference(dateTime) <=      Duration(minutes: 30)
+                                      ) {
+                                    boolHandler = false;
+                                  }
                                 }
-//if()
 
                                 return TimeTile(
                                   timeslot:

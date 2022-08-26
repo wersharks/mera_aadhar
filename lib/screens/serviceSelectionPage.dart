@@ -43,12 +43,12 @@ class _ServiceSelectionPageState extends State<ServiceSelectionPage> {
               : Provider.of<BookingProvider>(context, listen: false)
                   .booking
                   .bookingType = 1;
-          if(extraAbility==null)
-          Provider.of<BookingProvider>(context, listen: false)
+          if (extraAbility == null)
+            Provider.of<BookingProvider>(context, listen: false)
                 .booking
                 .userdata!
                 .type = 0;
-           else if (extraAbility.contains('senior') &&
+          else if (extraAbility.contains('senior') &&
               extraAbility.contains('phydisabled'))
             Provider.of<BookingProvider>(context, listen: false)
                 .booking
@@ -64,16 +64,18 @@ class _ServiceSelectionPageState extends State<ServiceSelectionPage> {
                 .booking
                 .userdata!
                 .type = 1;
-              
-            
+
           Provider.of<BookingProvider>(context, listen: false)
               .booking
               .userdata!
               .phoneNo = FirebaseAuth.instance.currentUser!.phoneNumber;
-print(Provider.of<BookingProvider>(context, listen: false)
-              .booking.bookingType);
           print(Provider.of<BookingProvider>(context, listen: false)
-              .booking.userdata!.type);
+              .booking
+              .bookingType);
+          print(Provider.of<BookingProvider>(context, listen: false)
+              .booking
+              .userdata!
+              .type);
           if (bookingType == 'new' || bookingType == 'update')
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => DocumentCheckPage()));
@@ -87,22 +89,20 @@ print(Provider.of<BookingProvider>(context, listen: false)
           const SizedBox(
             height: 30,
           ),
-
           GestureDetector(
-            onTap: () {
+              onTap: () {
                 Provider.of<Auth>(context, listen: false).logout(context);
               },
-            child: Center(
-              child: CircleAvatar(
+              child: Center(
+                  child: CircleAvatar(
                 backgroundColor: Colors.white,
                 radius: 40,
                 child: Image.asset(
                   'assets/aadharlogo.png',
                   width: 35,
                   height: 35,
-                ),))),
-
-        
+                ),
+              ))),
           const SizedBox(
             height: 9,
           ),

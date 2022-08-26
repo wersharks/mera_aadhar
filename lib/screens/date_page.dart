@@ -18,11 +18,13 @@ class DatePage extends StatefulWidget {
 
 class _DatePageState extends State<DatePage> {
   DateTime? realDate;
+  DateTime? dynamicDate;
   DateTime date = DateTime.now();
   String? slotType;
   bool isMorningSlot = true;
   @override
   void initState() {
+    print("init called00");
     bool flag = false;
     DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
     DateTime dateTime =
@@ -31,9 +33,11 @@ class _DatePageState extends State<DatePage> {
         dateFormat.parse('${date.year}-${date.month}-${date.day} 12:00:00');
     if (date.isAfter(dateTime)) {
       realDate = date.add(Duration(days: 1));
+      dynamicDate = realDate;
       flag = true;
     } else {
       realDate = date;
+      dynamicDate = realDate;
     }
 
     if (date.isAfter(dateTime1) && flag == false) {
@@ -66,8 +70,8 @@ class _DatePageState extends State<DatePage> {
               : Provider.of<BookingProvider>(context, listen: false).slots =
                   Provider.of<BookingProvider>(context, listen: false).evening;
           Provider.of<BookingProvider>(context, listen: false).booking.date =
-              realDate;
-
+              dynamicDate;
+          print(dynamicDate);
           print(Provider.of<BookingProvider>(context, listen: false)
               .booking
               .userdata!
@@ -162,7 +166,7 @@ class _DatePageState extends State<DatePage> {
                                 ),
                                 Text(
                                   DateFormat.yMMMMd('en_US')
-                                      .format(realDate!)
+                                      .format(dynamicDate!)
                                       .toString(),
                                   style: GoogleFonts.poppins(
                                     textStyle: const TextStyle(
@@ -186,7 +190,7 @@ class _DatePageState extends State<DatePage> {
                                       initialSelectedDate: realDate,
                                       daysCount: 15,
                                       onDateChange: (value) {
-                                        realDate = value;
+                                        dynamicDate = value;
                                         setState(() {});
                                       },
                                     ),

@@ -28,13 +28,15 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       } else {
         _currentPage = 0;
       }
-
+if(_controller.hasClients)
       _controller.animateToPage(
         _currentPage,
         duration: const Duration(milliseconds: 500),
         curve: Curves.easeIn,
       );
     });
+    print('here');
+    print(translatedStrings["aadharUpdationOrEnrollmentAtYourHome"]);
   }
 
   @override
@@ -58,8 +60,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
-                  onPressed: () {Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (BuildContext context) => ModeSelectPage()));},
+                  onPressed: () {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (BuildContext context) => ModeSelectPage()));
+                  },
                   child: Text(
                     "SKIP >>",
                     style: GoogleFonts.nunito(
@@ -99,19 +103,18 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               children: [
                 WelcomeScreen(
                   vectorLink: "assets/card.png",
-                  textelement: "Aadhar updation or Enrollment at your home",
-               //   textelement: translatedStrings["aadharUpdationOrEnrollmentAtYourHome"],
+                  //  textelement: "Aadhar updation or Enrollment at your home",
+                  textelement:
+                      translatedStrings["aadharUpdationOrEnrollmentAtYourHome"].toString(),
                 ),
                 WelcomeScreen(
-
                   vectorLink: "assets/time.png",
-                  textelement: "Select your own Time Slot & operator",
+                  textelement: translatedStrings["selectYourOwnTimeSlot&Operator"].toString(),
                 ),
                 WelcomeScreen(
                   vectorLink: "assets/review.png",
-                  textelement: "Review your on-going appointments",
-
-             )
+                  textelement: translatedStrings["reviewYourAppointments"].toString(),
+                )
               ],
             ),
           ),

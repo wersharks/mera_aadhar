@@ -1,6 +1,7 @@
 import 'dart:ffi';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
+import 'package:mera_aadhar/language_handler.dart';
 import 'package:mera_aadhar/screens/MapIntroductionPage.dart';
 import 'package:mera_aadhar/screens/date_page.dart';
 import 'package:mera_aadhar/screens/operator_selection.dart';
@@ -53,7 +54,7 @@ class _DocumentCheckPageState extends State<DocumentCheckPage> {
             ),
             Center(
               child: Text(
-                "Keep With yourself",
+                translatedStrings["keepWithYourself"].toString(),
                 style: GoogleFonts.nunito(
                   textStyle: TextStyle(
                       fontSize: 35,
@@ -81,7 +82,7 @@ class _DocumentCheckPageState extends State<DocumentCheckPage> {
                   activeColor: Colors.green,
                   checkColor: Colors.white,
                   title: Text(
-                    'Proof of Identity',
+                    translatedStrings["proofOfIdentity"].toString(),
                     style: GoogleFonts.poppins(
                         textStyle: TextStyle(
                             fontWeight: FontWeight.w700,
@@ -113,7 +114,7 @@ class _DocumentCheckPageState extends State<DocumentCheckPage> {
                   activeColor: Colors.green,
                   checkColor: Colors.white,
                   title: Text(
-                    'Proof of Address',
+                    translatedStrings["proofOfAddress"].toString(),
                     style: GoogleFonts.poppins(
                         textStyle: TextStyle(
                             fontWeight: FontWeight.w700,
@@ -145,7 +146,7 @@ class _DocumentCheckPageState extends State<DocumentCheckPage> {
                   activeColor: Colors.green,
                   checkColor: Colors.white,
                   title: Text(
-                    'Proof of Relationship',
+                    translatedStrings["proofOfRelationship"].toString(),
                     style: GoogleFonts.poppins(
                         textStyle: TextStyle(
                             fontWeight: FontWeight.w700,
@@ -195,7 +196,7 @@ class _DocumentCheckPageState extends State<DocumentCheckPage> {
                     'https://uidai.gov.in/images/commdoc/List_of_Acceptable_documents_July2022.pdf');
               },
               child: Text(
-                'Click here for more information about the document needed.',
+                translatedStrings["clickHereForMoreInformationAboutTheDocumentNeeded."].toString(),
                 style: GoogleFonts.nunito(
                   textStyle: TextStyle(fontSize: 20, color: Colors.white),
                 ),
@@ -223,7 +224,7 @@ class _DocumentCheckPageState extends State<DocumentCheckPage> {
 
               else
                 showSnackBar(
-                    'Please check all the documents to continue', context);
+                    translatedStrings["pleaseCheckAllTheDocumentsToContinue"].toString(), context);
             },
             backgroundColor: Colors.white,
             child: const Icon(

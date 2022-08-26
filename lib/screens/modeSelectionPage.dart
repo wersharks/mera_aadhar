@@ -1,5 +1,6 @@
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
+import 'package:mera_aadhar/language_handler.dart';
 import 'package:mera_aadhar/screens/verification.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -86,7 +87,7 @@ class _ModeSelectPageState extends State<ModeSelectPage> {
                                 height: 10,
                               ),
                               Text(
-                                'Book Operator',
+                                translatedStrings["bookOperator"].toString(),
                                 style: GoogleFonts.poppins(
                                   textStyle: const TextStyle(
                                       fontWeight: FontWeight.w500,
@@ -129,7 +130,7 @@ class _ModeSelectPageState extends State<ModeSelectPage> {
                                 height: 10,
                               ),
                               Text(
-                                'Use Helpline',
+                                translatedStrings["useHelpline"].toString(),
                                 style: GoogleFonts.poppins(
                                   textStyle: const TextStyle(
                                       fontWeight: FontWeight.w500,
@@ -173,7 +174,7 @@ class _ModeSelectPageState extends State<ModeSelectPage> {
                                 height: 10,
                               ),
                               Text(
-                                'Self Update',
+                                translatedStrings["selfUpdate"].toString(),
                                 style: GoogleFonts.poppins(
                                   textStyle: const TextStyle(
                                       fontWeight: FontWeight.w500,

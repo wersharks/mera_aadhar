@@ -2,6 +2,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:mera_aadhar/language_handler.dart';
 import 'package:mera_aadhar/screens/verification.dart';
 import 'package:mera_aadhar/widgets/my_card.dart';
 
@@ -27,7 +28,7 @@ class LoginType extends StatelessWidget {
           ),
           Expanded(
             child: MyCard(
-              text: "Use helpline",
+              text: translatedStrings["useHelpline"].toString(),
               icon: FontAwesomeIcons.headphonesSimple,
               onTheTap: () {
                 Navigator.push(context,
@@ -37,7 +38,7 @@ class LoginType extends StatelessWidget {
           ),
           Expanded(
             child: MyCard(
-              text: "Self Update",
+              text: translatedStrings["selfUpdate"].toString(),
               icon: FontAwesomeIcons.fireBurner,
               onTheTap: () {
                 Navigator.push(context,

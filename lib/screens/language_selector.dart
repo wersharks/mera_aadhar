@@ -27,16 +27,19 @@ class _LanguageSelectorScreenState extends State<LanguageSelectorScreen> {
         height: 60,
         width: 60,
         child: FloatingActionButton(
-          onPressed: () {
+          onPressed: ()async {
             if (Provider.of<BookingProvider>(context, listen: false)
                 .checkLanguage()) {
               Provider.of<BookingProvider>(context, listen: false)
                   .lodgeLanguage();
               Provider.of<BookingProvider>(context, listen: false)
                   .cleanLanguages();
-            //  superTranslate(context);
-              Navigator.of(context).push(MaterialPageRoute(
+              await superTranslate(context);
+              Future.delayed(Duration(milliseconds: 1500), () {
+   Navigator.of(context).push(MaterialPageRoute(
                   builder: (BuildContext context) => OnBoardingScreen()));
+});
+             
             } else {
               showSnackBar('Please select any slot to continue', context);
             }

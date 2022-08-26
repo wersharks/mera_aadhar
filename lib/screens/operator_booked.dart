@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:mera_aadhar/firebase/booking_db.dart';
+import 'package:mera_aadhar/language_handler.dart';
 import 'package:mera_aadhar/provider/booking.dart';
 import 'package:mera_aadhar/screens/finish_page.dart';
 import 'package:mera_aadhar/utilities/constants.dart';
@@ -90,7 +91,7 @@ class _OperatorBookedState extends State<OperatorBooked> {
                     Padding(
                       padding: const EdgeInsets.only(bottom: 5),
                       child: Text(
-                        'Operator Booked',
+                        translatedStrings["operatorBooked"].tostring(),
                         style: textStyle.copyWith(fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -115,7 +116,7 @@ class _OperatorBookedState extends State<OperatorBooked> {
             child: Align(
               alignment: Alignment.topLeft,
               child: Text(
-                'Your Operator',
+                translatedStrings["yourOperator"].tostring(),
                 style: oTextStyle,
               ),
             ),
@@ -159,7 +160,7 @@ class _OperatorBookedState extends State<OperatorBooked> {
                     cancelCurrentBookingAndExit();
                   },
                   child: Text(
-                    'Cancel',
+                    translatedStrings["cancel"].toString(),
                     style: buttonTextStyle,
                   )
                 )

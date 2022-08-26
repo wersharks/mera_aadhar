@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:mera_aadhar/firebase/booking_db.dart';
+import 'package:mera_aadhar/language_handler.dart';
 import 'package:mera_aadhar/models/booking_model.dart';
 import 'package:mera_aadhar/provider/booking.dart';
 import 'package:mera_aadhar/screens/operator_booked.dart';
@@ -340,7 +341,7 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
                               borderRadius: BorderRadius.circular(30)),
                           child: Center(
                             child: Text(
-                              'Select an operator for yourself',
+                              translatedStrings["selectAnOperatorForYourself"].toString(),
                               style: GoogleFonts.poppins(
                                   textStyle: const TextStyle(
                                       fontWeight: FontWeight.w500,
@@ -420,9 +421,9 @@ class _OperatorSelectionScreenState extends State<OperatorSelectionScreen> {
                             decoration: BoxDecoration(
                                 // color: Color(0xFFF8774A),
                                 borderRadius: BorderRadius.circular(30)),
-                            child: const Center(
+                            child:  Center(
                               child: Text(
-                                'Book operator',
+                                translatedStrings["bookOperator"].toString(),
                                 style: buttonTextStyle,
                               ),
                             ),

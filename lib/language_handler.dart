@@ -7,7 +7,7 @@ Map translatedStrings = {};
 Map strings = {
   "aadharUpdationOrEnrollmentAtYourHome":
       "Aadhar updation or Enrollment at your home",
-  "selectYourOwnTimeSlot": "Select your own Time Slot",
+  "selectYourOwnTimeSlot&Operator": "Select your own Time Slot & Operator",
   // "b83ac7e5c93e97387c489386a49c7bbf": "b83ac7e5c93e97387c489386a49c7bbf",
   // "मेराAadhar": "मेरा Aadhar",
   // "surabhiMishra": "Surabhi Mishra",
@@ -17,7 +17,7 @@ Map strings = {
   // "badOperator": "bad operator",
   // "averageOperatorGg": "average operator gg",
   // "bhb": "bhb",
-  // "bookOperator": "Book operator",
+   "bookOperator": "Book operator",
   // "operators": "Operators",
   // "morning": "morning",
   // "evening": "evening",
@@ -25,16 +25,16 @@ Map strings = {
   // "selectDateAndTime": "Select Date and Time",
   // "morningSlots": "Morning Slots",
   // "eveningSlots": "Evening Slots",
-  // "keepWithYourself": "Keep With yourself",
+ "keepWithYourself": "Keep With yourself",
   // "dart:ffi": "dart:ffi",
-  // "proofOfIdentity": "Proof of Identity",
-  // "proofOfAddress": "Proof of Address",
-  // "proofOfRelationship": "Proof of Relationship",
+  "proofOfIdentity": "Proof of Identity",
+  "proofOfAddress": "Proof of Address",
+  "proofOfRelationship": "Proof of Relationship",
   // "dateOfBirth": "Date of Birth",
-  // "clickHereForMoreInformationAboutTheDocumentNeeded":
-  //     "Click here for more information about the document needed.",
-  // "pleaseCheckAllTheDocumentsToContinue":
-  //     "Please check all the documents to continue",
+   "clickHereForMoreInformationAboutTheDocumentNeeded":
+   "Click here for more information about the document needed.",
+  "pleaseCheckAllTheDocumentsToContinue":
+      "Please check all the documents to continue",
   // "myMap": "My Map",
   // "searchLocation": "Search Location",
   // "currentLocation": "Current Location",
@@ -58,7 +58,7 @@ Map strings = {
   // "editAddressPage": "Edit Address Page",
   // "clickMap": "CLICK MAP",
   // "logout": "Logout",
-  // "operatorBooked": "Operator Booked",
+   "operatorBooked": "Operator Booked",
   // "finishPage": "finish page",
   // "modeSelectionPage": "Mode Selection Page",
   // "serviceSelectionPage": "Service Selection Page",
@@ -78,8 +78,8 @@ Map strings = {
   // "dart:async": "dart:async",
   // "pleaseSelectAnySlotToContinue": "Please select any slot to continue",
   // "selectaLanguage": "Select a language",
-  // "useHelpline": "Use Helpline",
-  // "selfUpdate": "Self Update",
+  "useHelpline": "Use Helpline",
+  "selfUpdate": "Self Update",
   // "getting": "Getting...",
   // "addOrUpdateLocationMarker": "Add or update location marker",
   // "amHereForSure": "Am here for sure",
@@ -100,13 +100,13 @@ Map strings = {
   // "aadharUpdationOrEnrollmentAtYourHome":
   //     "Aadhar updation or Enrollment at your home",
   // "selectYourOwnTimeSlot": "Select your own Time Slot",
-  // "reviewYourAppointments": "Review your appointments",
+   "reviewYourAppointments": "Review your appointments",
   // "getStarted": "Get Started",
-  // "yourOperator": "Your Operator",
+  "yourOperator": "Your Operator",
   // "aadharUpdation": "Aadhar Updation",
   // "aadharEnrollment": "Aadhar Enrollment",
   // "confirmationOtp": "Confirmation OTP",
-  // "cancel": "Cancel",
+  "cancel": "Cancel",
   // "loadingData": "Loading data...",
   // "icon": "icon",
   // "iconhigh": "iconhigh",
@@ -116,7 +116,7 @@ Map strings = {
   // "widgetFinallyRebuild": "Widget finally rebuild",
   // "123456789": "123456789",
   // "streamClosed": "Stream closed!",
-  // "selectAnOperatorForYourself": "Select an operator for yourself",
+   "selectAnOperatorForYourself": "Select an operator for yourself",
   // "youAreAllDone": "You are all done!",
   // "completedBookingForId:": "Completed Booking for ID :",
   // "xxxxxxx92": "XXX-XXX-X92",
@@ -138,14 +138,14 @@ Map strings = {
   // "\\d{6}": "(\\d{6})",
   // "mobileVerification": "MOBILE VERIFICATION",
   // "verifyYourAccount": "VERIFY YOUR ACCOUNT",
-  // "login": "Login",
+ "login": "Login",
   // "enterOtp": "Enter OTP",
   // "pleaseEnterYourMobileNumber": "Please enter your mobile number.",
   // "enterTheOtpReceivedOnYourPhone": "Enter the OTP received on your phone.",
   // "[09]": "[0-9]",
   // "phoneNumber": "Phone Number",
   // "in": "IN",
-  // "resend": "Resend",
+  "resend": "Resend",
   // "requestOtp": "Request OTP",
   // "unknown": "Unknown",
   // "operatorLoggedIn": "Operator Logged In!",
@@ -205,19 +205,22 @@ Map strings = {
   // "@@last_modified": "2022-08-25T18:16:18.534899"
 };
 
-void superTranslate(BuildContext context) async {
+Future<void> superTranslate(BuildContext context) async {
   final translator = GoogleTranslator();
 
-  final input = "Здравствуйте. Ты в порядке?";
+  //final input = "Здравствуйте. Ты в порядке?";
   String? conv = Provider.of<BookingProvider>(context, listen: false)
           .languageToCode[
       Provider.of<BookingProvider>(context, listen: false).selectedLanguage];
   print(Provider.of<BookingProvider>(context, listen: false).selectedLanguage);
-  translator.translate(input, from: 'ru', to: 'en').then(print);
+  // translator.translate(input, from: 'ru', to: 'en').then(print);
   print(conv);
   strings.forEach((key, value) async {
     await translator.translate(value, from: 'en', to: conv!).then((val) {
-      translatedStrings[key] = value;
+      translatedStrings[key] = val;
+      print(val);
+      print(key);
+      print(translatedStrings[key]);
     });
   });
 

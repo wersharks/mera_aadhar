@@ -3,6 +3,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:mera_aadhar/language_handler.dart';
 import 'package:mera_aadhar/services/auth/otp_signin.dart';
 import 'package:mera_aadhar/utilities/constants.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
@@ -133,7 +134,7 @@ class _VerificationState extends State<Verification> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 5),
                         child: Text(
-                          'Login',
+                          translatedStrings["login"].toString(),
                           style:
                               textStyle.copyWith(fontWeight: FontWeight.bold),
                         ),
@@ -258,7 +259,7 @@ class _VerificationState extends State<Verification> {
                   TextButton(
                       onPressed: () {},
                       child: Text(
-                        'Resend',
+                        translatedStrings["resend"].toString(),
                         style: TextStyle(color: Colors.red, fontSize: 17),
                       ))
                 ],

@@ -7,7 +7,11 @@ class BookingDB {
 CollectionReference _collectionRef =
     FirebaseFirestore.instance.collection('bookings');
 
-    Future<void> addNewBooking(Booking booking) {
+    Future<void> addNewBooking(Booking booking) async {
+      Booking? bookin = await getMyCurrentBooking();
+      if(booking != null){
+        print("already open request");
+      }
       return _collectionRef
           .add(booking.toJson())
           .then((value) => print("Booking entry added"))

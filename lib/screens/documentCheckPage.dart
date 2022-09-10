@@ -196,7 +196,9 @@ class _DocumentCheckPageState extends State<DocumentCheckPage> {
                     'https://uidai.gov.in/images/commdoc/List_of_Acceptable_documents_July2022.pdf');
               },
               child: Text(
-                translatedStrings["clickHereForMoreInformationAboutTheDocumentNeeded."].toString(),
+                translatedStrings[
+                        "clickHereForMoreInformationAboutTheDocumentNeeded"]
+                    .toString(),
                 style: GoogleFonts.nunito(
                   textStyle: TextStyle(fontSize: 20, color: Colors.white),
                 ),
@@ -224,7 +226,9 @@ class _DocumentCheckPageState extends State<DocumentCheckPage> {
 
               else
                 showSnackBar(
-                    translatedStrings["pleaseCheckAllTheDocumentsToContinue"].toString(), context);
+                    translatedStrings["pleaseCheckAllTheDocumentsToContinue"]
+                        .toString(),
+                    context);
             },
             backgroundColor: Colors.white,
             child: const Icon(

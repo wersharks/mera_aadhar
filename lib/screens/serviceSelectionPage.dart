@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
+import 'package:mera_aadhar/language_handler.dart';
 import 'package:mera_aadhar/provider/booking.dart';
 import 'package:mera_aadhar/screens/documentCheckPage.dart';
 import 'package:mera_aadhar/services/auth/otp_signin.dart';
@@ -35,7 +36,7 @@ class _ServiceSelectionPageState extends State<ServiceSelectionPage> {
                     colors: [Color(0xffF8774A), Color(0xffF8774A)],
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft))),
-        onPressed: () {
+        onPressed: ()async {
           (bookingType == 'update')
               ? Provider.of<BookingProvider>(context, listen: false)
                   .booking
@@ -64,7 +65,7 @@ class _ServiceSelectionPageState extends State<ServiceSelectionPage> {
                 .booking
                 .userdata!
                 .type = 1;
-
+   await superTranslate(context);
           Provider.of<BookingProvider>(context, listen: false)
               .booking
               .userdata!

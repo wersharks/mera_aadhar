@@ -30,13 +30,16 @@ class _OperatorBookedState extends State<OperatorBooked> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-          int bookingId = Provider.of<BookingProvider>(context, listen: false).booking.bookingId!;
-          print("book id completed $bookingId");
-          var bdb = BookingDB();
-          bdb.registerForBookingCompleted(bookingId, (){
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => FinishPage()));});
+      int bookingId = Provider.of<BookingProvider>(context, listen: false)
+          .booking
+          .bookingId!;
+      print("book id completed $bookingId");
+      var bdb = BookingDB();
+      bdb.registerForBookingCompleted(bookingId, () {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => FinishPage()));
+      });
     });
-
   }
 
   @override
@@ -45,10 +48,10 @@ class _OperatorBookedState extends State<OperatorBooked> {
     SizeConfig().init(context);
   }
 
-    void cancelCurrentBookingAndExit() async {
-      print("cancel");
-      // TODO: Implement here
-    }
+  void cancelCurrentBookingAndExit() async {
+    print("cancel");
+    // TODO: Implement here
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +94,7 @@ class _OperatorBookedState extends State<OperatorBooked> {
                     Padding(
                       padding: const EdgeInsets.only(bottom: 5),
                       child: Text(
-                        translatedStrings["operatorBooked"].tostring(),
+                        translatedStrings["operatorBooked"].toString(),
                         style: textStyle.copyWith(fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -116,7 +119,7 @@ class _OperatorBookedState extends State<OperatorBooked> {
             child: Align(
               alignment: Alignment.topLeft,
               child: Text(
-                translatedStrings["yourOperator"].tostring(),
+                translatedStrings["yourOperator"].toString(),
                 style: oTextStyle,
               ),
             ),
@@ -124,11 +127,13 @@ class _OperatorBookedState extends State<OperatorBooked> {
           Consumer<BookingProvider>(
             builder: (context, provider, child) {
               return OperatorBookedCard(
-              name: provider.focusOperator.name!,
-              phoneNo: provider.focusOperator.phoneNo!,
-              rating: provider.focusOperator.ratings!,
-              task: provider.booking.bookingType! == 0 ? 'Aadhar Updation' : 'Aadhar Enrollment',
-              time: provider.booking.slotTime!);
+                  name: provider.focusOperator.name!,
+                  phoneNo: provider.focusOperator.phoneNo!,
+                  rating: provider.focusOperator.ratings!,
+                  task: provider.booking.bookingType! == 0
+                      ? 'Aadhar Updation'
+                      : 'Aadhar Enrollment',
+                  time: provider.booking.slotTime!);
             },
           ),
           SizedBox(
@@ -146,8 +151,6 @@ class _OperatorBookedState extends State<OperatorBooked> {
               );
             },
           ),
-
-          
           SizedBox(
             height: 55,
           ),
@@ -162,9 +165,7 @@ class _OperatorBookedState extends State<OperatorBooked> {
                   child: Text(
                     translatedStrings["cancel"].toString(),
                     style: buttonTextStyle,
-                  )
-                )
-            ),
+                  ))),
         ],
       )),
     );
